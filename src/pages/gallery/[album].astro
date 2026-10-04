@@ -1,0 +1,180 @@
+---
+import { getEntries, getEntry } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Lightbox from '../../components/Lightbox.astro';
+import VerifyBadge from '../../components/VerifyBadge.astro';
+import { getAlbums, albumDate, albumPhotos, categoryLabels, type Album } from '../../lib/gallery';
+import { formatDate } from '../../lib/format';
+import { url } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const albums = await getAlbums();
+  return albums.map((album, i) => ({
+    params: { album: album.id },
+    props: { album, prev: albums[i - 1] ?? null, next: albums[i + 1] ?? null },
+  }));
+}
+
+interface Props {
+  album: Album;
+  prev: Album | null;
+  next: Album | null;
+}
+const { album, prev, next } = Astro.props;
+const a = album.data;
+const date = albumDate(album);
+const photos = albumPhotos(album);
+
+// Large, optimised versions for the lightbox.
+const lightboxPhotos = await Promise.all(
+  photos.map(async (p) => {
+    const big = await getImage({ src: p.src, width: Math.min(p.src.width, 1800), format: 'webp', quality: 82 });
+    return {
+      src: big.src,
+      alt: p.alt,
+      caption: p.caption,
+      width: Number(big.attributes.width ?? p.src.width),
+      height: Number(big.attributes.height ?? p.src.height),
+    };
+  }),
+);
+
+const related = await getEntries(a.relatedNews);
+const achievement = a.relatedAchievement ? await getEntry(a.relatedAchievement) : undefined;
+---
+
+<BaseLayout title={a.title} description={a.description}>
+  <article>
+    <header class="relative overflow-hidden border-b border-line">
+      <div class="bg-grid pointer-events-none absolute inset-0 opacity-60"></div>
+      <div class="container-page relative pb-12 pt-28 sm:pb-16 sm:pt-36">
+        <nav aria-label="Breadcrumb" class="mb-6 text-sm text-muted">
+          <a href={url('/gallery')} class="inline-flex items-center gap-1.5 hover:text-accent">
+            <Icon name="chevron-left" size={15} /> Academic Moments
+          </a>
+        </nav>
+        <p class="eyebrow mb-4">{categoryLabels[a.category]}</p>
+        <h1 class="max-w-4xl font-serif text-4xl font-medium tracking-tight text-ink sm:text-5xl">{a.title}</h1>
+        <dl class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
+          <div class="inline-flex items-center gap-2">
+            <dt><Icon name="calendar" size={16} /><span class="sr-only">Date</span></dt>
+            <dd>{date ?? 'Date to be confirmed'}</dd>
+          </div>
+          {
+            a.location && (
+              <div class="inline-flex items-center gap-2">
+                <dt><Icon name="pin" size={16} /><span class="sr-only">Location</span></dt>
+                <dd>{a.location}</dd>
+              </div>
+            )
+          }
+          <div class="inline-flex items-center gap-2">
+            <dt><Icon name="image" size={16} /><span class="sr-only">Photographs</span></dt>
+            <dd>{photos.length} photograph{photos.length === 1 ? '' : 's'}</dd>
+          </div>
+        </dl>
+        <p class="mt-6 max-w-3xl text-lg leading-relaxed text-ink-soft">{a.description}</p>
+        <div class="mt-5 flex flex-wrap items-center gap-2">
+          {
+            a.placeholder && (
+              <span class="rounded-full border border-warn-line bg-warn-soft px-3 py-1 text-xs text-warn">
+                Sample placeholder images — actual photographs to be added
+              </span>
+            )
+          }
+          <VerifyBadge notes={a.verify} />
+        </div>
+      </div>
+    </header>
+
+    <div class="container-page py-14 sm:py-20">
+      {
+        photos.length > 0 ? (
+          <ul class="columns-1 gap-5 sm:columns-2 lg:columns-3">
+            {photos.map((p, i) => (
+              <li class="mb-5 break-inside-avoid">
+                <figure class="card overflow-hidden">
+                  <button
+                    type="button"
+                    data-lightbox-index={i}
+                    class="group relative block w-full overflow-hidden"
+                    aria-label={`Open photo ${i + 1} of ${photos.length}${p.caption ? `: ${p.caption}` : ''}`}
+                  >
+                    <Image
+                      src={p.src}
+                      alt={p.alt}
+                      width={960}
+                      widths={[400, 640, 960]}
+                      sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 92vw"
+                      loading={i < 3 ? 'eager' : 'lazy'}
+                      class="h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                    />
+                    <span class="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-black/45 text-white opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                      <Icon name="search" size={16} />
+                    </span>
+                  </button>
+                  {p.caption && <figcaption class="px-4 py-3 text-sm text-muted">{p.caption}</figcaption>}
+                </figure>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="card p-10 text-center text-muted">Photographs for this event will be added soon.</p>
+        )
+      }
+
+      {
+        (related.length > 0 || achievement || a.externalLink) && (
+          <aside class="mt-14 grid gap-4 md:grid-cols-2" aria-label="Related">
+            {achievement && (
+              <div class="card p-6">
+                <p class="eyebrow mb-2">Related achievement</p>
+                <p class="font-serif text-lg text-ink">{achievement.data.title}</p>
+                <p class="mt-1 text-sm text-muted">{achievement.data.issuer}</p>
+              </div>
+            )}
+            {related.map((n) => (
+              <div class="card p-6">
+                <p class="eyebrow mb-2">Related update</p>
+                <p class="font-serif text-lg text-ink">{n.data.title}</p>
+                <p class="mt-1 font-mono text-xs text-muted">{n.data.date ? formatDate(n.data.date, 'long') : 'Date to be confirmed'}</p>
+              </div>
+            ))}
+            {a.externalLink && (
+              <a href={a.externalLink} target="_blank" rel="noopener noreferrer" class="card card-hover flex items-center justify-between p-6">
+                <span class="font-medium text-ink">Event page</span>
+                <Icon name="arrow-up-right" size={18} class="text-muted" />
+                <span class="sr-only">(opens in a new tab)</span>
+              </a>
+            )}
+          </aside>
+        )
+      }
+
+      <nav class="mt-16 grid gap-4 border-t border-line pt-8 sm:grid-cols-2" aria-label="More albums">
+        {
+          prev ? (
+            <a href={url(`/gallery/${prev.id}`)} class="group text-sm">
+              <span class="text-muted">← Newer album</span>
+              <span class="mt-1 block font-serif text-lg text-ink group-hover:text-accent-ink">{prev.data.title}</span>
+            </a>
+          ) : (
+            <span />
+          )
+        }
+        {
+          next && (
+            <a href={url(`/gallery/${next.id}`)} class="group text-sm sm:text-right">
+              <span class="text-muted">Older album →</span>
+              <span class="mt-1 block font-serif text-lg text-ink group-hover:text-accent-ink">{next.data.title}</span>
+            </a>
+          )
+        }
+      </nav>
+    </div>
+  </article>
+
+  <Lightbox photos={lightboxPhotos} title={a.title} />
+</BaseLayout>

@@ -1,0 +1,102 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import GalleryCard from '../../components/GalleryCard.astro';
+import Icon from '../../components/Icon.astro';
+import Spotlight from '../../components/Spotlight.astro';
+import { getAlbums, categoryLabels } from '../../lib/gallery';
+
+const albums = await getAlbums();
+const categories = Object.entries(categoryLabels)
+  .map(([id, label]) => ({ id, label, count: albums.filter((a) => a.data.category === id).length }))
+  .filter((c) => c.count > 0);
+const hasPlaceholders = albums.some((a) => a.data.placeholder);
+---
+
+<PageLayout
+  title="Academic Moments"
+  eyebrow="Gallery"
+  intro="Photographs from talks, faculty development programmes, recognitions, collaborations and student activities."
+>
+  {
+    hasPlaceholders && (
+      <p class="mb-8 flex items-start gap-3 rounded-2xl border border-warn-line bg-warn-soft px-5 py-4 text-sm text-warn">
+        <Icon name="image" size={18} class="mt-0.5 shrink-0" />
+        Albums marked “Placeholder” use sample images until the actual photographs are added.
+      </p>
+    )
+  }
+
+  <div data-gallery-filter>
+    <div class="mb-10 grid gap-5 lg:grid-cols-[minmax(0,20rem)_1fr] lg:items-center">
+      <label class="relative block">
+        <span class="sr-only">Search albums by title</span>
+        <Icon name="search" size={17} class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted" />
+        <input
+          type="search"
+          data-search
+          placeholder="Search events…"
+          class="w-full rounded-full border border-line bg-surface py-3 pl-11 pr-4 text-sm text-ink placeholder:text-muted focus:border-accent focus:outline-none"
+        />
+      </label>
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Filter by category">
+        <button type="button" data-category="all" aria-pressed="true" class="filter-chip">
+          All <span class="opacity-60">{albums.length}</span>
+        </button>
+        {
+          categories.map((c) => (
+            <button type="button" data-category={c.id} aria-pressed="false" class="filter-chip">
+              {c.label} <span class="opacity-60">{c.count}</span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <p class="sr-only" aria-live="polite" data-result-count></p>
+
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        albums.map((album, i) => (
+          <li data-album data-title={album.data.title.toLowerCase()} data-cat={album.data.category}>
+            <GalleryCard album={album} eager={i < 3} sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 92vw" />
+          </li>
+        ))
+      }
+    </ul>
+    <p data-empty hidden class="py-16 text-center text-muted">No albums match your search.</p>
+  </div>
+  <Spotlight />
+</PageLayout>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-gallery-filter]');
+  if (root) {
+    const search = root.querySelector<HTMLInputElement>('[data-search]')!;
+    const chips = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-category]'));
+    const items = Array.from(root.querySelectorAll<HTMLElement>('[data-album]'));
+    const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+    const count = root.querySelector<HTMLElement>('[data-result-count]')!;
+    let category = 'all';
+
+    const apply = () => {
+      const q = search.value.trim().toLowerCase();
+      let shown = 0;
+      for (const item of items) {
+        const ok = (category === 'all' || item.dataset.cat === category) && (!q || item.dataset.title!.includes(q));
+        item.hidden = !ok;
+        if (ok) shown++;
+      }
+      empty.hidden = shown > 0;
+      count.textContent = `${shown} album${shown === 1 ? '' : 's'} shown`;
+    };
+
+    chips.forEach((chip) =>
+      chip.addEventListener('click', () => {
+        category = chip.dataset.category!;
+        chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+        apply();
+      }),
+    );
+    search.addEventListener('input', apply);
+  }
+</script>

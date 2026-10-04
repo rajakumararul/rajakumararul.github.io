@@ -11,6 +11,12 @@ export const site = {
    */
   showVerificationNotes: true,
 
+  /** Homepage "Academic Moments" carousel. Auto-advance never runs for reduced-motion visitors. */
+  gallery: {
+    autoplay: true,
+    intervalMs: 6500,
+  },
+
   nav: [
     { label: 'About', href: '/about' },
     { label: 'Research', href: '/research' },
@@ -19,6 +25,7 @@ export const site = {
     { label: 'Teaching', href: '/teaching' },
     { label: 'Activities', href: '/activities' },
     { label: 'News', href: '/news' },
+    { label: 'Gallery', href: '/gallery' },
   ],
   contact: { label: 'Contact', href: '/contact' },
 } as const;

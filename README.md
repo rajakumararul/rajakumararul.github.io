@@ -23,7 +23,11 @@ All academic content lives in `src/content/`:
 | `publications.yaml` | All publications (`featured: true` → homepage) |
 | `news/*.md` | One file per news item (latest 6 shown on homepage) |
 | `leadership.yaml` | Current role, departmental initiatives, responsibilities |
-| `experience.yaml`, `education.yaml`, `awards.yaml` | Timeline and recognition |
+| `achievements.yaml` | Awards, recognitions and certifications (optional photo / certificate / credential link) |
+| `gallery/<album>/` | Academic Moments photo albums — see [docs/ADDING-GALLERY-ALBUMS.md](docs/ADDING-GALLERY-ALBUMS.md) |
+| `social.yaml` | **All** profile links and contact links, in one place |
+| `metrics.yaml` | Manually verified citation metrics (Google Scholar) |
+| `experience.yaml`, `education.yaml` | Timeline |
 
 Dates may be `2025`, `2025-07` or `2025-07-14`. Any entry can carry
 `verify: ["note"]`, shown on the site as an amber **To verify** marker. Hide all
@@ -31,6 +35,9 @@ markers by setting `showVerificationNotes: false` in `src/config/site.ts`.
 
 The build validates every file against the schemas in `src/content.config.ts`,
 so a typo fails the build with a clear message instead of breaking a page.
+
+**Publications import (Google Scholar BibTeX / ORCID):** see
+[docs/PUBLICATIONS-IMPORT.md](docs/PUBLICATIONS-IMPORT.md).
 
 **Adding the photograph:** put the image in `public/images/` and set
 `photo: /images/<file>.jpg` in `profile.yaml`.

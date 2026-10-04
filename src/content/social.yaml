@@ -1,0 +1,119 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# All public profiles and contact links — edit them here, in one place.
+#
+#   url:        https://… or mailto:…   — leave "" (empty) until verified;
+#               empty links are never displayed.
+#   public:     false keeps a link out of the website entirely.
+#   placements: where the link appears: hero, footer, about, contact
+#   icon:       scholar, orcid, scopus, researchgate, institution, linkedin,
+#               github, x, youtube, facebook, mail, telegram, whatsapp, form
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Academic ──
+- id: google-scholar
+  group: academic
+  label: Google Scholar
+  url: "https://scholar.google.com/citations?user=UzhDslYAAAAJ&hl=en"
+  icon: scholar
+  placements: [hero, footer, about, contact]
+  order: 1
+- id: orcid
+  group: academic
+  label: ORCID
+  handle: 0000-0002-1385-7965
+  url: "https://orcid.org/0000-0002-1385-7965"
+  icon: orcid
+  placements: [hero, footer, about, contact]
+  order: 2
+- id: scopus
+  group: academic
+  label: Scopus
+  handle: "Author ID 57194859626"
+  url: "https://www.scopus.com/authid/detail.uri?authorId=57194859626"
+  icon: scopus
+  placements: [hero, footer, about, contact]
+  order: 3
+- id: researchgate
+  group: academic
+  label: ResearchGate
+  url: "https://www.researchgate.net/profile/Rajakumar-Arul"
+  icon: researchgate
+  order: 4
+- id: vit-profile
+  group: academic
+  label: VIT Faculty Profile
+  url: "https://chennai.vit.ac.in/member/dr-rajakumar-arul/"
+  icon: institution
+  order: 5
+
+# ── Professional ──
+- id: linkedin
+  group: professional
+  label: LinkedIn
+  url: "https://www.linkedin.com/in/rajakumararul/"
+  icon: linkedin
+  placements: [hero, footer, about, contact]
+  order: 10
+- id: github
+  group: professional
+  label: GitHub
+  url: ""
+  icon: github
+  order: 11
+  verify: [GitHub profile URL not found on the existing website — please provide]
+- id: x
+  group: professional
+  label: X (Twitter)
+  handle: "@rajakumararul"
+  url: "https://twitter.com/rajakumararul"
+  icon: x
+  order: 12
+- id: youtube
+  group: professional
+  label: "YouTube — The Engineer's Terminal"
+  url: ""
+  icon: youtube
+  order: 13
+  verify: ["Channel URL could not be verified (embedded on the existing site via script) — please provide"]
+- id: facebook
+  group: professional
+  label: Facebook
+  url: "https://www.facebook.com/rajakumararul"
+  icon: facebook
+  placements: [about, contact]
+  order: 14
+
+# ── Contact ──
+- id: email
+  group: contact
+  label: Email
+  url: ""
+  icon: mail
+  placements: [footer, about, contact]
+  order: 20
+  verify: [Public professional email address to be provided]
+- id: contact-form
+  group: contact
+  label: Contact form
+  url: "https://docs.google.com/forms/d/e/1FAIpQLSfvGdRygIp8KMcHnhPx2BIBaB1mTJTdETr0Jxb8ldRqwv2qkw/viewform"
+  icon: form
+  placements: [contact]
+  order: 21
+# The following appear on the existing website but are personal contact
+# channels. They stay hidden (public: false) until you approve them.
+- id: telegram
+  group: contact
+  label: Telegram
+  url: "https://t.me/Rajakumararul"
+  icon: telegram
+  public: false
+  placements: [contact]
+  order: 22
+- id: whatsapp
+  group: contact
+  label: WhatsApp
+  url: "https://wa.me/919600054775"
+  icon: whatsapp
+  public: false
+  placements: [contact]
+  order: 23

@@ -1,8 +1,38 @@
 ---
+import { getEntry } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
-import ComingSoon from '../components/ComingSoon.astro';
+import Icon from '../components/Icon.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import Spotlight from '../components/Spotlight.astro';
+
+const profile = (await getEntry('profile', 'main'))!.data;
 ---
 
-<PageLayout title="Contact" eyebrow="Contact" intro="Get in touch for research collaborations and academic engagements.">
-  <ComingSoon plan={['Office address and email', 'Contact form', 'Academic and social profiles']} />
+<PageLayout
+  title="Contact"
+  eyebrow="Get in touch"
+  intro="For research collaborations, academic engagements, invited talks and enquiries."
+>
+  <div class="grid gap-12 lg:grid-cols-12">
+    <aside class="lg:col-span-4">
+      <div class="card p-6 sm:p-8">
+        <p class="eyebrow mb-4">Institution</p>
+        <p class="font-serif text-xl text-ink">{profile.shortName}</p>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          {profile.designation}<br />
+          {profile.leadershipRole}<br />
+          {profile.school}<br />
+          {profile.institution}
+        </p>
+        <p class="mt-4 inline-flex items-center gap-2 text-sm text-muted">
+          <Icon name="pin" size={16} />
+          {profile.location}
+        </p>
+      </div>
+    </aside>
+    <div class="lg:col-span-8">
+      <SocialLinks placement="contact" variant="cards" />
+    </div>
+  </div>
+  <Spotlight />
 </PageLayout>

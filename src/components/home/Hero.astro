@@ -4,6 +4,7 @@ import Icon from '../Icon.astro';
 import QuantumField from '../QuantumField.astro';
 import PhotoPortrait from '../PhotoPortrait.astro';
 import VerifyBadge from '../VerifyBadge.astro';
+import SocialLinks from '../SocialLinks.astro';
 import { url } from '../../lib/url';
 import { getHomeStats } from '../../lib/stats';
 
@@ -15,7 +16,6 @@ const areas = (await getCollection('researchAreas'))
 // Stats are computed from the content records (see src/lib/stats.ts).
 const stats = await getHomeStats();
 
-const heroLinks = profile.links.filter((l) => ['scholar', 'orcid', 'scopus', 'linkedin'].includes(l.kind));
 ---
 
 <section class="relative isolate overflow-hidden" aria-labelledby="hero-title">
@@ -89,21 +89,7 @@ const heroLinks = profile.links.filter((l) => ['scholar', 'orcid', 'scopus', 'li
           Explore research <Icon name="arrow-right" size={16} />
         </a>
         <a href={url('/publications')} class="btn btn-ghost">Publications</a>
-        <div class="ml-1 flex items-center gap-1">
-          {
-            heroLinks.map((l) => (
-              <a
-                href={l.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="grid h-10 w-10 place-items-center rounded-full text-muted transition-colors hover:bg-bg-soft hover:text-accent"
-                title={l.label}
-              >
-                <Icon name={l.kind} size={19} label={l.label} />
-              </a>
-            ))
-          }
-        </div>
+        <SocialLinks placement="hero" variant="icons" class="ml-1" />
       </div>
     </div>
 

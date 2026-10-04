@@ -220,6 +220,33 @@
     background: var(--surface-2);
   }
 
+  /* Toggle chips used by filters (gallery, publications). */
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 0.45rem 0.9rem;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition:
+      border-color 0.25s ease,
+      background-color 0.25s ease,
+      color 0.25s ease;
+  }
+  .filter-chip:hover {
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+  .filter-chip[aria-pressed='true'] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
+  }
+
   /* Gradient text used sparingly for emphasis. */
   .text-quantum {
     background: linear-gradient(100deg, var(--accent) 10%, var(--accent-2) 90%);

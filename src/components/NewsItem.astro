@@ -17,6 +17,7 @@ const categoryLabel: Record<string, string> = {
   publication: 'Publication',
   project: 'Project',
   award: 'Award',
+  certification: 'Certification',
   event: 'Event',
   mentoring: 'Mentoring',
 };
@@ -26,6 +27,7 @@ const categoryIcon: Record<string, string> = {
   publication: 'file',
   project: 'compass',
   award: 'award',
+  certification: 'certificate',
   event: 'calendar',
   mentoring: 'users',
 };
@@ -40,7 +42,13 @@ const categoryIcon: Record<string, string> = {
     <span class="h-1.5 w-1.5 rounded-full bg-current"></span>
   </span>
   <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
-    <time datetime={n.date} class="font-mono text-xs text-muted">{formatDate(n.date, 'long')}</time>
+    {
+      n.date ? (
+        <time datetime={n.date} class="font-mono text-xs text-muted">{formatDate(n.date, 'long')}</time>
+      ) : (
+        <span class="font-mono text-xs text-muted">Recent · date to be confirmed</span>
+      )
+    }
     <span class="inline-flex items-center gap-1 text-[0.7rem] font-medium uppercase tracking-[0.12em] text-accent">
       <Icon name={categoryIcon[n.category]} size={13} />
       {categoryLabel[n.category]}

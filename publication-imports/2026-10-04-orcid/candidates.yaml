@@ -1,0 +1,67 @@
+# Records awaiting approval — generated 2026-10-04T12:09:48.231Z from ORCID 0000-0002-1385-7965.
+# Review, edit if needed (add "areas", fix "type"), then approve with:
+#   npm run pubs:approve -- publication-imports/2026-10-04-orcid <id> [<id> …]
+# Nothing here is published until approved.
+
+- id: naecp-attention-based-neural-architecture-2026
+  type: journal
+  status: published
+  title: "AB-NAECP: Attention-Based Neural Architecture for Electricity Consumption Prediction"
+  authors:
+    - Shaik Jamaludeen
+    - Amrit Pal
+    - Rajakumar Arul
+    - Abishi Chowdhury
+  venue: IEEE Access
+  publisher: Institute of Electrical and Electronics Engineers (IEEE)
+  year: 2026
+  volume: "14"
+  pages: 132009–132027
+  doi: 10.1109/access.2026.3726807
+  areas: []
+  sources:
+    - orcid
+    - crossref
+  verify: []
+- id: survey-scheduling-mechanisms-broadband-wireless-2014
+  type: journal
+  status: published
+  title: A Survey on Scheduling Mechanisms in Broadband Wireless Networks
+  authors:
+    - Ramkumar Jayaraman
+    - Gunasekaran Raja
+    - Rajakumar Arul
+    - Raja kothandaraman
+    - Sheeba Sinto
+  venue: Lecture Notes on Information Theory
+  publisher: EJournal Publishing
+  year: 2014
+  volume: "2"
+  issue: "3"
+  doi: 10.12720/lnit.2.3.214-219
+  areas: []
+  sources:
+    - orcid
+    - crossref
+  verify:
+    - Possible duplicate of existing "scheduling-survey-bwn" (100% title similarity)
+- id: prediction-dementia-using-whale-optimization-2023
+  type: chapter
+  status: published
+  title: Prediction of Dementia Using Whale Optimization Algorithm Based Convolutional Neural Network
+  authors:
+    - Rajalakshmi Shenbaga Moorthy
+    - Rajakumar Arul
+    - K. Kannan
+    - Raja Kothandaraman
+  venue: Machine Learning and Computational Intelligence Techniques for Data Engineering
+  publisher: Springer Nature Singapore
+  year: 2023
+  pages: 279–289
+  doi: 10.1007/978-981-99-0047-3_25
+  areas: []
+  sources:
+    - orcid
+    - crossref
+  verify:
+    - Possible duplicate of existing "dementia-woa-cnn-2022" (78% title similarity)

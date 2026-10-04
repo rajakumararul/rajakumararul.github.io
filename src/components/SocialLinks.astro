@@ -1,0 +1,105 @@
+---
+/**
+ * Renders profile links from src/content/social.yaml.
+ *   variant="icons"  — compact round icon buttons (hero)
+ *   variant="list"   — icon + label rows (footer, about)
+ *   variant="cards"  — larger cards grouped by type (contact)
+ */
+import Icon from './Icon.astro';
+import { getSocialLinks, isExternal } from '../lib/social';
+
+interface Props {
+  placement: 'hero' | 'footer' | 'about' | 'contact';
+  variant?: 'icons' | 'list' | 'cards';
+  class?: string;
+}
+const { placement, variant = 'list', class: className = '' } = Astro.props;
+const links = await getSocialLinks(placement);
+const ext = (url: string) => (isExternal(url) ? { target: '_blank', rel: 'noopener noreferrer' } : {});
+
+const groupLabels = { academic: 'Academic profiles', professional: 'Professional', contact: 'Contact' } as const;
+const groups = (['academic', 'professional', 'contact'] as const)
+  .map((g) => ({ id: g, label: groupLabels[g], items: links.filter((l) => l.group === g) }))
+  .filter((g) => g.items.length);
+---
+
+{
+  variant === 'icons' && (
+    <ul class:list={['flex flex-wrap items-center gap-1', className]} aria-label="Academic and professional profiles">
+      {links.map((l) => (
+        <li>
+          <a
+            href={l.url}
+            {...ext(l.url)}
+            class="grid h-10 w-10 place-items-center rounded-full text-muted transition-colors hover:bg-bg-soft hover:text-accent"
+            title={l.label}
+          >
+            <Icon name={l.icon} size={19} label={`${l.label}${isExternal(l.url) ? ' (opens in a new tab)' : ''}`} />
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+{
+  variant === 'list' && (
+    <div class:list={['grid gap-6', className]}>
+      {groups.map((g) => (
+        <div>
+          <p class="eyebrow mb-3 text-muted!">{g.label}</p>
+          <ul class="grid gap-2 text-sm">
+            {g.items.map((l) => (
+              <li>
+                <a href={l.url} {...ext(l.url)} class="group inline-flex items-center gap-2.5 text-ink-soft hover:text-accent">
+                  <Icon name={l.icon} size={16} class="text-muted group-hover:text-accent" />
+                  <span class="link-underline">{l.label}</span>
+                  {isExternal(l.url) && (
+                    <>
+                      <Icon name="arrow-up-right" size={13} class="opacity-0 transition-opacity group-hover:opacity-100" />
+                      <span class="sr-only">(opens in a new tab)</span>
+                    </>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+{
+  variant === 'cards' && (
+    <div class:list={['grid gap-10', className]}>
+      {groups.map((g) => (
+        <section aria-label={g.label}>
+          <p class="eyebrow mb-4">{g.label}</p>
+          <ul class="grid gap-3 sm:grid-cols-2">
+            {g.items.map((l) => (
+              <li>
+                <a
+                  href={l.url}
+                  {...ext(l.url)}
+                  data-spotlight
+                  class="card card-hover group flex items-center gap-4 p-5"
+                >
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent">
+                    <Icon name={l.icon} size={21} />
+                  </span>
+                  <span class="min-w-0 flex-1">
+                    <span class="block font-medium text-ink">{l.label}</span>
+                    {l.handle && <span class="block truncate font-mono text-xs text-muted">{l.handle}</span>}
+                  </span>
+                  <Icon name={isExternal(l.url) ? 'arrow-up-right' : 'arrow-right'} size={16} class="text-muted transition-colors group-hover:text-accent" />
+                  {isExternal(l.url) && <span class="sr-only">(opens in a new tab)</span>}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  )
+}

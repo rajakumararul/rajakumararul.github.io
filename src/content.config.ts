@@ -9,7 +9,7 @@
  * confirmation. These are rendered as amber "To verify" markers on the site
  * (toggle with `showVerificationNotes` in src/config/site.ts).
  */
-import { defineCollection } from 'astro:content';
+import { defineCollection, reference } from 'astro:content';
 import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
@@ -24,11 +24,6 @@ const partialDate = z
   .pipe(z.string().regex(/^\d{4}(-\d{2}(-\d{2})?)?$/, 'Use YYYY, YYYY-MM or YYYY-MM-DD'));
 
 const verify = z.array(z.string()).default([]);
-
-const link = z.object({
-  label: z.string(),
-  url: z.url(),
-});
 
 /** Research area ids — shared by projects, publications and news for filtering. */
 const areaId = z.enum([
@@ -57,8 +52,6 @@ const profile = defineCollection({
     specializations: z.array(z.string()),
     bio: z.array(z.string()),
     photo: z.string().nullable(),
-    email: z.email().nullable(),
-    links: z.array(link.extend({ kind: z.string() })),
     memberships: z.array(z.string()),
     verify,
   }),
@@ -107,8 +100,9 @@ const publications = defineCollection({
   loader: file('src/content/publications.yaml'),
   schema: z.object({
     id: z.string(),
-    type: z.enum(['journal', 'conference', 'chapter', 'book', 'thesis', 'article']),
-    status: z.enum(['published', 'accepted', 'under-review']).default('published'),
+    type: z.enum(['journal', 'conference', 'chapter', 'book', 'thesis', 'article', 'preprint']),
+    /** Only `published` records count towards published-work totals. */
+    status: z.enum(['published', 'accepted', 'under-review', 'preprint', 'unconfirmed']).default('published'),
     title: z.string(),
     authors: z.array(z.string()),
     venue: z.string(),
@@ -118,10 +112,16 @@ const publications = defineCollection({
     issue: z.string().optional(),
     pages: z.string().optional(),
     doi: z.string().optional(),
+    /** Publisher / landing page link. */
     url: z.url().optional(),
+    /** Open-access or author-accepted PDF — only where sharing is permitted. */
+    pdf: z.string().optional(),
+    keywords: z.array(z.string()).default([]),
     areas: z.array(areaId).default([]),
     featured: z.boolean().default(false),
     note: z.string().optional(),
+    /** Where the record was confirmed: existing-site, crossref, orcid, scholar … */
+    sources: z.array(z.string()).default([]),
     verify,
   }),
 });
@@ -130,10 +130,13 @@ const news = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/news' }),
   schema: z.object({
     title: z.string(),
-    date: partialDate,
-    category: z.enum(['appointment', 'talk', 'publication', 'project', 'award', 'event', 'mentoring']),
+    /** Leave out when the date is not yet confirmed — the item is then shown as "Date to be confirmed". */
+    date: partialDate.optional(),
+    category: z.enum(['appointment', 'talk', 'publication', 'project', 'award', 'certification', 'event', 'mentoring']),
     summary: z.string(),
     link: z.url().optional(),
+    achievement: reference('achievements').optional(),
+    album: reference('gallery').optional(),
     areas: z.array(areaId).default([]),
     verify,
   }),
@@ -189,16 +192,126 @@ const education = defineCollection({
   }),
 });
 
-const awards = defineCollection({
-  loader: file('src/content/awards.yaml'),
+/**
+ * Awards, fellowships, recognitions and certifications.
+ * Images are optional; place them in src/assets/achievements/ and reference
+ * them relative to achievements.yaml, e.g. ../assets/achievements/service-award.jpg
+ */
+const achievements = defineCollection({
+  loader: file('src/content/achievements.yaml'),
+  schema: ({ image }) =>
+    z.object({
+      id: z.string(),
+      kind: z.enum(['award', 'fellowship', 'recognition', 'certification']),
+      title: z.string(),
+      /** Credential name, e.g. "Quantum Excellence". */
+      credential: z.string().optional(),
+      issuer: z.string(),
+      category: z.string(),
+      years: z.array(z.number()).default([]),
+      date: partialDate.optional(),
+      validUntil: partialDate.optional(),
+      description: z.string().optional(),
+      photo: image().optional(),
+      certificateImage: image().optional(),
+      credentialUrl: z.url().optional(),
+      album: reference('gallery').optional(),
+      areas: z.array(areaId).default([]),
+      featured: z.boolean().default(false),
+      order: z.number().default(100),
+      verify,
+    }),
+});
+
+/** Gallery categories — ids used in album front matter. Labels live in src/lib/gallery.ts. */
+export const galleryCategories = [
+  'awards-recognition',
+  'faculty-development',
+  'conferences',
+  'invited-talks',
+  'workshops',
+  'research-lab',
+  'academic-leadership',
+  'industry',
+  'international',
+  'student-activities',
+] as const;
+
+/**
+ * Academic Moments — one folder per album: src/content/gallery/<album>/index.md
+ * with the photographs alongside. Folders starting with "_" are ignored (templates).
+ */
+const gallery = defineCollection({
+  loader: glob({
+    pattern: ['*/index.md', '!_*/**'],
+    base: './src/content/gallery',
+    generateId: ({ entry }) => entry.split('/')[0],
+  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      eventDate: partialDate.optional(),
+      endDate: partialDate.optional(),
+      location: z.string().optional(),
+      category: z.enum(galleryCategories),
+      description: z.string(),
+      cover: image().optional(),
+      coverAlt: z.string().optional(),
+      photos: z
+        .array(
+          z.object({
+            src: image(),
+            caption: z.string().optional(),
+            alt: z.string().optional(),
+          }),
+        )
+        .default([]),
+      featured: z.boolean().default(false),
+      relatedNews: z.array(reference('news')).default([]),
+      relatedAchievement: reference('achievements').optional(),
+      externalLink: z.url().optional(),
+      /** true while the album only contains sample placeholder images. */
+      placeholder: z.boolean().default(false),
+      order: z.number().default(100),
+      verify,
+    }),
+});
+
+/** Every public profile / contact link, edited in one place: src/content/social.yaml */
+const social = defineCollection({
+  loader: file('src/content/social.yaml'),
   schema: z.object({
     id: z.string(),
-    title: z.string(),
-    body: z.string(),
-    years: z.array(z.number()).default([]),
-    detail: z.string().optional(),
-    featured: z.boolean().default(false),
+    group: z.enum(['academic', 'professional', 'contact']),
+    label: z.string(),
+    /** https:// or mailto: link. Leave empty ("") until verified — empty links are never shown. */
+    url: z
+      .string()
+      .refine((v) => v === '' || /^(https:\/\/|mailto:)/.test(v), 'Use an https:// or mailto: link, or leave empty'),
+    handle: z.string().optional(),
+    icon: z.string(),
+    /** Set false to keep a verified link private (not displayed). */
+    public: z.boolean().default(true),
+    placements: z.array(z.enum(['hero', 'footer', 'about', 'contact'])).default(['footer', 'about', 'contact']),
+    order: z.number().default(100),
     verify,
+  }),
+});
+
+/**
+ * Citation metrics — entered manually from a verified source (e.g. Google Scholar).
+ * null values are never displayed.
+ */
+const metrics = defineCollection({
+  loader: file('src/content/metrics.yaml'),
+  schema: z.object({
+    source: z.string(),
+    sourceUrl: z.url().optional(),
+    publications: z.number().nullable(),
+    citations: z.number().nullable(),
+    hIndex: z.number().nullable(),
+    i10Index: z.number().nullable(),
+    lastVerified: partialDate.nullable(),
   }),
 });
 
@@ -211,5 +324,8 @@ export const collections = {
   leadership,
   experience,
   education,
-  awards,
+  achievements,
+  gallery,
+  social,
+  metrics,
 };

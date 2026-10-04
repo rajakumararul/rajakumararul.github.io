@@ -1,0 +1,130 @@
+# Awards, fellowships, recognitions and certifications.
+#
+# kind:      award | fellowship | recognition | certification
+# featured:  true → shown under "Honours & awards" on the homepage (awards / fellowships / recognitions)
+# order:     display order (lower first)
+#
+# Optional media (add when available — paths are relative to this file):
+#   photo:            ../assets/achievements/<file>.jpg
+#   certificateImage: ../assets/achievements/<file>.jpg
+#   credentialUrl:    https://…   (public verification link)
+#   album:            <gallery album folder name>
+#
+# Never guess a date — leave `date` out and keep a `verify` note until confirmed.
+
+# ─── Awards & recognition ────────────────────────────────────────────────────
+
+- id: vit-faculty-research-award
+  kind: award
+  title: Faculty Research Award
+  issuer: VIT Chennai
+  category: Research Award
+  years: [2022, 2023, 2024, 2025]
+  description: For sanctioned projects and research publications, four consecutive years.
+  featured: true
+  order: 1
+
+- id: vit-five-years-service
+  kind: recognition
+  title: Five Years of Service Award
+  issuer: Vellore Institute of Technology (VIT)
+  category: Institutional Recognition / Service Award
+  description: Recognized by Vellore Institute of Technology for completing five years of dedicated service.
+  album: vit-five-years-service-award
+  featured: true
+  order: 2
+  verify:
+    - Award date to be provided
+    - Award photograph to be provided
+    - Confirm exact award title from the award document
+
+- id: ieee-mas-publication
+  kind: award
+  title: Publication Award
+  issuer: IEEE MAS
+  category: Publication Award
+  years: [2020]
+  description: For a research article in IEEE Transactions on Industrial Informatics.
+  featured: true
+  order: 3
+
+- id: amrita-chancellor-publication
+  kind: award
+  title: Chancellor's Publication Award
+  issuer: Amrita Innovation and Research Awards
+  category: Publication Award
+  years: [2020]
+  description: For publication in IEEE Transactions.
+  featured: true
+  order: 4
+
+- id: anna-centenary-fellowship
+  kind: fellowship
+  title: Anna Centenary Research Fellowship
+  issuer: Anna University, Chennai
+  category: Doctoral Fellowship
+  description: Full-time Ph.D. fellowship.
+  featured: true
+  order: 5
+
+# ─── Certifications & professional development ───────────────────────────────
+
+- id: qiskit-gss-2026
+  kind: certification
+  title: Qiskit Global Summer School 2026
+  credential: Quantum Excellence
+  issuer: IBM / Qiskit
+  category: Professional Development / Quantum Computing Certification
+  years: [2026]
+  description: Successfully completed Qiskit Global Summer School 2026, earning the Quantum Excellence credential.
+  areas: [quantum-computing]
+  album: qiskit-global-summer-school-2026
+  order: 1
+  verify:
+    - Completion date to be provided
+    - Certificate image and credential URL to be provided
+    - Confirm exact credential title from the certificate
+
+- id: offsec-sec-100
+  kind: certification
+  title: "OffSec SEC-100: Foundations of Offensive Security"
+  issuer: OffSec (Offensive Security)
+  category: Security Certification
+  description: Core penetration-testing concepts and practical security fundamentals.
+  areas: [network-security]
+  order: 2
+  verify: [Year not stated on the existing site]
+
+- id: certified-scrum-master
+  kind: certification
+  title: Certified Scrum Master (CSM)
+  issuer: Scrum Alliance
+  category: Professional Certification
+  validUntil: 2024-06
+  order: 3
+  verify: ["Existing site lists it as valid 'till June 2024' — confirm whether renewed"]
+
+- id: apple-teacher
+  kind: certification
+  title: Apple Teacher
+  issuer: Apple
+  category: Teaching Certification
+  years: [2020]
+  description: Apple products and Swift programming.
+  order: 4
+
+- id: aws-cloud-practitioner-essentials
+  kind: certification
+  title: Cloud Practitioner Essentials
+  issuer: Amazon Web Services (AWS)
+  category: Cloud Computing Training
+  years: [2020]
+  order: 5
+
+- id: java-foundations
+  kind: certification
+  title: Java Certified Foundations Associate
+  issuer: Oracle
+  category: Programming Certification
+  order: 6
+  verify: [Year not stated on the existing site, Issuer assumed to be Oracle — confirm]

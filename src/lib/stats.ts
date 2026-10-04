@@ -53,13 +53,13 @@ export async function getHomeStats(): Promise<Stat[]> {
   });
 
   // Faculty Research Award streak.
-  const award = await getEntry('awards', 'vit-faculty-research-award');
+  const award = await getEntry('achievements', 'vit-faculty-research-award');
   if (award && award.data.years.length) {
     const years = [...award.data.years].sort();
     stats.push({
       value: `${years.length}×`,
       label: award.data.title,
-      hint: `${award.data.body}, ${years.length > 1 ? `${years[0]}–${years.at(-1)}` : years[0]}`,
+      hint: `${award.data.issuer}, ${years.length > 1 ? `${years[0]}–${years.at(-1)}` : years[0]}`,
       pending: award.data.verify,
     });
   }

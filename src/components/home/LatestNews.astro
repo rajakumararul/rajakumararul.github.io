@@ -3,14 +3,18 @@ import { getCollection } from 'astro:content';
 import SectionHeading from '../SectionHeading.astro';
 import NewsItem from '../NewsItem.astro';
 import Icon from '../Icon.astro';
+import VerifyBadge from '../VerifyBadge.astro';
 import { dateKey } from '../../lib/format';
 import { url } from '../../lib/url';
 
-const news = (await getCollection('news')).sort((a, b) => dateKey(b.data.date).localeCompare(dateKey(a.data.date))).slice(0, 6);
-const latestYear = (years: number[]) => (years.length ? Math.max(...years) : 0);
-const awards = (await getCollection('awards', (a) => a.data.featured))
-  .sort((a, b) => latestYear(b.data.years) - latestYear(a.data.years))
-  .slice(0, 4);
+// Undated items are recent additions awaiting a confirmed date, so they lead the list.
+const newsKey = (d?: string) => (d ? dateKey(d) : '9999');
+const news = (await getCollection('news'))
+  .sort((a, b) => newsKey(b.data.date).localeCompare(newsKey(a.data.date)))
+  .slice(0, 6);
+const awards = (await getCollection('achievements', (a) => a.data.featured && a.data.kind !== 'certification'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 5);
 ---
 
 <section class="border-t border-line bg-bg-soft py-20 sm:py-28" aria-labelledby="news-title">
@@ -36,9 +40,10 @@ const awards = (await getCollection('awards', (a) => a.data.featured))
                 <div>
                   <p class="font-medium leading-snug text-ink">{a.data.title}</p>
                   <p class="mt-0.5 text-sm text-muted">
-                    {a.data.body}
+                    {a.data.issuer}
                     {a.data.years.length > 0 && <span class="font-mono text-xs"> · {a.data.years.join(', ')}</span>}
                   </p>
+                  <VerifyBadge notes={a.data.verify} label="Details to follow" class="mt-2" />
                 </div>
               </li>
             ))

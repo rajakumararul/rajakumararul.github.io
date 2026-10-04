@@ -1,8 +1,141 @@
 ---
+import { getCollection, getEntry } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
-import ComingSoon from '../components/ComingSoon.astro';
+import Icon from '../components/Icon.astro';
+import PublicationExplorer, { type PubItem } from '../components/publications/PublicationExplorer';
+import { formatAuthors, formatDate, publicationTypeLabel } from '../lib/format';
+import { formatCitation, toBibtex } from '../lib/citations';
+import { site } from '../config/site';
+
+const all = await getCollection('publications');
+const areaEntries = (await getCollection('researchAreas')).sort((a, b) => a.data.order - b.data.order);
+const areaLabel = Object.fromEntries(areaEntries.map((a) => [a.id, a.data.title]));
+
+const pubs: PubItem[] = all.map(({ data: p }) => ({
+  id: p.id,
+  type: p.type,
+  typeLabel: publicationTypeLabel[p.type],
+  status: p.status,
+  title: p.title,
+  authors: formatAuthors(p.authors, p.authors.length),
+  venue: p.venue,
+  publisher: p.publisher,
+  year: p.year,
+  details: [p.volume && `${p.volume}${p.issue ? `(${p.issue})` : ''}`, p.pages].filter(Boolean).join(', '),
+  doi: p.doi,
+  url: p.url,
+  pdf: p.pdf,
+  areas: p.areas.map((id) => ({ id, label: areaLabel[id] ?? id })),
+  keywords: p.keywords,
+  featured: p.featured,
+  verify: p.verify,
+  bibtex: toBibtex(p),
+  citation: formatCitation(p),
+}));
+
+const typeOrder = ['journal', 'conference', 'chapter', 'book', 'article', 'preprint', 'thesis'];
+const types = typeOrder
+  .map((id) => ({ id, label: publicationTypeLabel[id], count: pubs.filter((p) => p.type === id).length }))
+  .filter((t) => t.count > 0);
+
+// ── Locally calculated totals (from publications.yaml) ──
+const counted = all.filter((p) => p.data.type !== 'thesis');
+const published = counted.filter((p) => p.data.status === 'published');
+const notYet = counted.filter((p) => p.data.status !== 'published');
+const incomplete = published.filter((p) => p.data.verify.length > 0);
+const byType = (t: string) => published.filter((p) => p.data.type === t).length;
+const localTotals = [
+  { label: 'Published works', value: published.length },
+  { label: 'Journal articles', value: byType('journal') },
+  { label: 'Conference papers', value: byType('conference') },
+  { label: 'Books & chapters', value: byType('book') + byType('chapter') },
+];
+
+// ── Manually verified citation metrics ──
+const metrics = (await getEntry('metrics', 'scholar'))!.data;
+const metricItems = [
+  { label: 'Citations', value: metrics.citations },
+  { label: 'h-index', value: metrics.hIndex },
+  { label: 'i10-index', value: metrics.i10Index },
+  { label: `Publications on ${metrics.source}`, value: metrics.publications },
+].filter((m) => m.value !== null);
 ---
 
-<PageLayout title="Publications" eyebrow="Publications" intro="Journal articles, conference papers, book chapters and books.">
-  <ComingSoon plan={['Instant search across titles, authors and venues', 'Filters by type, year and research area', 'DOI links and one-click citation copy']} />
+<PageLayout
+  title="Publications"
+  eyebrow="Research output"
+  intro="Journal articles, conference papers, book chapters and books — searchable, filterable and ready to cite."
+>
+  <div class="mb-14 grid gap-5 lg:grid-cols-12">
+    <section class="card p-6 sm:p-8 lg:col-span-7" aria-labelledby="local-totals">
+      <div class="flex flex-wrap items-baseline justify-between gap-2">
+        <h2 id="local-totals" class="font-serif text-xl text-ink">Publication record</h2>
+        <p class="font-mono text-[0.68rem] uppercase tracking-wider text-muted">Calculated from this site's records</p>
+      </div>
+      <dl class="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-4">
+        {
+          localTotals.map((t) => (
+            <div>
+              <dd class="font-serif text-4xl font-medium text-ink">{t.value}</dd>
+              <dt class="mt-1 text-xs text-muted">{t.label}</dt>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="mt-6 border-t border-line pt-4 text-xs leading-relaxed text-muted">
+        Only records with a confirmed published status are counted.
+        {notYet.length > 0 && ` ${notYet.length} accepted / in-progress item${notYet.length === 1 ? ' is' : 's are'} listed but not counted.`}
+        {
+          site.showVerificationNotes && incomplete.length > 0 && (
+            <span class="text-warn"> {incomplete.length} counted records still have incomplete bibliographic details.</span>
+          )
+        }
+      </p>
+    </section>
+
+    <section class="card p-6 sm:p-8 lg:col-span-5" aria-labelledby="citation-metrics">
+      <div class="flex flex-wrap items-baseline justify-between gap-2">
+        <h2 id="citation-metrics" class="font-serif text-xl text-ink">Citation metrics</h2>
+        <p class="font-mono text-[0.68rem] uppercase tracking-wider text-muted">Manually verified</p>
+      </div>
+      {
+        metricItems.length > 0 ? (
+          <>
+            <dl class="mt-6 grid grid-cols-2 gap-6">
+              {metricItems.map((m) => (
+                <div>
+                  <dd class="font-serif text-4xl font-medium text-ink">{m.value}</dd>
+                  <dt class="mt-1 text-xs text-muted">{m.label}</dt>
+                </div>
+              ))}
+            </dl>
+            <p class="mt-6 border-t border-line pt-4 text-xs text-muted">
+              Source: {metrics.source}
+              {metrics.lastVerified && ` · verified ${formatDate(metrics.lastVerified, 'long')}`}
+            </p>
+          </>
+        ) : (
+          <p class="mt-6 text-sm leading-relaxed text-muted">
+            Citation counts, h-index and i10-index will appear here once verified figures are recorded.
+          </p>
+        )
+      }
+      {
+        metrics.sourceUrl && (
+          <a href={metrics.sourceUrl} target="_blank" rel="noopener noreferrer" class="btn btn-ghost mt-5 py-2! text-sm!">
+            <Icon name="scholar" size={16} /> View {metrics.source} profile
+            <span class="sr-only">(opens in a new tab)</span>
+          </a>
+        )
+      }
+    </section>
+  </div>
+
+  <PublicationExplorer
+    client:load
+    pubs={pubs}
+    types={types}
+    areas={areaEntries.map((a) => ({ id: a.id, label: a.data.title }))}
+    showVerify={site.showVerificationNotes}
+  />
 </PageLayout>

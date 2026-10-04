@@ -1,0 +1,144 @@
+---
+/**
+ * Accessible photo lightbox built on <dialog>. Any element with
+ * [data-lightbox-index] opens the photo at that index from `photos`.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  photos: { src: string; alt: string; caption?: string; width: number; height: number }[];
+  title: string;
+}
+const { photos, title } = Astro.props;
+---
+
+<dialog data-lightbox class="lightbox" aria-label={`${title} — photo viewer`}>
+  <div class="flex h-full w-full flex-col">
+    <div class="flex items-center justify-between gap-4 px-4 py-3 text-white/80 sm:px-6">
+      <p class="font-mono text-xs" data-lb-counter aria-live="polite"></p>
+      <button type="button" data-lb-close class="lb-btn" aria-label="Close photo viewer">
+        <Icon name="close" size={20} />
+      </button>
+    </div>
+    <div class="relative flex min-h-0 flex-1 items-center justify-center px-2 sm:px-16" data-lb-stage>
+      <img data-lb-img alt="" class="max-h-full max-w-full rounded-lg object-contain shadow-2xl" />
+      <button type="button" data-lb-prev class="lb-btn lb-nav left-2 sm:left-4" aria-label="Previous photo">
+        <Icon name="chevron-left" size={22} />
+      </button>
+      <button type="button" data-lb-next class="lb-btn lb-nav right-2 sm:right-4" aria-label="Next photo">
+        <Icon name="chevron-right" size={22} />
+      </button>
+    </div>
+    <p data-lb-caption class="mx-auto max-w-3xl px-6 py-5 text-center text-sm leading-relaxed text-white/85"></p>
+  </div>
+  <script type="application/json" data-lb-data set:html={JSON.stringify(photos)} />
+</dialog>
+
+<style is:global>
+  .lightbox {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(5 8 16 / 0.94);
+    color: white;
+  }
+  .lightbox::backdrop {
+    background: rgb(5 8 16 / 0.7);
+    backdrop-filter: blur(6px);
+  }
+  .lightbox[open] {
+    animation: lb-in 0.35s var(--ease-out-soft);
+  }
+  @keyframes lb-in {
+    from {
+      opacity: 0;
+    }
+  }
+  .lb-btn {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.2);
+    background: rgb(255 255 255 / 0.06);
+    color: white;
+    transition: background-color 0.2s ease;
+  }
+  .lb-btn:hover {
+    background: rgb(255 255 255 / 0.16);
+  }
+  .lb-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .lb-btn:disabled {
+    opacity: 0.25;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  type Photo = { src: string; alt: string; caption?: string; width: number; height: number };
+  const dialog = document.querySelector<HTMLDialogElement>('[data-lightbox]');
+  if (dialog) {
+    const photos: Photo[] = JSON.parse(dialog.querySelector('[data-lb-data]')!.textContent || '[]');
+    const img = dialog.querySelector<HTMLImageElement>('[data-lb-img]')!;
+    const caption = dialog.querySelector<HTMLElement>('[data-lb-caption]')!;
+    const counter = dialog.querySelector<HTMLElement>('[data-lb-counter]')!;
+    const prev = dialog.querySelector<HTMLButtonElement>('[data-lb-prev]')!;
+    const next = dialog.querySelector<HTMLButtonElement>('[data-lb-next]')!;
+    let index = 0;
+    let opener: HTMLElement | null = null;
+
+    const show = (i: number) => {
+      index = (i + photos.length) % photos.length;
+      const p = photos[index];
+      img.src = p.src;
+      img.alt = p.alt;
+      img.width = p.width;
+      img.height = p.height;
+      caption.textContent = p.caption ?? '';
+      counter.textContent = `Photo ${index + 1} of ${photos.length}`;
+      prev.disabled = next.disabled = photos.length < 2;
+      // Preload neighbours for smooth navigation.
+      [index + 1, index - 1].forEach((n) => {
+        const q = photos[(n + photos.length) % photos.length];
+        if (q) new Image().src = q.src;
+      });
+    };
+
+    document.querySelectorAll<HTMLElement>('[data-lightbox-index]').forEach((el) =>
+      el.addEventListener('click', () => {
+        opener = el;
+        show(Number(el.dataset.lightboxIndex));
+        dialog.showModal();
+        dialog.querySelector<HTMLButtonElement>('[data-lb-close]')!.focus();
+      }),
+    );
+    prev.addEventListener('click', () => show(index - 1));
+    next.addEventListener('click', () => show(index + 1));
+    dialog.querySelector('[data-lb-close]')!.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('close', () => opener?.focus());
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') show(index + 1);
+      if (e.key === 'ArrowLeft') show(index - 1);
+    });
+    // Close when clicking the dark area around the photo.
+    dialog.querySelector('[data-lb-stage]')!.addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) dialog.close();
+    });
+    // Swipe on touch screens.
+    let startX = 0;
+    dialog.addEventListener('touchstart', (e) => (startX = e.touches[0].clientX), { passive: true });
+    dialog.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+    });
+  }
+</script>

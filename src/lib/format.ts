@@ -34,9 +34,11 @@ export function formatAmount(amount: number | null, currency: string | null): st
 }
 
 /** Shorten an author list and emphasise the site owner. */
+/** Matches the spellings of the site owner's name used in author lists. */
+export const OWNER_NAME = /^(Rajakumar Arul|R\.? Arul|A\.? Rajakumar|Rajakumar A\.?|Arul,? Rajakumar)$/i;
+
 export function formatAuthors(authors: string[], max = 6): { text: string; isOwner: boolean }[] {
-  const owner = /^(Rajakumar Arul|R\.? Arul|A\.? Rajakumar|Rajakumar A)$/i;
-  const list = authors.slice(0, max).map((a) => ({ text: a, isOwner: owner.test(a.trim()) }));
+  const list = authors.slice(0, max).map((a) => ({ text: a, isOwner: OWNER_NAME.test(a.trim()) }));
   if (authors.length > max) list.push({ text: `+${authors.length - max} more`, isOwner: false });
   return list;
 }
@@ -48,4 +50,5 @@ export const publicationTypeLabel: Record<string, string> = {
   book: 'Book',
   thesis: 'Thesis',
   article: 'Article',
+  preprint: 'Preprint',
 };

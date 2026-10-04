@@ -1,0 +1,12 @@
+# Citation metrics — copy them from your Google Scholar profile and record the date.
+# Leave a value as null until verified; null values are never shown on the site.
+# (Local publication totals are calculated automatically from publications.yaml
+#  and are shown separately from these figures.)
+scholar:
+  source: Google Scholar
+  sourceUrl: "https://scholar.google.com/citations?user=UzhDslYAAAAJ&hl=en"
+  publications: null
+  citations: null
+  hIndex: null
+  i10Index: null
+  lastVerified: null

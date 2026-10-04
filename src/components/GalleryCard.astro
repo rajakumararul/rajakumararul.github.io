@@ -1,0 +1,77 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import VerifyBadge from './VerifyBadge.astro';
+import { albumDate, albumPhotos, categoryLabels, type Album } from '../lib/gallery';
+import { url } from '../lib/url';
+
+interface Props {
+  album: Album;
+  eager?: boolean;
+  sizes?: string;
+}
+const { album, eager = false, sizes = '(min-width: 1024px) 380px, (min-width: 640px) 60vw, 85vw' } = Astro.props;
+const a = album.data;
+const date = albumDate(album);
+const count = albumPhotos(album).length;
+---
+
+<article
+  data-spotlight
+  class="card card-hover group relative flex h-full flex-col overflow-hidden focus-within:ring-2 focus-within:ring-accent"
+>
+  <div class="relative aspect-[3/2] overflow-hidden bg-bg-soft">
+    {
+      a.cover ? (
+        <Picture
+          src={a.cover}
+          alt={a.coverAlt ?? a.title}
+          width={960}
+          widths={[400, 640, 960]}
+          sizes={sizes}
+          formats={['avif', 'webp']}
+          loading={eager ? 'eager' : 'lazy'}
+          class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+        />
+      ) : (
+        <div class="grid h-full w-full place-items-center bg-gradient-to-br from-accent-soft via-surface to-accent-2-soft text-muted">
+          <Icon name="image" size={36} />
+        </div>
+      )
+    }
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/45 to-transparent"></div>
+    <span class="absolute left-3 top-3 rounded-full bg-black/45 px-2.5 py-1 text-[0.68rem] font-medium text-white backdrop-blur">
+      {categoryLabels[a.category]}
+    </span>
+    {
+      a.placeholder && (
+        <span class="absolute right-3 top-3 rounded-full border border-[#f0d59e] bg-[#fdf1dc] px-2 py-0.5 font-mono text-[0.6rem] font-medium uppercase tracking-wider text-[#9a5b00]">
+          Placeholder
+        </span>
+      )
+    }
+    {
+      count > 1 && (
+        <span class="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full bg-black/45 px-2 py-0.5 text-[0.7rem] text-white backdrop-blur">
+          <Icon name="image" size={12} /> {count}
+        </span>
+      )
+    }
+  </div>
+
+  <div class="flex flex-1 flex-col p-5 sm:p-6">
+    <p class="font-mono text-[0.7rem] text-muted">{date ?? 'Date to be confirmed'}{a.location && ` · ${a.location}`}</p>
+    <h3 class="mt-2 font-serif text-xl font-medium leading-snug text-ink">
+      <a href={url(`/gallery/${album.id}`)} class="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none">
+        {a.title}
+      </a>
+    </h3>
+    <p class="mt-2 line-clamp-2 text-sm leading-relaxed text-muted">{a.description}</p>
+    <div class="mt-auto flex items-center justify-between gap-3 pt-5">
+      <span class="inline-flex items-center gap-1.5 text-sm font-medium text-ink-soft transition-colors group-hover:text-accent">
+        View album <Icon name="arrow-right" size={15} class="transition-transform duration-300 group-hover:translate-x-1" />
+      </span>
+      <VerifyBadge notes={a.verify} class="relative z-10" />
+    </div>
+  </div>
+</article>

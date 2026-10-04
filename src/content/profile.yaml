@@ -38,15 +38,7 @@ main:
   # 2. Replace null with its path, e.g.   photo: /images/rajakumar-arul.jpg
   # The circular frame and orbit animation stay the same; null shows the placeholder.
   photo: null
-  email: null
-  links:
-    - { kind: scholar, label: Google Scholar, url: "https://scholar.google.com/citations?user=UzhDslYAAAAJ&hl=en" }
-    - { kind: orcid, label: ORCID, url: "https://orcid.org/0000-0002-1385-7965" }
-    - { kind: scopus, label: Scopus, url: "https://www.scopus.com/authid/detail.uri?authorId=57194859626" }
-    - { kind: researchgate, label: ResearchGate, url: "https://www.researchgate.net/profile/Rajakumar-Arul" }
-    - { kind: linkedin, label: LinkedIn, url: "https://www.linkedin.com/in/rajakumararul/" }
-    - { kind: institution, label: VIT Chennai profile, url: "https://chennai.vit.ac.in/member/dr-rajakumar-arul/" }
-    - { kind: x, label: X (Twitter), url: "https://twitter.com/rajakumararul" }
+  # Profile links and email are managed in src/content/social.yaml
   memberships:
     - Senior Member, IEEE
     - Life Member, Cryptology Research Society of India (L/1184)

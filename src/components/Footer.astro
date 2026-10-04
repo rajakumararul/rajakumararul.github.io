@@ -1,12 +1,11 @@
 ---
 import { getEntry } from 'astro:content';
 import Icon from './Icon.astro';
+import SocialLinks from './SocialLinks.astro';
 import { site } from '../config/site';
 import { url } from '../lib/url';
 
 const profile = (await getEntry('profile', 'main'))!.data;
-const academicKinds = ['scholar', 'orcid', 'scopus', 'researchgate', 'linkedin', 'institution'];
-const links = profile.links.filter((l) => academicKinds.includes(l.kind));
 const year = new Date().getFullYear();
 ---
 
@@ -45,25 +44,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="md:col-span-4">
-      <p class="eyebrow mb-4 text-muted!">Academic profiles</p>
-      <ul class="grid gap-2 text-sm">
-        {
-          links.map((l) => (
-            <li>
-              <a
-                href={l.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="group inline-flex items-center gap-2.5 text-ink-soft hover:text-accent"
-              >
-                <Icon name={l.kind} size={16} class="text-muted group-hover:text-accent" />
-                <span class="link-underline">{l.label}</span>
-                <Icon name="arrow-up-right" size={13} class="opacity-0 transition-opacity group-hover:opacity-100" />
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+      <SocialLinks placement="footer" variant="list" />
     </div>
   </div>
   <div class="border-t border-line">
