@@ -1,0 +1,140 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import Icon from '../Icon.astro';
+import QuantumField from '../QuantumField.astro';
+import PhotoPortrait from '../PhotoPortrait.astro';
+import VerifyBadge from '../VerifyBadge.astro';
+import { url } from '../../lib/url';
+import { getHomeStats } from '../../lib/stats';
+
+const profile = (await getEntry('profile', 'main'))!.data;
+const areas = (await getCollection('researchAreas'))
+  .filter((a) => a.data.tier === 'primary')
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Stats are computed from the content records (see src/lib/stats.ts).
+const stats = await getHomeStats();
+
+const heroLinks = profile.links.filter((l) => ['scholar', 'orcid', 'scopus', 'linkedin'].includes(l.kind));
+---
+
+<section class="relative isolate overflow-hidden" aria-labelledby="hero-title">
+  <!-- Background layers -->
+  <div class="absolute inset-0 -z-10">
+    <QuantumField class="opacity-90 [mask-image:radial-gradient(ellipse_80%_70%_at_60%_40%,black,transparent)]" />
+    <div
+      class="absolute -right-40 -top-40 h-[36rem] w-[36rem] rounded-full blur-3xl"
+      style="background: radial-gradient(closest-side, rgb(var(--glow) / 0.16), transparent)"
+    >
+    </div>
+    <div
+      class="absolute -left-40 top-1/2 h-[28rem] w-[28rem] rounded-full blur-3xl"
+      style="background: radial-gradient(closest-side, color-mix(in oklab, var(--accent-2) 14%, transparent), transparent)"
+    >
+    </div>
+  </div>
+
+  <div class="container-page grid items-center gap-12 pb-12 pt-28 sm:pt-32 lg:grid-cols-12 lg:gap-10 lg:pb-16">
+    <div class="lg:col-span-7">
+      <p
+        class="reveal inline-flex items-center gap-2.5 rounded-full border border-line bg-surface/70 py-1.5 pl-2 pr-4 text-[0.78rem] text-ink-soft backdrop-blur"
+      >
+        <span class="relative flex h-5 w-5 items-center justify-center rounded-full bg-accent-soft">
+          <span class="h-1.5 w-1.5 rounded-full bg-accent" style="animation: pulse-dot 2.4s infinite"></span>
+        </span>
+        {profile.leadershipRole}
+      </p>
+
+      <h1
+        id="hero-title"
+        class="reveal mt-5 font-serif text-[2.9rem] font-medium leading-[1.02] tracking-[-0.02em] text-ink sm:text-7xl lg:text-[5.2rem]"
+        style="--reveal-delay:80ms"
+      >
+        <span class="block text-[0.42em] font-normal italic tracking-normal text-muted">{profile.honorific}</span>
+        {profile.name}
+      </h1>
+
+      <p class="reveal mt-5 text-lg text-ink-soft sm:text-xl" style="--reveal-delay:160ms">
+        <span class="font-medium text-ink">{profile.designation}</span>
+        <span class="mx-2 text-line-strong">/</span>
+        {profile.department}
+        <span class="mt-1 block text-base text-muted">{profile.school}, {profile.institution}</span>
+      </p>
+
+      <p
+        class="reveal mt-6 max-w-xl border-l-2 border-accent/60 pl-5 font-serif text-[1.35rem] italic leading-snug text-ink-soft sm:text-2xl"
+        style="--reveal-delay:240ms"
+      >
+        {profile.tagline}
+      </p>
+
+      <ul class="reveal mt-6 flex flex-wrap gap-2" style="--reveal-delay:320ms" aria-label="Research specializations">
+        {
+          areas.map((a) => (
+            <li>
+              <a
+                href={url(`/#area-${a.id}`)}
+                class="inline-flex items-center gap-2 rounded-full border border-line bg-surface/80 px-3.5 py-1.5 text-sm text-ink backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-accent hover:text-accent-ink"
+              >
+                <Icon name={a.data.icon} size={16} class="text-accent" />
+                {a.data.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="reveal mt-8 flex flex-wrap items-center gap-3" style="--reveal-delay:400ms">
+        <a href={url('/research')} class="btn btn-primary">
+          Explore research <Icon name="arrow-right" size={16} />
+        </a>
+        <a href={url('/publications')} class="btn btn-ghost">Publications</a>
+        <div class="ml-1 flex items-center gap-1">
+          {
+            heroLinks.map((l) => (
+              <a
+                href={l.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="grid h-10 w-10 place-items-center rounded-full text-muted transition-colors hover:bg-bg-soft hover:text-accent"
+                title={l.label}
+              >
+                <Icon name={l.kind} size={19} label={l.label} />
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal lg:col-span-5" style="--reveal-delay:200ms">
+      <PhotoPortrait photo={profile.photo} name={`${profile.honorific} ${profile.name}`} />
+    </div>
+  </div>
+
+  <!-- Stats strip -->
+  <div class="container-page pb-6">
+    <dl class="reveal grid grid-cols-2 overflow-hidden rounded-2xl border border-line bg-surface/70 backdrop-blur lg:grid-cols-4">
+      {
+        stats.map((s, i) => (
+          <div
+            class:list={[
+              'p-5 sm:p-7',
+              i % 2 === 1 && 'border-l border-line',
+              i > 1 && 'border-t border-line lg:border-t-0',
+              i === 2 && 'lg:border-l',
+            ]}
+          >
+            <dt class="sr-only">{s.label}</dt>
+            <dd>
+              <span class="block font-serif text-4xl font-medium tracking-tight text-ink sm:text-5xl">{s.value}</span>
+              <span class="mt-2 block text-sm font-medium text-ink-soft">{s.label}</span>
+              <span class="mt-0.5 block text-xs text-muted">{s.hint}</span>
+              {s.pending.length > 0 && <VerifyBadge notes={s.pending} label={s.pendingLabel ?? 'To verify'} class="mt-2.5" />}
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>

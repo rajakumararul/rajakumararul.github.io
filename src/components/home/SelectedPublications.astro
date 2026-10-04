@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHeading from '../SectionHeading.astro';
+import PublicationItem from '../PublicationItem.astro';
+
+const pubs = (await getCollection('publications', (p) => p.data.featured)).sort(
+  (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0),
+);
+const total = (await getCollection('publications', (p) => p.data.type !== 'thesis' && p.data.status === 'published')).length;
+---
+
+<section class="py-20 sm:py-28" aria-labelledby="pubs-title">
+  <div class="container-page grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <div class="lg:sticky lg:top-28">
+        <SectionHeading
+          id="pubs-title"
+          stacked
+          eyebrow="Selected publications"
+          title="Research in print"
+          intro={`A selection from ${total} published works, including IEEE Transactions on Industrial Informatics, Springer and Wiley journals.`}
+          href="/publications"
+          linkLabel="Search all publications"
+        />
+      </div>
+    </div>
+    <ol class="lg:col-span-8">
+      {pubs.map((pub, i) => <PublicationItem pub={pub} index={i} />)}
+    </ol>
+  </div>
+</section>

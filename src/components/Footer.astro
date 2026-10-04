@@ -1,0 +1,75 @@
+---
+import { getEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import { site } from '../config/site';
+import { url } from '../lib/url';
+
+const profile = (await getEntry('profile', 'main'))!.data;
+const academicKinds = ['scholar', 'orcid', 'scopus', 'researchgate', 'linkedin', 'institution'];
+const links = profile.links.filter((l) => academicKinds.includes(l.kind));
+const year = new Date().getFullYear();
+---
+
+<footer class="relative mt-10 overflow-hidden border-t border-line bg-bg-soft">
+  <div
+    class="pointer-events-none absolute -top-40 left-1/2 h-80 w-[40rem] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
+    style="background: radial-gradient(closest-side, rgb(var(--glow) / 0.25), transparent)"
+  >
+  </div>
+  <div class="container-page relative grid gap-12 py-16 md:grid-cols-12">
+    <div class="md:col-span-5">
+      <p class="font-serif text-2xl font-medium text-ink">{profile.shortName}</p>
+      <p class="mt-2 text-sm leading-relaxed text-muted">
+        {profile.designation} · {profile.leadershipRole}<br />
+        {profile.institution}
+      </p>
+      <p class="mt-4 inline-flex items-center gap-2 text-sm text-muted">
+        <Icon name="pin" size={16} />
+        {profile.location}
+      </p>
+    </div>
+
+    <div class="md:col-span-3">
+      <p class="eyebrow mb-4 text-muted!">Explore</p>
+      <ul class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm md:grid-cols-1">
+        {
+          [...site.nav, site.contact].map((item) => (
+            <li>
+              <a href={url(item.href)} class="link-underline text-ink-soft hover:text-ink">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="md:col-span-4">
+      <p class="eyebrow mb-4 text-muted!">Academic profiles</p>
+      <ul class="grid gap-2 text-sm">
+        {
+          links.map((l) => (
+            <li>
+              <a
+                href={l.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group inline-flex items-center gap-2.5 text-ink-soft hover:text-accent"
+              >
+                <Icon name={l.kind} size={16} class="text-muted group-hover:text-accent" />
+                <span class="link-underline">{l.label}</span>
+                <Icon name="arrow-up-right" size={13} class="opacity-0 transition-opacity group-hover:opacity-100" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-line">
+    <div class="container-page flex flex-col gap-2 py-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} {profile.shortName}. All rights reserved.</p>
+      <p class="font-mono tracking-wide">Built with Astro · Tailwind CSS</p>
+    </div>
+  </div>
+</footer>

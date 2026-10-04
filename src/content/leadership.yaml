@@ -1,0 +1,99 @@
+# Academic leadership — homepage "Academic Leadership" section and (later) its own page.
+#
+# group:   current-role | portfolio | responsibility
+# status:  established     → shown as "Ongoing"
+#          in-development  → shown as "In development"
+# clusters: optional list rendered as chips (e.g. research clusters)
+
+- id: hod-quantum-computing
+  group: current-role
+  title: Head of the Department of Quantum Computing
+  organisation: School of Computer Science and Engineering, VIT Chennai
+  start: 2026-03-24
+  end: null
+  description: >-
+    Leads the Department of Quantum Computing, overseeing its academic programme, research
+    clusters and the development of quantum technology capabilities at VIT Chennai.
+  order: 1
+
+# ── Departmental leadership portfolio ──
+
+- id: curriculum
+  group: portfolio
+  title: Quantum computing curriculum & academic activities
+  description: Developing the department's quantum computing curriculum and coordinating its academic activities.
+  status: established
+  icon: layers
+  order: 2
+
+- id: research-clusters
+  group: portfolio
+  title: Research cluster coordination
+  description: Coordinating the department's research clusters across five themes.
+  status: established
+  icon: atom
+  order: 1
+  clusters:
+    - Quantum Simulation & HPC
+    - Hybrid Quantum Computing & AI
+    - Quantum Algorithms
+    - Post-Quantum Cryptography
+    - Quantum Key Distribution
+
+- id: fdp-workshops
+  group: portfolio
+  title: Faculty development programmes & technical workshops
+  description: Organising faculty development programmes and hands-on technical workshops.
+  status: established
+  icon: users
+  order: 3
+
+- id: industry-engagement
+  group: portfolio
+  title: Industry engagement & research collaborations
+  description: Building partnerships with industry and research institutions.
+  status: established
+  icon: handshake
+  order: 4
+
+- id: quantum-lab
+  group: portfolio
+  title: Quantum technology laboratory
+  description: Initiatives to establish quantum technology laboratory facilities for teaching and research.
+  status: in-development
+  icon: compass
+  order: 5
+
+# ── Other current responsibilities (from the existing website) ──
+
+- id: gian-coordinator
+  group: responsibility
+  title: Local Coordinator, Global Initiative of Academic Networks (GIAN)
+  organisation: VIT Chennai
+  start: 2024-12
+  end: null
+  order: 1
+
+- id: fist-automation
+  group: responsibility
+  title: Automation In-Charge, FIST Server
+  organisation: School of Computer Science and Engineering, VIT Chennai
+  start: 2025-11
+  end: null
+  order: 2
+
+- id: ieee-future-directions
+  group: responsibility
+  title: "Editorial Board Member, IEEE Future Directions Newsletter: Technology, Policy and Ethics"
+  organisation: IEEE
+  start: 2023-04
+  end: null
+  order: 3
+
+- id: ispace-mentor
+  group: responsibility
+  title: Mentor, iSpace — Apple Developers Club
+  organisation: VIT Chennai
+  start: 2023-07
+  end: null
+  order: 4

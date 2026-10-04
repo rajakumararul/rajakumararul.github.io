@@ -1,0 +1,84 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import VerifyBadge from './VerifyBadge.astro';
+import { formatAmount, formatRange } from '../lib/format';
+import { url } from '../lib/url';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  areaTitles: Record<string, string>;
+  index?: number;
+}
+const { project, areaTitles, index = 0 } = Astro.props;
+const p = project.data;
+const { Content } = await render(project);
+const amount = formatAmount(p.amount, p.currency);
+
+const statusStyle = {
+  ongoing: 'bg-accent-2-soft text-accent-2 border-accent-2/30',
+  completed: 'bg-accent-soft text-accent-ink border-accent/25',
+  'to-verify': 'bg-warn-soft text-warn border-warn-line',
+}[p.status];
+const statusLabel = { ongoing: 'Ongoing', completed: 'Completed', 'to-verify': 'Status to verify' }[p.status];
+---
+
+<article
+  data-spotlight
+  class="card card-hover reveal group flex h-full flex-col p-6 sm:p-7"
+  style={`--reveal-delay:${index * 90}ms`}
+>
+  <div class="flex items-start justify-between gap-4">
+    <span class:list={['inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[0.7rem] font-medium', statusStyle]}>
+      {p.status === 'ongoing' && <span class="h-1.5 w-1.5 rounded-full bg-current" style="animation: pulse-dot 2s infinite" />}
+      {statusLabel}
+    </span>
+    <span class="font-mono text-[0.7rem] text-muted">{formatRange(p.start, p.end)}</span>
+  </div>
+
+  <p class="mt-6 text-[0.72rem] font-medium uppercase tracking-[0.14em] text-accent">{p.role}</p>
+  <h3 class="mt-2 font-serif text-[1.45rem] font-medium leading-snug text-ink">
+    {p.shortTitle ?? p.title}
+  </h3>
+  {p.shortTitle && p.shortTitle !== p.title && <p class="mt-2 text-[0.8rem] italic leading-relaxed text-muted line-clamp-2" title={p.title}>“{p.title}”</p>}
+
+  <div class="mt-4 text-[0.92rem] leading-relaxed text-ink-soft [&_p]:m-0">
+    <Content />
+  </div>
+
+  <dl class="mt-6 grid gap-3 border-t border-line pt-5 text-sm">
+    <div class="flex gap-3">
+      <dt class="w-20 shrink-0 text-muted">Funder</dt>
+      <dd class="text-ink-soft">{p.funder}</dd>
+    </div>
+    {
+      amount && (
+        <div class="flex gap-3">
+          <dt class="w-20 shrink-0 text-muted">Grant</dt>
+          <dd class="font-medium text-ink">{amount}</dd>
+        </div>
+      )
+    }
+    {
+      p.collaborators.length > 0 && (
+        <div class="flex gap-3">
+          <dt class="w-20 shrink-0 text-muted">With</dt>
+          <dd class="text-ink-soft">{p.collaborators.join('; ')}</dd>
+        </div>
+      )
+    }
+  </dl>
+
+  <div class="mt-auto flex flex-wrap items-center gap-2 pt-6">
+    {p.areas.map((a) => <span class="chip">{areaTitles[a] ?? a}</span>)}
+    <VerifyBadge notes={p.verify} class="relative z-10" />
+  </div>
+
+  <a href={url(`/research#${project.id}`)} class="absolute inset-0 rounded-[inherit]" aria-label={`More about ${p.shortTitle ?? p.title}`}>
+  </a>
+  <Icon
+    name="arrow-up-right"
+    size={18}
+    class="absolute right-6 top-[4.6rem] text-muted opacity-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent group-hover:opacity-100"
+  />
+</article>

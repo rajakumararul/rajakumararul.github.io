@@ -1,0 +1,139 @@
+---
+import { getCollection } from 'astro:content';
+import Icon from '../Icon.astro';
+import SectionHeading from '../SectionHeading.astro';
+import VerifyBadge from '../VerifyBadge.astro';
+import { formatDate, formatRange } from '../../lib/format';
+
+const items = (await getCollection('leadership')).sort((a, b) => a.data.order - b.data.order);
+const role = items.find((i) => i.data.group === 'current-role')!;
+const portfolio = items.filter((i) => i.data.group === 'portfolio');
+const responsibilities = items.filter((i) => i.data.group === 'responsibility');
+
+const statusLabel = { established: 'Ongoing', 'in-development': 'In development' } as const;
+---
+
+<section class="relative overflow-hidden py-20 sm:py-28" aria-labelledby="leadership-title">
+  <div class="container-page">
+    <SectionHeading
+      id="leadership-title"
+      eyebrow="Academic leadership"
+      title="Building a department for the quantum era"
+      intro="Leading the Department of Quantum Computing at VIT Chennai — from curriculum and research clusters to laboratory development and industry engagement."
+      href="/leadership"
+      linkLabel="Leadership & service"
+    />
+
+    <!-- Current role + departmental portfolio -->
+    <article
+      class="reveal relative overflow-hidden rounded-[1.5rem] border border-transparent bg-[#0d1526] p-7 text-[#f2f1ec] sm:p-10 dark:border-line dark:bg-[#11183a]"
+    >
+      <div
+        class="pointer-events-none absolute -left-24 -top-24 h-80 w-80 rounded-full opacity-60 blur-3xl"
+        style="background: radial-gradient(closest-side, rgb(var(--glow) / 0.5), transparent)"
+      >
+      </div>
+      <svg class="pointer-events-none absolute -bottom-20 -left-16 h-72 w-72 opacity-[0.08]" viewBox="0 0 200 200" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="0.8">
+          <ellipse cx="100" cy="100" rx="90" ry="34"></ellipse>
+          <ellipse cx="100" cy="100" rx="90" ry="34" transform="rotate(60 100 100)"></ellipse>
+          <ellipse cx="100" cy="100" rx="90" ry="34" transform="rotate(120 100 100)"></ellipse>
+        </g>
+        <circle cx="100" cy="100" r="5" fill="currentColor"></circle>
+      </svg>
+
+      <div class="relative grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <!-- Role -->
+        <div class="flex flex-col lg:col-span-5">
+          <p class="font-mono text-[0.7rem] uppercase tracking-[0.18em] opacity-60">Current role</p>
+          <h3 class="mt-4 font-serif text-3xl font-medium leading-tight sm:text-4xl">{role.data.title}</h3>
+          <p class="mt-3 opacity-75">{role.data.organisation}</p>
+          {
+            role.data.start && (
+              <p class="mt-5 inline-flex items-center gap-2 self-start rounded-full border border-white/15 px-3 py-1 font-mono text-xs opacity-85">
+                <Icon name="calendar" size={14} /> Since {formatDate(role.data.start, 'long')}
+              </p>
+            )
+          }
+          {role.data.description && <p class="mt-6 leading-relaxed opacity-80">{role.data.description}</p>}
+
+          <dl class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-xs lg:mt-auto lg:pt-8">
+            <div class="flex items-center gap-2">
+              <dt class="h-2 w-2 rounded-full bg-[#4fd1e8]"><span class="sr-only">Solid marker</span></dt>
+              <dd class="opacity-75">Ongoing — established activity</dd>
+            </div>
+            <div class="flex items-center gap-2">
+              <dt class="h-2 w-2 rounded-full border border-[#c3b8ff]"><span class="sr-only">Hollow marker</span></dt>
+              <dd class="opacity-75">In development — initiative being established</dd>
+            </div>
+          </dl>
+        </div>
+
+        <!-- Portfolio -->
+        <div class="lg:col-span-7">
+          <p class="mb-4 font-mono text-[0.7rem] uppercase tracking-[0.18em] opacity-60">Departmental leadership</p>
+          <ul class="grid gap-3 sm:grid-cols-2">
+            {
+              portfolio.map((it) => {
+                const developing = it.data.status === 'in-development';
+                return (
+                  <li
+                    class:list={[
+                      'group rounded-2xl border p-5 transition-colors duration-300',
+                      it.data.clusters.length > 0 && 'sm:col-span-2',
+                      developing
+                        ? 'border-dashed border-white/25 hover:border-[#c3b8ff]/60'
+                        : 'border-white/12 bg-white/[0.04] hover:border-white/30',
+                    ]}
+                  >
+                    <div class="flex items-start justify-between gap-3">
+                      <Icon name={it.data.icon ?? 'spark'} size={20} class="mt-0.5 shrink-0 opacity-80" />
+                      {it.data.status && (
+                        <span
+                          class:list={[
+                            'inline-flex shrink-0 items-center gap-1.5 rounded-full px-2 py-0.5 font-mono text-[0.62rem] uppercase tracking-wider',
+                            developing ? 'border border-[#c3b8ff]/40 text-[#c3b8ff]' : 'bg-[#4fd1e8]/12 text-[#7fe0f0]',
+                          ]}
+                        >
+                          <span class:list={['h-1.5 w-1.5 rounded-full', developing ? 'border border-current' : 'bg-current']} />
+                          {statusLabel[it.data.status]}
+                        </span>
+                      )}
+                    </div>
+                    <p class="mt-3 font-medium leading-snug">{it.data.title}</p>
+                    {it.data.description && <p class="mt-1.5 text-sm leading-relaxed opacity-65">{it.data.description}</p>}
+                    {it.data.clusters.length > 0 && (
+                      <ul class="mt-4 flex flex-wrap gap-2" aria-label="Research clusters">
+                        {it.data.clusters.map((c) => (
+                          <li class="rounded-full border border-white/15 bg-white/[0.06] px-3 py-1 text-xs">{c}</li>
+                        ))}
+                      </ul>
+                    )}
+                    <VerifyBadge notes={it.data.verify} class="mt-3" />
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- Other responsibilities -->
+    <article class="card reveal mt-5 p-7 sm:p-9" style="--reveal-delay:120ms">
+      <p class="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted">Service & responsibilities</p>
+      <ul class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {
+          responsibilities.map((r) => (
+            <li class="border-l border-line pl-4">
+              <p class="font-medium leading-snug text-ink">{r.data.title}</p>
+              {r.data.organisation && <p class="mt-1.5 text-sm text-muted">{r.data.organisation}</p>}
+              {r.data.start && <p class="mt-1 font-mono text-xs text-muted">{formatRange(r.data.start, r.data.end)}</p>}
+              <VerifyBadge notes={r.data.verify} class="mt-2" />
+            </li>
+          ))
+        }
+      </ul>
+    </article>
+  </div>
+</section>

@@ -1,0 +1,122 @@
+---
+import Icon from './Icon.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import { site } from '../config/site';
+import { url, isActive } from '../lib/url';
+
+const pathname = Astro.url.pathname;
+---
+
+<header
+  data-header
+  class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-[background-color,border-color,backdrop-filter] duration-500"
+>
+  <div class="container-page flex h-[4.5rem] items-center justify-between gap-6">
+    <a href={url('/')} class="group flex items-center gap-3" aria-label="Dr. Rajakumar Arul — home">
+      <span
+        class="relative grid h-9 w-9 place-items-center rounded-xl bg-ink font-serif text-[0.95rem] font-semibold text-bg transition-transform duration-500 group-hover:rotate-[-6deg]"
+      >
+        RA
+        <span class="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-accent-2 ring-2 ring-bg"></span>
+      </span>
+      <span class="hidden leading-tight sm:block">
+        <span class="block font-serif text-[1.05rem] font-medium text-ink">Dr. Rajakumar Arul</span>
+        <span class="block text-[0.7rem] tracking-wide text-muted">Quantum Computing · VIT Chennai</span>
+      </span>
+    </a>
+
+    <nav aria-label="Primary" class="hidden lg:block">
+      <ul class="flex items-center gap-1">
+        {
+          site.nav.map((item) => (
+            <li>
+              <a
+                href={url(item.href)}
+                class:list={[
+                  'rounded-full px-3 py-2 text-[0.88rem] transition-colors',
+                  isActive(item.href, pathname)
+                    ? 'bg-accent-soft text-accent-ink'
+                    : 'text-ink-soft hover:bg-bg-soft hover:text-ink',
+                ]}
+                aria-current={isActive(item.href, pathname) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a href={url(site.contact.href)} class="btn btn-primary hidden py-2! text-[0.85rem]! sm:inline-flex">
+        {site.contact.label}
+      </a>
+      <ThemeToggle />
+      <button
+        type="button"
+        data-menu-button
+        class="grid h-10 w-10 place-items-center rounded-full border border-line text-ink lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open menu"
+      >
+        <span data-menu-open><Icon name="menu" size={18} /></span>
+        <span data-menu-close class="hidden"><Icon name="close" size={18} /></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" data-menu hidden class="border-t border-line bg-bg/95 backdrop-blur-xl lg:hidden">
+    <nav aria-label="Mobile" class="container-page py-4">
+      <ul class="grid gap-1">
+        {
+          [...site.nav, site.contact].map((item) => (
+            <li>
+              <a
+                href={url(item.href)}
+                class:list={[
+                  'flex items-center justify-between rounded-xl px-4 py-3 text-base',
+                  isActive(item.href, pathname) ? 'bg-accent-soft text-accent-ink' : 'text-ink hover:bg-bg-soft',
+                ]}
+              >
+                {item.label}
+                <Icon name="arrow-right" size={16} class="text-muted" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const button = document.querySelector<HTMLButtonElement>('[data-menu-button]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+
+  // Solid, blurred header once the page is scrolled.
+  const onScroll = () => {
+    const scrolled = window.scrollY > 12;
+    header?.classList.toggle('bg-bg/80', scrolled);
+    header?.classList.toggle('backdrop-blur-xl', scrolled);
+    header?.classList.toggle('border-line!', scrolled);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const setOpen = (open: boolean) => {
+    if (!button || !menu) return;
+    menu.hidden = !open;
+    button.setAttribute('aria-expanded', String(open));
+    button.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    button.querySelector('[data-menu-open]')?.classList.toggle('hidden', open);
+    button.querySelector('[data-menu-close]')?.classList.toggle('hidden', !open);
+    if (open) header?.classList.add('bg-bg/80', 'backdrop-blur-xl');
+    else onScroll();
+  };
+  button?.addEventListener('click', () => setOpen(Boolean(menu?.hidden)));
+  document.addEventListener('keydown', (e) => e.key === 'Escape' && setOpen(false));
+  window.matchMedia('(min-width: 1024px)').addEventListener('change', (e) => e.matches && setOpen(false));
+</script>

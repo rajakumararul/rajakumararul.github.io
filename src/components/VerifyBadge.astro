@@ -1,0 +1,32 @@
+---
+/**
+ * Amber marker for details that still need confirmation. Hidden entirely when
+ * `site.showVerificationNotes` is false.
+ */
+import { site } from '../config/site';
+
+interface Props {
+  notes: string[];
+  label?: string;
+  class?: string;
+}
+const { notes, label = 'To verify', class: className = '' } = Astro.props;
+const show = site.showVerificationNotes && notes.length > 0;
+const tip = notes.join(' • ');
+---
+
+{
+  show && (
+    <span
+      class:list={[
+        'inline-flex cursor-help items-center gap-1 rounded-full border border-warn-line bg-warn-soft px-2 py-0.5 align-middle font-mono text-[0.62rem] font-medium uppercase tracking-wider text-warn',
+        className,
+      ]}
+      title={tip}
+      aria-label={`${label}: ${tip}`}
+    >
+      <span class="h-1.5 w-1.5 rounded-full bg-current" style="animation: pulse-dot 2.4s ease-in-out infinite" />
+      {label}
+    </span>
+  )
+}

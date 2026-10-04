@@ -1,0 +1,43 @@
+---
+import Icon from './Icon.astro';
+import { url } from '../lib/url';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  intro?: string;
+  href?: string;
+  linkLabel?: string;
+  id?: string;
+  stacked?: boolean;
+}
+const { eyebrow, title, intro, href, linkLabel = 'View all', id, stacked = false } = Astro.props;
+---
+
+<div
+  class:list={[
+    'reveal mb-10 flex flex-col gap-6 sm:mb-14',
+    !stacked && 'md:flex-row md:items-end md:justify-between',
+  ]}
+>
+  <div class="max-w-2xl">
+    <p class="eyebrow mb-3 flex items-center gap-3">
+      <span class="h-px w-8 bg-accent/60"></span>{eyebrow}
+    </p>
+    <h2 id={id} class="font-serif text-3xl font-medium tracking-tight text-ink sm:text-[2.6rem] sm:leading-[1.1]">
+      {title}
+    </h2>
+    {intro && <p class="mt-4 text-[1.02rem] leading-relaxed text-muted">{intro}</p>}
+  </div>
+  {
+    href && (
+      <a
+        href={url(href)}
+        class="group inline-flex shrink-0 items-center gap-2 text-sm font-medium text-ink-soft transition-colors hover:text-accent"
+      >
+        {linkLabel}
+        <Icon name="arrow-right" size={16} class="transition-transform duration-300 group-hover:translate-x-1" />
+      </a>
+    )
+  }
+</div>

@@ -1,0 +1,29 @@
+- id: phd
+  degree: Ph.D.
+  field: Information and Communication Engineering
+  institution: Anna University – MIT Campus, Chennai
+  year: 2020
+  detail: "Thesis: Robust Symmetric Key Management Techniques for Next Generation Networks. Anna Centenary Research Fellow."
+  link: http://hdl.handle.net/10603/333921
+- id: me
+  degree: M.E.
+  field: Computer Science and Engineering
+  institution: Anna University – MIT Campus, Chennai
+  year: 2013
+- id: be
+  degree: B.E.
+  field: Computer Science and Engineering
+  institution: Anna University, Coimbatore
+  year: 2011
+  verify: ["Bio on existing site says 'Anna University, Chennai'"]
+- id: mba
+  degree: MBA
+  field: Human Resource Management
+  institution: Annamalai University, Chidambaram
+  year: 2021
+- id: epgp
+  degree: Executive PG Programme
+  field: Machine Learning & AI
+  institution: IIIT Bangalore & upGrad
+  year: 2022
+  verify: ["Marked with an unexplained asterisk on the existing site"]

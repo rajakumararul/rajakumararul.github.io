@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHeading from '../SectionHeading.astro';
+import ProjectCard from '../ProjectCard.astro';
+
+const projects = (await getCollection('projects', (p) => p.data.featured)).sort((a, b) => a.data.order - b.data.order);
+const areaTitles = Object.fromEntries((await getCollection('researchAreas')).map((a) => [a.id, a.data.short]));
+---
+
+<section class="relative border-y border-line bg-bg-soft py-20 sm:py-28" aria-labelledby="projects-title">
+  <div class="bg-grid pointer-events-none absolute inset-0 opacity-50"></div>
+  <div class="container-page relative">
+    <SectionHeading
+      id="projects-title"
+      eyebrow="Funded research"
+      title="Featured research projects"
+      intro="Nationally and internationally funded work spanning quantum computation, lattice-based cryptography and network attack resilience."
+      href="/research"
+      linkLabel="All projects"
+    />
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {projects.map((project, i) => <ProjectCard project={project} areaTitles={areaTitles} index={i} />)}
+    </div>
+  </div>
+</section>

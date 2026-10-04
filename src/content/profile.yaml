@@ -1,0 +1,58 @@
+# Core profile — shown in the hero, header, footer and About page.
+# Edit text freely; keep the keys. Lists use "- " items.
+main:
+  name: Rajakumar Arul
+  honorific: Dr.
+  shortName: Dr. Rajakumar Arul
+  designation: Associate Professor
+  leadershipRole: Head of the Department of Quantum Computing
+  department: Department of Quantum Computing
+  school: School of Computer Science and Engineering (SCOPE)
+  institution: Vellore Institute of Technology, Chennai
+  institutionShort: VIT Chennai
+  location: Chennai, India
+  tagline: >-
+    Securing the communication networks of today against the quantum computers of tomorrow.
+  specializations:
+    - Quantum Computing
+    - Post-Quantum Cryptography
+    - Quantum Key Distribution
+    - Network Security
+  bio:
+    - >-
+      Dr. Rajakumar Arul is an Associate Professor and Head of the Department of Quantum
+      Computing at VIT Chennai, where he leads the quantum computing initiatives of the
+      School of Computer Science and Engineering.
+    - >-
+      He earned his B.E. and M.E. in Computer Science and Engineering and his Ph.D. in
+      Information and Communication Engineering from Anna University, Chennai, where he was
+      awarded the Anna Centenary Research Fellowship. His research on authentication, key
+      management and quantum-safe security for LTE/5G networks has appeared in IEEE
+      Transactions on Industrial Informatics, Springer, Wiley and other leading venues.
+    - >-
+      He has led and co-led funded research supported by SERB (Government of India), Mitacs
+      (Canada) and the MeitY Quantum Computing Applications Lab with AWS. He is a Senior
+      Member of IEEE and a Life Member of the Cryptology Research Society of India.
+  # ── Professional photograph ──
+  # 1. Copy the image into  public/images/  (square crop works best, at least 800×800 px).
+  # 2. Replace null with its path, e.g.   photo: /images/rajakumar-arul.jpg
+  # The circular frame and orbit animation stay the same; null shows the placeholder.
+  photo: null
+  email: null
+  links:
+    - { kind: scholar, label: Google Scholar, url: "https://scholar.google.com/citations?user=UzhDslYAAAAJ&hl=en" }
+    - { kind: orcid, label: ORCID, url: "https://orcid.org/0000-0002-1385-7965" }
+    - { kind: scopus, label: Scopus, url: "https://www.scopus.com/authid/detail.uri?authorId=57194859626" }
+    - { kind: researchgate, label: ResearchGate, url: "https://www.researchgate.net/profile/Rajakumar-Arul" }
+    - { kind: linkedin, label: LinkedIn, url: "https://www.linkedin.com/in/rajakumararul/" }
+    - { kind: institution, label: VIT Chennai profile, url: "https://chennai.vit.ac.in/member/dr-rajakumar-arul/" }
+    - { kind: x, label: X (Twitter), url: "https://twitter.com/rajakumararul" }
+  memberships:
+    - Senior Member, IEEE
+    - Life Member, Cryptology Research Society of India (L/1184)
+    - Professional Member, ACM
+    - Member, Internet Society
+  verify:
+    - Professional photograph to be provided.
+    - Public email address to be confirmed.
+    - "Existing site gives B.E. institution as both 'Anna University, Chennai' and 'Anna University, Coimbatore'."

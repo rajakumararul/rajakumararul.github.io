@@ -1,0 +1,62 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import VerifyBadge from './VerifyBadge.astro';
+import { formatDate } from '../lib/format';
+
+interface Props {
+  item: CollectionEntry<'news'>;
+  index?: number;
+}
+const { item, index = 0 } = Astro.props;
+const n = item.data;
+
+const categoryLabel: Record<string, string> = {
+  appointment: 'Appointment',
+  talk: 'Invited talk',
+  publication: 'Publication',
+  project: 'Project',
+  award: 'Award',
+  event: 'Event',
+  mentoring: 'Mentoring',
+};
+const categoryIcon: Record<string, string> = {
+  appointment: 'flag',
+  talk: 'users',
+  publication: 'file',
+  project: 'compass',
+  award: 'award',
+  event: 'calendar',
+  mentoring: 'users',
+};
+---
+
+<li class="reveal relative pb-9 pl-10 last:pb-0" style={`--reveal-delay:${index * 70}ms`}>
+  <span class="absolute left-[0.6rem] top-8 bottom-0 w-px bg-line" aria-hidden="true"></span>
+  <span
+    class="absolute left-0 top-1 grid h-[1.3rem] w-[1.3rem] place-items-center rounded-full border border-line bg-surface text-accent"
+    aria-hidden="true"
+  >
+    <span class="h-1.5 w-1.5 rounded-full bg-current"></span>
+  </span>
+  <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+    <time datetime={n.date} class="font-mono text-xs text-muted">{formatDate(n.date, 'long')}</time>
+    <span class="inline-flex items-center gap-1 text-[0.7rem] font-medium uppercase tracking-[0.12em] text-accent">
+      <Icon name={categoryIcon[n.category]} size={13} />
+      {categoryLabel[n.category]}
+    </span>
+  </div>
+  <h3 class="mt-1.5 font-serif text-lg font-medium leading-snug text-ink">
+    {
+      n.link ? (
+        <a href={n.link} target="_blank" rel="noopener noreferrer" class="hover:text-accent-ink">
+          {n.title}
+        </a>
+      ) : (
+        n.title
+      )
+    }
+  </h3>
+  <p class="mt-1 text-sm leading-relaxed text-muted">{n.summary}</p>
+  <VerifyBadge notes={n.verify} class="mt-2" />
+</li>

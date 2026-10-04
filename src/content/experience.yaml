@@ -1,0 +1,66 @@
+# Positions — feeds the academic timeline. end: null means "Present".
+- id: vit-hod
+  track: academic
+  title: Head of the Department of Quantum Computing
+  organisation: VIT Chennai
+  location: Chennai, India
+  start: 2026-03
+  end: null
+- id: vit-associate
+  track: academic
+  title: Associate Professor
+  organisation: Vellore Institute of Technology, Chennai
+  location: Chennai, India
+  start: 2025-07
+  end: null
+- id: vit-assistant
+  track: academic
+  title: Assistant Professor
+  organisation: Vellore Institute of Technology, Chennai
+  location: Chennai, India
+  start: 2021-06
+  end: 2025-06
+  note: Recognised as an Institution of Eminence by the Govt. of India
+- id: amrita-assistant
+  track: academic
+  title: Assistant Professor
+  organisation: Amrita School of Engineering, Bengaluru
+  location: Bengaluru, India
+  start: 2018
+  end: 2021
+- id: rns-researcher
+  track: research
+  title: Senior Researcher (Part Time)
+  organisation: RNS Solutions Pvt. Ltd
+  location: Singapore
+  start: 2018
+  end: 2018
+- id: anna-scholar
+  track: research
+  title: Full-Time Research Scholar
+  organisation: Anna University
+  location: Chennai, India
+  start: 2013
+  end: 2018
+- id: redfowl-director
+  track: advisory
+  title: Director
+  organisation: Redfowl Infotech Pvt. Ltd.
+  location: India
+  start: 2021-06
+  end: null
+  note: DPIIT-recognised startup
+- id: rsp-project-manager
+  track: advisory
+  title: Project Manager
+  organisation: RSP Management Consultancy Services LLP
+  location: Chennai, India
+  start: 2025-01
+  end: null
+- id: fu-tech-researcher
+  track: advisory
+  title: Senior Researcher (Remote)
+  organisation: Fu-technologies Ltd.
+  location: Manchester, United Kingdom
+  start: 2024-06
+  end: null

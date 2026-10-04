@@ -1,0 +1,91 @@
+---
+import { getCollection } from 'astro:content';
+import Icon from '../Icon.astro';
+import SectionHeading from '../SectionHeading.astro';
+import VerifyBadge from '../VerifyBadge.astro';
+
+const areas = (await getCollection('researchAreas')).sort((a, b) => a.data.order - b.data.order);
+const primary = areas.filter((a) => a.data.tier === 'primary');
+const secondary = areas.filter((a) => a.data.tier === 'secondary');
+---
+
+<section class="relative py-20 sm:py-28" aria-labelledby="research-title">
+  <div class="container-page">
+    <SectionHeading
+      id="research-title"
+      eyebrow="Research focus"
+      title="Quantum-era security, from qubits to networks"
+      intro="Four connected themes anchor the work: building with quantum computers, defending against them with post-quantum cryptography and quantum key distribution, and securing the networks that carry it all."
+      href="/research"
+      linkLabel="Research overview"
+    />
+
+    <div class="grid gap-5 md:grid-cols-2">
+      {
+        primary.map((a, i) => (
+          <article
+            id={`area-${a.id}`}
+            data-spotlight
+            class="card card-hover reveal group relative flex flex-col overflow-hidden p-7 sm:p-9"
+            style={`--reveal-delay:${i * 90}ms`}
+          >
+            <div class="flex items-start justify-between">
+              <span class="grid h-14 w-14 place-items-center rounded-2xl border border-line bg-accent-soft text-accent transition-transform duration-500 group-hover:rotate-[-8deg] group-hover:scale-105">
+                <Icon name={a.data.icon} size={28} />
+              </span>
+              <span class="font-mono text-xs text-muted">0{a.data.order}</span>
+            </div>
+            <h3 class="mt-7 font-serif text-[1.7rem] font-medium leading-tight text-ink">{a.data.title}</h3>
+            <p class="mt-3 leading-relaxed text-ink-soft">{a.data.summary}</p>
+            <ul class="mt-5 flex flex-wrap gap-2">
+              {a.data.keywords.map((k) => (
+                <li class="chip">{k}</li>
+              ))}
+            </ul>
+            {a.data.evidence.length > 0 && (
+              <div class="mt-7 border-t border-dashed border-line pt-5">
+                <p class="mb-2.5 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-muted">Track record</p>
+                <ul class="grid gap-2">
+                  {a.data.evidence.map((e) => (
+                    <li class="flex gap-2.5 text-sm leading-snug text-muted">
+                      <span class="mt-[0.45rem] h-1 w-1 shrink-0 rounded-full bg-accent-2" />
+                      {e}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <VerifyBadge notes={a.data.verify} class="mt-4 self-start" />
+            <div
+              class="pointer-events-none absolute -bottom-24 -right-24 h-56 w-56 rounded-full opacity-0 blur-2xl transition-opacity duration-700 group-hover:opacity-100"
+              style="background: radial-gradient(closest-side, color-mix(in oklab, var(--accent-2) 22%, transparent), transparent)"
+            />
+          </article>
+        ))
+      }
+    </div>
+
+    {
+      secondary.length > 0 && (
+        <div class="mt-5 grid gap-5 md:grid-cols-2">
+          {secondary.map((a, i) => (
+            <article
+              id={`area-${a.id}`}
+              class="reveal flex items-start gap-5 rounded-2xl border border-dashed border-line-strong p-6 transition-colors hover:border-accent/50"
+              style={`--reveal-delay:${i * 90}ms`}
+            >
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-bg-soft text-ink-soft">
+                <Icon name={a.data.icon} size={22} />
+              </span>
+              <div>
+                <p class="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-muted">Also working on</p>
+                <h3 class="mt-1 font-serif text-xl font-medium text-ink">{a.data.title}</h3>
+                <p class="mt-1.5 text-sm leading-relaxed text-muted">{a.data.summary}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>

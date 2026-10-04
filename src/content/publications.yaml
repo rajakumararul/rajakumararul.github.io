@@ -1,0 +1,439 @@
+# Publications — one entry per item, newest first within each type (order here is free;
+# pages sort by year). Source: existing Google Site, with year/volume/pages/DOI completed
+# from Crossref only where the site already linked the paper.
+#
+# Fields: id, type (journal | conference | chapter | book | thesis | article),
+# status (published | accepted | under-review), title, authors, venue, publisher, year,
+# volume, issue, pages, doi, url, areas, featured, note, verify
+#
+# "featured: true" places a paper in "Selected publications" on the homepage.
+
+# ─── Journal articles ────────────────────────────────────────────────────────
+
+- id: quantum-computing-foundations-2025
+  type: journal
+  title: "Quantum Computing: Foundations, Architecture and Applications"
+  authors: [Christopher Columbus Chinnappan, Palani Thanaraj Krishnan, Elakiya Elamaran, Rajakumar Arul, T. Sunil Kumar]
+  venue: Engineering Reports
+  publisher: Wiley
+  year: 2025
+  volume: "7"
+  issue: "8"
+  pages: e70337
+  doi: 10.1002/eng2.70337
+  areas: [quantum-computing]
+  featured: true
+
+- id: ml-customer-retention-2024
+  type: journal
+  title: Machine Learning-Driven Strategies for Customer Retention and Financial Improvement
+  authors: [N. Rakesh, B. A. Mohan, U. Kumaran, G. L. Prakash, Rajakumar Arul, Kalaipriyan Thirugnanasambandam]
+  venue: Archives for Technical Sciences
+  year: 2024
+  volume: "31"
+  issue: "2"
+  pages: 269–283
+  url: https://www.arhivzatehnickenauke.com/article/421/pdf
+  areas: [ai-ml]
+
+- id: noc-adaptive-routing-2022
+  type: journal
+  title: Congestion aware and game based odd even adaptive routing in network on chip many-core architecture
+  authors: [Radha Doraisamy, Minal Moharir, Rajakumar Arul]
+  venue: Indonesian Journal of Electrical Engineering and Computer Science
+  year: 2022
+  volume: "28"
+  issue: "2"
+  pages: 962–972
+  doi: 10.11591/ijeecs.v28.i2.pp962-972
+
+- id: mine-safety-2022
+  type: journal
+  title: Mine safety and risk prediction mechanism through nanocomposite and heuristic optimization algorithm
+  authors: [T. P. Latchoumi, K. Raja, Y. Jyothi, K. Balamurugan, Rajakumar Arul]
+  venue: "Measurement: Sensors"
+  publisher: Elsevier
+  year: 2022
+  volume: "23"
+  pages: "100390"
+  doi: 10.1016/j.measen.2022.100390
+  areas: [ai-ml]
+
+- id: bio-inspired-iot-2022
+  type: journal
+  title: AI-assisted bio-inspired algorithm for secure IoT communication networks
+  authors: [Roobaea Alroobaea, Rajakumar Arul, Saeed Rubaiee, Fahd S. Alharithi, Usman Tariq, Xincan Fan]
+  venue: Cluster Computing
+  publisher: Springer
+  year: 2022
+  volume: "25"
+  issue: "3"
+  pages: 1805–1816
+  doi: 10.1007/s10586-021-03520-z
+  areas: [ai-ml, network-security]
+
+- id: underwater-iot-energy-2021
+  type: journal
+  title: Intelligent data analytics in energy optimization for the internet of underwater things
+  authors: [Rajakumar Arul, Roobaea Alroobaea, Seifeddine Mechti, Saeed Rubaiee, Murad Andejany, Usman Tariq, Saman Iftikhar]
+  venue: Soft Computing
+  publisher: Springer
+  year: 2021
+  volume: "25"
+  issue: "18"
+  pages: 12507–12519
+  doi: 10.1007/s00500-021-06002-x
+  areas: [ai-ml]
+
+- id: iomt-blockchain-dissemination-2021
+  type: journal
+  title: Multi-modal secure healthcare data dissemination framework using blockchain in IoMT
+  authors: [Rajakumar Arul, Yasser D. Al-Otaibi, Waleed S. Alnumay, Usman Tariq, Umar Shoaib, M. D. Jalil Piran]
+  venue: Personal and Ubiquitous Computing
+  publisher: Springer
+  year: 2021
+  volume: "28"
+  issue: "1"
+  pages: 3–15
+  doi: 10.1007/s00779-021-01527-2
+  areas: [blockchain-iot]
+  featured: true
+
+- id: iot-healthcare-blockchain-2021
+  type: journal
+  title: IoT-enabled healthcare systems using block chain-dependent adaptable services
+  authors: [Rajakumar Arul, Roobaea Alroobaea, Usman Tariq, Ahmed H. Almulihi, Fahd S. Alharithi, Umar Shoaib]
+  venue: Personal and Ubiquitous Computing
+  publisher: Springer
+  year: 2021
+  volume: "28"
+  issue: "1"
+  pages: 43–57
+  doi: 10.1007/s00779-021-01584-7
+  areas: [blockchain-iot]
+
+- id: quantum-safe-lte-2020
+  type: journal
+  title: A quantum-safe key hierarchy and dynamic security association for LTE/SAE in 5G scenario
+  authors: [Rajakumar Arul, Gunasekaran Raja, Alaa Omran Almagrabi, Mohammed Saeed Alkatheiri, Sajjad Hussain Chauhdary, Ali Kashif Bashir]
+  venue: IEEE Transactions on Industrial Informatics
+  publisher: IEEE
+  year: 2020
+  volume: "16"
+  issue: "1"
+  pages: 681–690
+  doi: 10.1109/TII.2019.2949354
+  areas: [post-quantum-cryptography, network-security]
+  featured: true
+
+- id: cloud-ran-5g-2019
+  type: journal
+  title: An optimal multitier resource allocation of cloud RAN in 5G using machine learning
+  authors: [Ali Kashif Bashir, Rajakumar Arul, Shakila Basheer, Gunasekaran Raja, Ramkumar Jayaraman, Nawab Muhammad Faseeh Qureshi]
+  venue: Transactions on Emerging Telecommunications Technologies
+  publisher: Wiley
+  year: 2019
+  volume: "30"
+  issue: "8"
+  pages: e3627
+  doi: 10.1002/ett.3627
+  areas: [ai-ml, network-security]
+
+- id: ddos-sdn-2019
+  type: journal
+  title: A novel dynamic framework to detect DDoS in SDN using metaheuristic clustering
+  authors: [Muhammad Shakil, Alaelddin Fuad Yousif Mohammed, Rajakumar Arul, Ali Kashif Bashir, Jun Kyun Choi]
+  venue: Transactions on Emerging Telecommunications Technologies
+  publisher: Wiley
+  year: 2019
+  volume: "33"
+  issue: "3"
+  pages: e3622
+  doi: 10.1002/ett.3622
+  areas: [network-security]
+  note: Published online 2019; issue volume 33(3).
+
+- id: console-grid-lte-2018
+  type: journal
+  title: A console GRID leveraged authentication and key agreement mechanism for LTE/SAE
+  authors: [Rajakumar Arul, Gunasekaran Raja, Ali Kashif Bashir, Junaid Chaudry, Amjad Ali]
+  venue: IEEE Transactions on Industrial Informatics
+  publisher: IEEE
+  year: 2018
+  volume: "14"
+  issue: "6"
+  pages: 2677–2689
+  doi: 10.1109/TII.2018.2817028
+  areas: [network-security]
+  featured: true
+
+- id: compatibility-vector-2017
+  type: journal
+  title: A compatibility vector technique for cooperative scheduling and channel assignment algorithm in broadband wireless networks
+  authors: [Ramkumar Jayaraman, Gunasekaran Raja, Dipak Ghosal, Rajakumar Arul, Sabareesh Kumar A]
+  venue: Mobile Networks and Applications
+  publisher: Springer
+  year: 2017
+  volume: "22"
+  issue: "4"
+  pages: 730–742
+  doi: 10.1007/s11036-017-0841-x
+  areas: [network-security]
+
+- id: key-caching-bwn-2016
+  type: journal
+  title: User path prediction based key caching and authentication mechanism for broadband wireless networks
+  authors: [Rajakumar Arul, Gunasekaran Raja, Kottilingam Kottursamy, Pavithra Sathiyanarayanan, Swaminathan Venkatraman]
+  venue: Wireless Personal Communications
+  publisher: Springer
+  year: 2016
+  volume: "94"
+  issue: "4"
+  pages: 2645–2664
+  doi: 10.1007/s11277-016-3877-5
+  areas: [network-security]
+
+- id: handover-vehicular-4g
+  type: journal
+  title: "An efficient handover prediction & initiation algorithm for vehicular communication in 4G wireless networks"
+  authors: [R. Gunasekaran, A. Rajakumar, K. Raja, J. Ramkumar, S. K. S. Kumar]
+  venue: Lecture Notes on Information Theory
+  year: null
+  volume: "2"
+  issue: "2"
+  url: https://pdfs.semanticscholar.org/e347/af864988387e98a602402418706dc2cb7db3.pdf
+  areas: [network-security]
+  verify: [Year not stated, Listed under both journals and conferences on the existing site]
+
+- id: scheduling-survey-bwn
+  type: journal
+  title: A Survey on Scheduling Mechanisms in Broadband Wireless Networks
+  authors: [R. Sheeba, J. Ramkumar, R. Gunasekaran, A. Rajakumar]
+  venue: Lecture Notes on Information Theory
+  year: null
+  volume: "2"
+  issue: "3"
+  pages: 214–219
+  verify: [Year not stated, Author list garbled on the existing site, Listed under both journals and conferences]
+
+- id: d2d-5g-mechanism
+  type: journal
+  title: "Simple & Secure Mechanism for establishing connection between D2D Communication in 5G Scenario"
+  authors: [Rajakumar Arul, Gunasekaran Raja]
+  venue: International Journal of Engineering Research in Computer Science and Engineering
+  year: null
+  areas: [network-security]
+  verify: [Year, volume and pages not stated, Author list garbled on the existing site, Listed under both journals and conferences]
+
+- id: network-coding-multicast
+  type: journal
+  title: Network Coding with Buffer Scheme in Multicast for Broadband Wireless Network
+  authors: [G. Raja, R. Jayaraman, R. Arul, K. Kottursamy]
+  venue: International Journal of Electronics and Communication Engineering
+  year: null
+  volume: "10"
+  issue: "6"
+  pages: 1022–1027
+  verify: [Year not stated, Listed under both journals and conferences]
+
+- id: wimax-mesh-scheduling
+  type: journal
+  title: An Enhanced Coordinated Distributed Scheduling Mechanism for IEEE 802.16 Wireless Mesh Networks
+  authors: [A. Rajakumar, K. Chithraa]
+  venue: International Journal of Advanced Computational Engineering and Networking
+  year: null
+  volume: "2"
+  issue: "7"
+  pages: 97–103
+  verify: [Year not stated, Author list garbled on the existing site, Listed under both journals and conferences]
+
+# ─── Conference papers ───────────────────────────────────────────────────────
+
+- id: crystals-kyber-lte-2025
+  type: conference
+  status: accepted
+  title: Review on the Implications of CRYSTALS-Kyber in LTE Networks
+  authors: [Divyaansh Agarwal, Rajakumar Arul, Kalaipriyan Thirugnanasambandam]
+  venue: 4th International Conference on Security & Privacy (ICSP 2025), NIT Rourkela
+  year: 2025
+  url: https://icsp.co.in/2025/cfp.html#accepted
+  areas: [post-quantum-cryptography, network-security]
+  featured: true
+  verify: [Listed as accepted for presentation — update once published]
+
+- id: public-health-emergencies-2024
+  type: conference
+  title: Advanced Automated System for Optimal Management in Public Health Emergencies
+  authors: [Shakil Muhammad, Adnan Mujahid Khan, Azka Qureshi, Rajakumar Arul, Kalaipriyan Thirugnanasambandam]
+  venue: Fourth International Conference on Computing and Communication Networks (ICCCN 2024)
+  publisher: Springer (LNNS)
+  year: 2024
+  pages: 629–638
+  doi: 10.1007/978-981-96-3250-3_47
+  areas: [ai-ml]
+
+- id: lattice-key-generation-2023
+  type: conference
+  title: A Novel Key Generation Algorithm Utilizing Lattice-Based Cryptography Principles
+  authors: [Rajakumar Arul, B. Sivaselvam, Ankush Choudhary]
+  venue: Third International Conference on Computing and Communication Networks (ICCCN 2023), Manchester Metropolitan University
+  publisher: Springer (LNNS)
+  year: 2023
+  doi: 10.1007/978-981-97-2671-4_9
+  areas: [post-quantum-cryptography]
+  featured: true
+  note: Proceedings published 2024.
+
+- id: iot-dl-ontology-2021
+  type: conference
+  title: A Novel Secure Data Processing Mechanism in IoT Using Deep Learning with Ontology
+  authors: [Auxilia Michael, K. Raja, Kannan Kaliyan, Rajakumar Arul]
+  venue: International Conference on Computing and Communication Networks (ICCCN 2021), Manchester Metropolitan University
+  publisher: Springer (LNNS)
+  year: 2021
+  doi: 10.1007/978-981-19-0604-6_39
+  areas: [ai-ml, blockchain-iot]
+  note: Proceedings published 2022.
+
+- id: dementia-woa-cnn-2022
+  type: conference
+  status: accepted
+  title: Prediction of Dementia using Whale Optimisation algorithm based CNN
+  authors: []
+  venue: International Conference of Machine Intelligence and Signal Processing (MISP 2022), NIT Raipur
+  year: 2022
+  areas: [ai-ml]
+  verify: [Authors not listed, Listed as accepted — confirm publication details]
+
+- id: iot-privacy-blockchain-2020
+  type: conference
+  title: A Novel Privacy Preservation Scheme for Internet of Things Using Blockchain Strategy
+  authors: [Dolagobinda Samal, Rajakumar Arul]
+  venue: International Conference on Communication, Computing and Electronics Systems
+  publisher: Springer (LNEE)
+  year: 2020
+  pages: 695–705
+  doi: 10.1007/978-981-15-2612-1_66
+  areas: [blockchain-iot]
+
+- id: ebusiness-dss-mas
+  type: conference
+  title: E-Business Decision Support System for Online Shopping using MAS with Ontology and JADE Methodology
+  authors: [K. Kannan, K. Raja, A. Rajakumar, P. K. Nizar Banu]
+  venue: Uva Wellassa University of Sri Lanka
+  year: null
+  url: http://192.248.93.15/handle/123456789/127
+  verify: [Year and full venue name not stated]
+
+- id: non3gpp-authentication
+  type: conference
+  title: "Fault-tolerant Interworking Authentication Model for Non 3GPP – 3GPP Access"
+  authors: [S. B. M. Baskaran, Gunasekaran Raja, Ramkumar Jayaraman, Arunkumar Arulappan, Rajakumar Arul]
+  venue: International Conference on Innovations in Engineering and Technology
+  year: null
+  pages: 75–82
+  areas: [network-security]
+  verify: [Year not stated, Author list partly garbled on the existing site]
+
+- id: bay-race-wmn
+  type: conference
+  title: "BAY-RACE: Bayesian-Resource Allocation Conditional Entities algorithm under uncertainty in distributed WMN"
+  authors: [Ramkumar Jayaraman, Gunasekaran Raja, Rajakumar Arul, S. B. M. Baskaran, Arunkumar Arulappan]
+  venue: International Conference on Innovations in Engineering and Technology
+  year: null
+  pages: 66–74
+  verify: [Year not stated, Author list partly garbled on the existing site]
+
+- id: vanet-urban-parking
+  type: conference
+  title: Sensor-to-Vehicle Communication by using VANETs for Urban Parking
+  authors: [Arunkumar Arulappan, Gunasekaran Raja, S. B. M. Baskaran, Rajakumar Arul, Kottilingam Kottursamy, Ramkumar Jayaraman]
+  venue: International Conference on Innovations in Engineering and Technology (ICET)
+  year: null
+  pages: 19–27
+  verify: [Year not stated]
+
+# ─── Book chapters ───────────────────────────────────────────────────────────
+
+- id: iot-medical-imaging-2023
+  type: chapter
+  title: Internet of Things and medical imaging AI systems
+  authors: []
+  venue: "Medical Imaging Informatics: Machine Learning, Deep Learning and Big Data Analytics"
+  publisher: IET
+  year: 2023
+  pages: 205–220
+  doi: 10.1049/PBHE057E_ch10
+  areas: [ai-ml, blockchain-iot]
+  verify: [Chapter authors not listed]
+
+- id: dl-securing-iot-2021
+  type: chapter
+  title: Role of Deep Learning Algorithms in Securing Internet of Things Applications
+  authors: [Rajakumar Arul, Shakila Basheer, Asad Abbas, Ali Kashif Bashir]
+  venue: Deep Learning for Internet of Things Infrastructure
+  publisher: CRC Press / Taylor & Francis
+  year: 2021
+  pages: 145–164
+  doi: 10.1201/9781003032175-7
+  areas: [ai-ml, network-security]
+
+- id: blockchain-industry40-2021
+  type: chapter
+  title: "Blockchain for Industry 4.0: An Assessment of Blockchain Adoptability"
+  authors: [Rajakumar Arul, Raja Kothandaraman, Kannan Kaliyan, P. K. Nizar Banu]
+  venue: Industry 4.0 Interoperability, Analytics, Security, and Case Studies
+  publisher: CRC Press / Taylor & Francis
+  year: 2021
+  pages: 209–224
+  doi: 10.1201/9781003048855-14
+  areas: [blockchain-iot]
+
+- id: ensemble-threat-detection-2019
+  type: chapter
+  title: Ensemble learning mechanisms for threat detection
+  authors: []
+  venue: Machine Learning and Cognitive Science Applications in Cyber Security
+  publisher: IGI Global
+  year: 2019
+  url: https://www.igi-global.com/chapter/ensemble-learning-mechanisms-for-threat-detection/227584
+  areas: [ai-ml, network-security]
+  verify: [Chapter authors not listed]
+
+# ─── Books, theses and articles ──────────────────────────────────────────────
+
+- id: python-programming-book-2024
+  type: book
+  title: Python Programming and Applications — Step by Step Tutorials
+  authors: [Rajakumar Arul, Kalaipriyan T, Saravanan D]
+  venue: Lulu
+  publisher: Lulu
+  year: 2024
+  url: https://www.lulu.com/shop/rajakumar-arul-and-kalaipriyan-t-and-saravanan-d/python-programming-and-applications/paperback/product-gjvj4kr.html
+
+- id: phd-thesis-2020
+  type: thesis
+  title: Robust Symmetric Key Management Techniques for Next Generation Networks
+  authors: [Rajakumar Arul]
+  venue: Ph.D. Thesis, Anna University, Chennai
+  year: 2020
+  url: http://hdl.handle.net/10603/333921
+  areas: [network-security]
+
+- id: authenticity-social-media-2020
+  type: article
+  title: The Authenticity of Information on Social Media
+  authors: [R. Arul, K. Vishnu, A. Eleyan, A. K. Bashir]
+  venue: "IEEE Future Directions Newsletter: Technology, Policy and Ethics"
+  publisher: IEEE
+  year: 2020
+  url: https://cmte.ieee.org/futuredirections/tech-policy-ethics/november-2020/authenticity-of-information-on-social-media/
+
+- id: future-smartphones-2017
+  type: article
+  title: The Future Usage of Smart Phones
+  authors: [R. Arul, G. Raja, S. Anbalagan, D. Kumar, A. K. Bashir]
+  venue: IEEE Internet Initiative eNewsletter
+  publisher: IEEE
+  year: 2017
+  url: https://internetinitiative.ieee.org/newsletter/march-2017/the-future-usage-of-smart-phones

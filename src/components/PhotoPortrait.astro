@@ -1,0 +1,61 @@
+---
+/**
+ * Portrait with quantum "orbit" framing. Shows a clearly labelled placeholder
+ * until `photo` is set in src/content/profile.yaml.
+ */
+import { url } from '../lib/url';
+import VerifyBadge from './VerifyBadge.astro';
+
+interface Props {
+  photo: string | null;
+  name: string;
+}
+const { photo, name } = Astro.props;
+---
+
+<figure class="relative mx-auto aspect-square w-full max-w-[22rem]">
+  <!-- Orbits -->
+  <svg viewBox="0 0 400 400" class="absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
+    <defs>
+      <linearGradient id="orbit-grad" x1="0" x2="1">
+        <stop offset="0" style="stop-color: var(--accent); stop-opacity: 0.9"></stop>
+        <stop offset="1" style="stop-color: var(--accent-2); stop-opacity: 0.2"></stop>
+      </linearGradient>
+    </defs>
+    <g style="transform-origin: 200px 200px; animation: orbit 38s linear infinite">
+      <ellipse cx="200" cy="200" rx="196" ry="78" fill="none" stroke="url(#orbit-grad)" stroke-width="1" transform="rotate(-28 200 200)"></ellipse>
+      <circle cx="372" cy="108" r="4.5" style="fill: var(--accent)"></circle>
+    </g>
+    <g style="transform-origin: 200px 200px; animation: orbit 52s linear infinite reverse">
+      <ellipse cx="200" cy="200" rx="196" ry="78" fill="none" stroke="url(#orbit-grad)" stroke-width="1" transform="rotate(32 200 200)" opacity="0.8"></ellipse>
+      <circle cx="40" cy="98" r="3.5" style="fill: var(--accent-2)"></circle>
+    </g>
+    <circle cx="200" cy="200" r="168" fill="none" style="stroke: var(--line-strong)" stroke-dasharray="2 6"></circle>
+  </svg>
+
+  <!-- Portrait / placeholder -->
+  <div
+    class="absolute inset-[14%] overflow-hidden rounded-full border border-line bg-surface shadow-[0_30px_80px_-30px_rgb(var(--glow)/0.45)]"
+  >
+    {
+      photo ? (
+        <img src={url(photo)} alt={`Portrait of ${name}`} class="h-full w-full object-cover" loading="eager" />
+      ) : (
+        <div class="relative grid h-full w-full place-items-center bg-gradient-to-br from-accent-soft via-surface to-accent-2-soft">
+          <div class="text-center">
+            <span class="block font-serif text-6xl font-medium tracking-tight text-ink/80 sm:text-7xl">RA</span>
+            <span class="mt-2 block font-mono text-[0.62rem] uppercase tracking-[0.2em] text-muted">Photograph</span>
+          </div>
+        </div>
+      )
+    }
+  </div>
+
+  {
+    !photo && (
+      <figcaption class="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap">
+        <VerifyBadge label="Photo to be added" notes={['Professional photograph to be provided — set "photo" in src/content/profile.yaml']} />
+      </figcaption>
+    )
+  }
+</figure>

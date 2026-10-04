@@ -1,0 +1,51 @@
+# Dr. Rajakumar Arul — Academic Portfolio
+
+Astro + Tailwind CSS static site, with React available for interactive islands.
+
+## Run locally
+
+```bash
+npm install
+npm run dev        # http://localhost:4321
+npm run build      # type-check + production build into dist/
+npm run preview    # serve the production build
+```
+
+## Editing content (no design changes needed)
+
+All academic content lives in `src/content/`:
+
+| File | What it controls |
+|---|---|
+| `profile.yaml` | Name, designation, bio, photo, profile links, memberships |
+| `research-areas.yaml` | Research focus cards (primary / secondary) |
+| `projects/*.md` | One file per funded project (`featured: true` → homepage) |
+| `publications.yaml` | All publications (`featured: true` → homepage) |
+| `news/*.md` | One file per news item (latest 6 shown on homepage) |
+| `leadership.yaml` | Current role, departmental initiatives, responsibilities |
+| `experience.yaml`, `education.yaml`, `awards.yaml` | Timeline and recognition |
+
+Dates may be `2025`, `2025-07` or `2025-07-14`. Any entry can carry
+`verify: ["note"]`, shown on the site as an amber **To verify** marker. Hide all
+markers by setting `showVerificationNotes: false` in `src/config/site.ts`.
+
+The build validates every file against the schemas in `src/content.config.ts`,
+so a typo fails the build with a clear message instead of breaking a page.
+
+**Adding the photograph:** put the image in `public/images/` and set
+`photo: /images/<file>.jpg` in `profile.yaml`.
+
+## Deployment
+
+### GitHub Pages
+1. Push the repository to GitHub (branch `main`).
+2. In **Settings → Pages**, set **Source** to **GitHub Actions**.
+3. `.github/workflows/deploy.yml` builds and publishes on every push. The site
+   URL and base path come from GitHub automatically.
+
+### Custom domain (GoDaddy), later
+1. In **Settings → Pages → Custom domain**, enter e.g. `www.example.com`.
+2. In GoDaddy DNS, add:
+   - `A` records for `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+   - `CNAME` for `www` → `<github-username>.github.io`
+3. Once DNS resolves, enable **Enforce HTTPS**. No code changes are needed.

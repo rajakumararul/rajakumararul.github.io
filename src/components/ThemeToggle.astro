@@ -1,0 +1,43 @@
+---
+import Icon from './Icon.astro';
+---
+
+<button
+  type="button"
+  data-theme-toggle
+  class="group relative grid h-10 w-10 place-items-center rounded-full border border-line text-ink-soft transition-colors hover:border-accent hover:text-accent"
+  aria-label="Switch colour theme"
+  title="Switch colour theme"
+>
+  <span class="absolute transition-all duration-500 ease-out dark:rotate-90 dark:scale-0 dark:opacity-0">
+    <Icon name="moon" size={18} />
+  </span>
+  <span class="absolute -rotate-90 scale-0 opacity-0 transition-all duration-500 ease-out dark:rotate-0 dark:scale-100 dark:opacity-100">
+    <Icon name="sun" size={18} />
+  </span>
+</button>
+
+<script>
+  const root = document.documentElement;
+  const setTheme = (theme: 'light' | 'dark', persist: boolean) => {
+    root.dataset.theme = theme;
+    if (persist) {
+      try {
+        localStorage.setItem('theme', theme);
+      } catch {}
+    }
+  };
+
+  document.querySelectorAll('[data-theme-toggle]').forEach((btn) =>
+    btn.addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark', true)),
+  );
+
+  // Follow system changes until the visitor picks a theme explicitly.
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem('theme');
+    } catch {}
+    if (!stored) setTheme(e.matches ? 'dark' : 'light', false);
+  });
+</script>

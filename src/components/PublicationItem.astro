@@ -1,0 +1,65 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import VerifyBadge from './VerifyBadge.astro';
+import { formatAuthors, publicationTypeLabel } from '../lib/format';
+
+interface Props {
+  pub: CollectionEntry<'publications'>;
+  index?: number;
+}
+const { pub, index = 0 } = Astro.props;
+const p = pub.data;
+const authors = formatAuthors(p.authors);
+const href = p.doi ? `https://doi.org/${p.doi}` : p.url;
+const details = [p.volume && `${p.volume}${p.issue ? `(${p.issue})` : ''}`, p.pages].filter(Boolean).join(', ');
+---
+
+<li class="reveal group grid gap-4 border-b border-line py-7 first:pt-0 sm:grid-cols-[6rem_1fr] sm:gap-8" style={`--reveal-delay:${index * 60}ms`}>
+  <div class="flex items-center gap-3 sm:block">
+    <span class="font-mono text-sm text-muted">{p.year ?? '—'}</span>
+    <span class="mt-0 block text-[0.68rem] font-medium uppercase tracking-[0.14em] text-accent sm:mt-2">
+      {publicationTypeLabel[p.type]}
+    </span>
+  </div>
+  <div>
+    <h3 class="font-serif text-[1.25rem] font-medium leading-snug text-ink">
+      {
+        href ? (
+          <a href={href} target="_blank" rel="noopener noreferrer" class="decoration-accent/40 underline-offset-4 transition-colors hover:text-accent-ink hover:underline">
+            {p.title}
+          </a>
+        ) : (
+          p.title
+        )
+      }
+    </h3>
+    {
+      authors.length > 0 && (
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          {authors.map((a, i) => (
+            <>
+              <span class:list={[a.isOwner && 'font-semibold text-ink']}>{a.text}</span>
+              {i < authors.length - 1 && ', '}
+            </>
+          ))}
+        </p>
+      )
+    }
+    <p class="mt-1.5 text-sm text-ink-soft">
+      <em>{p.venue}</em>{details && <span class="text-muted">, {details}</span>}
+    </p>
+    <div class="mt-3 flex flex-wrap items-center gap-2">
+      {p.status === 'accepted' && <span class="chip border-accent-2/30! text-accent-2!">Accepted</span>}
+      {
+        p.doi && (
+          <a href={`https://doi.org/${p.doi}`} target="_blank" rel="noopener noreferrer" class="chip font-mono transition-colors hover:border-accent hover:text-accent">
+            <Icon name="link" size={12} />
+            DOI {p.doi}
+          </a>
+        )
+      }
+      <VerifyBadge notes={p.verify} />
+    </div>
+  </div>
+</li>

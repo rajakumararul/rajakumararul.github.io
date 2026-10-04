@@ -1,0 +1,81 @@
+# Research areas. "primary" areas get large cards on the homepage.
+# "evidence" lines are short, verifiable pointers to projects, papers or talks.
+- id: quantum-computing
+  title: Quantum Computing
+  short: Quantum
+  tier: primary
+  order: 1
+  icon: atom
+  summary: >-
+    Applying quantum computation to real scientific problems and building the academic
+    foundations of the discipline through curriculum and departmental leadership.
+  keywords: [Quantum applications, Foundations & architecture, Quantum education]
+  evidence:
+    - "Co-PI, MeitY Quantum Computing Applications Lab (with AWS) project, 2023–2025"
+    - "Engineering Reports (2025): Quantum Computing — Foundations, Architecture and Applications"
+
+- id: post-quantum-cryptography
+  title: Post-Quantum Cryptography
+  short: PQC
+  tier: primary
+  order: 2
+  icon: lattice
+  summary: >-
+    Lattice-based cryptographic schemes and quantum-safe key hierarchies designed to remain
+    secure once large-scale quantum computers arrive.
+  keywords: [Lattice-based cryptography, CRYSTALS-Kyber, Quantum-safe key management]
+  evidence:
+    - "PI, Mitacs Globalink Research Award (Canada), 2025"
+    - "IEEE Transactions on Industrial Informatics: quantum-safe key hierarchy for LTE/SAE"
+
+- id: quantum-key-distribution
+  title: Quantum Key Distribution
+  short: QKD
+  tier: primary
+  order: 3
+  icon: photon
+  summary: >-
+    Quantum key distribution and its interplay with post-quantum cryptography for securing
+    next-generation communication networks.
+  keywords: [QKD protocols, QKD + PQC integration, Quantum communications]
+  evidence:
+    - "Invited session “QKD & Post-Quantum Cryptography”, FDP on Quantum Computing, Communications and Materials, Oct 2025"
+
+- id: network-security
+  title: Network Security
+  short: NetSec
+  tier: primary
+  order: 4
+  icon: shield
+  summary: >-
+    Authentication, key agreement and attack resilience for LTE, 5G and emerging
+    telecommunication networks — from protocol design to side-channel analysis.
+  keywords: [LTE/5G authentication, Side-channel attacks, DDoS detection in SDN]
+  evidence:
+    - "PI, SERB-TARE project on side-channel attacks"
+    - "IEEE Transactions on Industrial Informatics: console GRID authentication and key agreement for LTE/SAE"
+
+- id: blockchain-iot
+  title: Blockchain & Secure IoT
+  short: Blockchain
+  tier: secondary
+  order: 5
+  icon: blocks
+  summary: >-
+    Blockchain-based trust and privacy for IoT and healthcare data dissemination.
+  keywords: [IoMT, Privacy preservation, Smart contracts]
+  evidence:
+    - "Personal and Ubiquitous Computing (2021): blockchain frameworks for IoMT healthcare"
+
+- id: ai-ml
+  title: AI & Machine Learning for Security
+  short: AI / ML
+  tier: secondary
+  order: 6
+  icon: spark
+  summary: >-
+    Machine and deep learning for threat detection, secure IoT communication and
+    resource optimisation.
+  keywords: [Threat detection, Bio-inspired algorithms, 5G resource allocation]
+  evidence:
+    - "VIT RGEMS Seed Grant for AI & ML research, 2022–2024"

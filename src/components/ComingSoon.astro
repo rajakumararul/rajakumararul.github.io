@@ -1,0 +1,32 @@
+---
+/** Temporary body for pages scheduled in later milestones. */
+import Icon from './Icon.astro';
+import { url } from '../lib/url';
+
+interface Props {
+  milestone?: string;
+  plan: string[];
+}
+const { milestone = 'Milestone 2', plan } = Astro.props;
+---
+
+<div class="card mx-auto max-w-2xl p-8 text-center sm:p-12">
+  <span class="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-accent-soft text-accent">
+    <Icon name="atom" size={28} />
+  </span>
+  <p class="eyebrow mt-6">In preparation · {milestone}</p>
+  <p class="mt-3 font-serif text-2xl text-ink">This page is being built.</p>
+  <ul class="mx-auto mt-6 grid max-w-md gap-2 text-left text-sm text-muted">
+    {
+      plan.map((p) => (
+        <li class="flex gap-2.5">
+          <span class="mt-[0.5rem] h-1 w-1 shrink-0 rounded-full bg-accent-2" />
+          {p}
+        </li>
+      ))
+    }
+  </ul>
+  <a href={url('/')} class="btn btn-ghost mt-8">
+    <Icon name="arrow-right" size={16} class="rotate-180" /> Back to home
+  </a>
+</div>

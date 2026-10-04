@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHeading from '../SectionHeading.astro';
+import NewsItem from '../NewsItem.astro';
+import Icon from '../Icon.astro';
+import { dateKey } from '../../lib/format';
+import { url } from '../../lib/url';
+
+const news = (await getCollection('news')).sort((a, b) => dateKey(b.data.date).localeCompare(dateKey(a.data.date))).slice(0, 6);
+const latestYear = (years: number[]) => (years.length ? Math.max(...years) : 0);
+const awards = (await getCollection('awards', (a) => a.data.featured))
+  .sort((a, b) => latestYear(b.data.years) - latestYear(a.data.years))
+  .slice(0, 4);
+---
+
+<section class="border-t border-line bg-bg-soft py-20 sm:py-28" aria-labelledby="news-title">
+  <div class="container-page grid gap-14 lg:grid-cols-12">
+    <div class="lg:col-span-7">
+      <SectionHeading id="news-title" eyebrow="News & activities" title="Latest updates" href="/news" linkLabel="All news" />
+      <ol>
+        {news.map((item, i) => <NewsItem item={item} index={i} />)}
+      </ol>
+    </div>
+
+    <aside class="lg:col-span-5" aria-labelledby="awards-title">
+      <div class="lg:sticky lg:top-28">
+        <p class="eyebrow mb-3 flex items-center gap-3"><span class="h-px w-8 bg-accent/60"></span>Recognition</p>
+        <h2 id="awards-title" class="font-serif text-3xl font-medium tracking-tight text-ink">Honours & awards</h2>
+        <ul class="mt-8 grid gap-3">
+          {
+            awards.map((a, i) => (
+              <li class="card reveal flex items-start gap-4 p-5" style={`--reveal-delay:${i * 80}ms`}>
+                <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent">
+                  <Icon name="award" size={20} />
+                </span>
+                <div>
+                  <p class="font-medium leading-snug text-ink">{a.data.title}</p>
+                  <p class="mt-0.5 text-sm text-muted">
+                    {a.data.body}
+                    {a.data.years.length > 0 && <span class="font-mono text-xs"> · {a.data.years.join(', ')}</span>}
+                  </p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="card reveal mt-6 overflow-hidden p-6">
+          <p class="font-serif text-xl font-medium text-ink">Collaborate or get in touch</p>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            For research collaborations, academic engagements and enquiries.
+          </p>
+          <a href={url('/contact')} class="btn btn-primary mt-5">
+            Contact <Icon name="arrow-right" size={16} />
+          </a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
