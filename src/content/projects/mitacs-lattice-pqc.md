@@ -7,8 +7,8 @@ funder: Mitacs Globalink Research Award, Canada
 funderShort: Mitacs
 amount: 9000
 currency: USD
-start: 2024-05-14
-end: 2025-05-31
+start: 2025-01-13
+end: 2025-06-11
 status: completed
 areas: [post-quantum-cryptography, quantum-computing]
 collaborators: ["Dr. Ajmery Sultana, Algoma University, Canada"]

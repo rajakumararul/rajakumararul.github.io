@@ -55,7 +55,7 @@
   technologies: [Lattice-based cryptography (LWE / Module-LWE), CRYSTALS-Kyber (ML-KEM), Key encapsulation mechanisms, Quantum-safe key management]
   keywords: [Lattice-based cryptography, CRYSTALS-Kyber, Quantum-safe key management]
   evidence:
-    - "PI, Mitacs Globalink Research Award (Canada), 2024–2025"
+    - "PI, Mitacs Globalink Research Award (Canada), 2025"
     - "IEEE Transactions on Industrial Informatics: quantum-safe key hierarchy for LTE/SAE"
     - "Accepted at ICSP 2025, NIT Rourkela: review of CRYSTALS-Kyber in LTE networks"
 
