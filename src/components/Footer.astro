@@ -50,7 +50,9 @@ const year = new Date().getFullYear();
   <div class="border-t border-line">
     <div class="container-page flex flex-col gap-2 py-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
       <p>© {year} {profile.shortName}. All rights reserved.</p>
-      <p class="font-mono tracking-wide">Built with Astro · Tailwind CSS</p>
+      <p class="font-mono tracking-wide">
+        <a href={url('/credits')} class="link-underline hover:text-ink">Image credits</a> · Built with Astro · Tailwind CSS
+      </p>
     </div>
   </div>
 </footer>

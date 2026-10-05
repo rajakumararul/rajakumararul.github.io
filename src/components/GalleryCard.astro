@@ -44,13 +44,6 @@ const count = albumPhotos(album).length;
       {categoryLabels[a.category]}
     </span>
     {
-      a.placeholder && (
-        <span class="absolute right-3 top-3 rounded-full border border-[#f0d59e] bg-[#fdf1dc] px-2 py-0.5 font-mono text-[0.6rem] font-medium uppercase tracking-wider text-[#9a5b00]">
-          Placeholder
-        </span>
-      )
-    }
-    {
       count > 1 && (
         <span class="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full bg-black/45 px-2 py-0.5 text-[0.7rem] text-white backdrop-blur">
           <Icon name="image" size={12} /> {count}

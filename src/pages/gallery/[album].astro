@@ -80,16 +80,7 @@ const achievement = a.relatedAchievement ? await getEntry(a.relatedAchievement) 
           </div>
         </dl>
         <p class="mt-6 max-w-3xl text-lg leading-relaxed text-ink-soft">{a.description}</p>
-        <div class="mt-5 flex flex-wrap items-center gap-2">
-          {
-            a.placeholder && (
-              <span class="rounded-full border border-warn-line bg-warn-soft px-3 py-1 text-xs text-warn">
-                Sample placeholder images — actual photographs to be added
-              </span>
-            )
-          }
-          <VerifyBadge notes={a.verify} />
-        </div>
+        <VerifyBadge notes={a.verify} class="mt-5" />
       </div>
     </header>
 
@@ -119,7 +110,19 @@ const achievement = a.relatedAchievement ? await getEntry(a.relatedAchievement) 
                       <Icon name="search" size={16} />
                     </span>
                   </button>
-                  {p.caption && <figcaption class="px-4 py-3 text-sm text-muted">{p.caption}</figcaption>}
+                  {(p.caption || p.credit) && (
+                    <figcaption class="px-4 py-3 text-sm text-muted">
+                      {p.caption}
+                      {p.credit && (
+                        <span class="mt-1 block text-[0.7rem]">
+                          Photo:{' '}
+                          <a href={p.credit.sourceUrl} target="_blank" rel="noopener noreferrer" class="link-underline hover:text-ink">
+                            {p.credit.creator} / {p.credit.provider}
+                          </a>
+                        </span>
+                      )}
+                    </figcaption>
+                  )}
                 </figure>
               </li>
             ))}

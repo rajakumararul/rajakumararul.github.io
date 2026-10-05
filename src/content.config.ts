@@ -299,8 +299,23 @@ const gallery = defineCollection({
       relatedNews: z.array(reference('news')).default([]),
       relatedAchievement: reference('achievements').optional(),
       externalLink: z.url().optional(),
-      /** true while the album only contains sample placeholder images. */
-      placeholder: z.boolean().default(false),
+      /**
+       * Internal flag: the cover is a third-party stock photograph standing in for
+       * the event photograph. Never shown to visitors — replace `cover.jpg`, then
+       * remove this line and `coverCredit`.
+       */
+      temporaryImage: z.boolean().default(false),
+      /** Attribution for a third-party cover photograph (listed on /credits). */
+      coverCredit: z
+        .object({
+          creator: z.string(),
+          creatorUrl: z.url().optional(),
+          provider: z.string(),
+          sourceUrl: z.url(),
+          license: z.string(),
+          licenseUrl: z.url().optional(),
+        })
+        .optional(),
       order: z.number().default(100),
       verify,
     }),

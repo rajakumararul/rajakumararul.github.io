@@ -9,7 +9,6 @@ const albums = await getAlbums();
 const categories = Object.entries(categoryLabels)
   .map(([id, label]) => ({ id, label, count: albums.filter((a) => a.data.category === id).length }))
   .filter((c) => c.count > 0);
-const hasPlaceholders = albums.some((a) => a.data.placeholder);
 ---
 
 <PageLayout
@@ -17,15 +16,6 @@ const hasPlaceholders = albums.some((a) => a.data.placeholder);
   eyebrow="Gallery"
   intro="Photographs from talks, faculty development programmes, recognitions, collaborations and student activities."
 >
-  {
-    hasPlaceholders && (
-      <p class="mb-8 flex items-start gap-3 rounded-2xl border border-warn-line bg-warn-soft px-5 py-4 text-sm text-warn">
-        <Icon name="image" size={18} class="mt-0.5 shrink-0" />
-        Albums marked “Placeholder” use sample images until the actual photographs are added.
-      </p>
-    )
-  }
-
   <div data-gallery-filter>
     <div class="mb-10 grid gap-5 lg:grid-cols-[minmax(0,20rem)_1fr] lg:items-center">
       <label class="relative block">

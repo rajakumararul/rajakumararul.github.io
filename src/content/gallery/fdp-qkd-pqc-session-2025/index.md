@@ -4,7 +4,15 @@ eventDate: 2025-10-08
 category: faculty-development
 description: "Session on QKD and post-quantum cryptography at the one-week FDP on Quantum Computing, Quantum Communications and Quantum Materials (6–10 October 2025)."
 cover: ./cover.jpg
-coverAlt: "Illustrative image: light travelling through optical fibres, the medium used for quantum key distribution"
+coverAlt: "A fibre-coupled photonic module, the kind of optical hardware used in quantum key distribution"
+temporaryImage: true
+coverCredit:
+  creator: "HC Optical"
+  creatorUrl: "https://unsplash.com/@hcoptical"
+  provider: Unsplash
+  sourceUrl: "https://unsplash.com/photos/Vi--cd9XPnU"
+  license: Unsplash License
+  licenseUrl: "https://unsplash.com/license"
 relatedNews: [2025-10-qkd-pqc-fdp]
 featured: true
 order: 5

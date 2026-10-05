@@ -1,0 +1,65 @@
+---
+import { Image } from 'astro:assets';
+import PageLayout from '../layouts/PageLayout.astro';
+import { getAlbums } from '../lib/gallery';
+import { url } from '../lib/url';
+
+/** Third-party photographs, read from `coverCredit` in each album's index.md. */
+const credited = (await getAlbums()).filter((a) => a.data.coverCredit && a.data.cover);
+---
+
+<PageLayout
+  title="Image credits"
+  eyebrow="Credits"
+  intro="Some Academic Moments albums use photographs by other photographers. Thank you to the creators below."
+>
+  {
+    credited.length > 0 ? (
+      <ul class="grid gap-4 md:grid-cols-2">
+        {credited.map((album) => {
+          const c = album.data.coverCredit!;
+          return (
+            <li class="card flex gap-4 p-4 sm:p-5">
+              <Image
+                src={album.data.cover!}
+                alt={album.data.coverAlt ?? album.data.title}
+                width={160}
+                class="h-20 w-28 shrink-0 rounded-xl object-cover"
+              />
+              <div class="min-w-0 text-sm">
+                <a href={url(`/gallery/${album.id}`)} class="link-underline font-medium text-ink">
+                  {album.data.title}
+                </a>
+                <p class="mt-1 text-ink-soft">
+                  Photo by{' '}
+                  {c.creatorUrl ? (
+                    <a href={c.creatorUrl} target="_blank" rel="noopener noreferrer" class="link-underline hover:text-ink">
+                      {c.creator}
+                    </a>
+                  ) : (
+                    c.creator
+                  )}{' '}
+                  on{' '}
+                  <a href={c.sourceUrl} target="_blank" rel="noopener noreferrer" class="link-underline hover:text-ink">
+                    {c.provider}
+                  </a>
+                </p>
+                <p class="mt-1 text-xs text-muted">
+                  {c.licenseUrl ? (
+                    <a href={c.licenseUrl} target="_blank" rel="noopener noreferrer" class="link-underline hover:text-ink">
+                      {c.license}
+                    </a>
+                  ) : (
+                    c.license
+                  )}
+                </p>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    ) : (
+      <p class="text-muted">All photographs on this site are the author's own.</p>
+    )
+  }
+</PageLayout>

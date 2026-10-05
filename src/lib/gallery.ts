@@ -35,8 +35,9 @@ export function albumDate(album: Album): string | null {
 
 /** Cover first, then the remaining photographs. */
 export function albumPhotos(album: Album) {
-  const list = [] as { src: ImageMetadata; caption?: string; alt: string }[];
-  if (album.data.cover) list.push({ src: album.data.cover, alt: album.data.coverAlt ?? album.data.title, caption: album.data.coverAlt });
+  const list = [] as { src: ImageMetadata; caption?: string; alt: string; credit?: Album['data']['coverCredit'] }[];
+  if (album.data.cover)
+    list.push({ src: album.data.cover, alt: album.data.coverAlt ?? album.data.title, caption: album.data.coverAlt, credit: album.data.coverCredit });
   for (const p of album.data.photos) list.push({ src: p.src, caption: p.caption, alt: p.alt ?? p.caption ?? album.data.title });
   return list;
 }

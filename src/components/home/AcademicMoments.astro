@@ -7,7 +7,6 @@ import { site } from '../../config/site';
 import { url } from '../../lib/url';
 
 const albums = await getAlbums((a) => a.data.featured);
-const hasPlaceholders = albums.some((a) => a.data.placeholder);
 ---
 
 {
@@ -36,7 +35,6 @@ const hasPlaceholders = albums.some((a) => a.data.placeholder);
           <div class="mb-5 flex items-center justify-between gap-4">
             <p class="text-xs text-muted" data-carousel-status aria-live="polite">
               {albums.length} albums
-              {hasPlaceholders && <span class="ml-2 font-mono text-[0.65rem] uppercase tracking-wider text-warn">· sample placeholder images</span>}
             </p>
             <div class="flex items-center gap-2">
               <button

@@ -9,8 +9,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "pubs:import": "node scripts/publications/import.mjs",
-    "pubs:approve": "node scripts/publications/approve.mjs",
-    "gallery:placeholders": "python3 scripts/gallery/make-placeholders.py"
+    "pubs:approve": "node scripts/publications/approve.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

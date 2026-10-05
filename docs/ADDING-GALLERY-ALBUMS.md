@@ -66,15 +66,18 @@ The folder holds the photographs plus one small text file, `index.md`, that desc
 4. **Preview**: `npm run dev` → open http://localhost:4321/gallery
    If a field is wrong, the terminal shows exactly which file and field to fix.
 
-## Replacing an illustrative cover
+## Replacing a temporary cover
 
-Some albums use a public-domain **illustrative image** as `cover.jpg` until the event
-photographs are available (its `coverAlt` starts with "Illustrative image"; sources are
-listed in [IMAGE-CREDITS.md](IMAGE-CREDITS.md)).
+Some albums use a free stock photograph (Unsplash) as `cover.jpg` until the event
+photographs are available. They are marked internally in `index.md` with
+`temporaryImage: true` and a `coverCredit:` block (photographer, source, licence) —
+neither is shown as "temporary" on the site; the credit appears on the album page and on
+`/credits`.
 
 1. Replace `cover.jpg` with your photograph (and add `photo-01.jpg`, … if you have more).
 2. Update `coverAlt:` (and `photos:`) in `index.md`.
-3. Remove that album's row from `docs/IMAGE-CREDITS.md`.
+3. Delete the `temporaryImage: true` line and the whole `coverCredit:` block.
+   The `/credits` page updates itself.
 
 ## Achievement photographs and certificates
 

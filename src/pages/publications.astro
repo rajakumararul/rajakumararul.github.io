@@ -28,7 +28,8 @@ const pubs: PubItem[] = all.map(({ data: p }) => ({
   areas: p.areas.map((id) => ({ id, label: areaLabel[id] ?? id })),
   keywords: p.keywords,
   featured: p.featured,
-  verify: p.verify,
+  // Internal notes are only sent to the browser when they are displayed (local preview).
+  verify: site.showVerificationNotes ? p.verify : [],
   bibtex: toBibtex(p),
   citation: formatCitation(p),
 }));
