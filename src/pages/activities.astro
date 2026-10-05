@@ -9,8 +9,8 @@ import { url } from '../lib/url';
 
 const activities = await getActivities();
 
-// Ongoing roles are listed under the year they started.
-const yearOf = (d?: string) => (d ? d.slice(0, 4) : 'Ongoing');
+// Roles are listed under the year they started; undated entries go last, under "Other".
+const yearOf = (d?: string) => (d ? d.slice(0, 4) : 'Other');
 const years = [...new Set(activities.map((a) => yearOf(a.data.date)))];
 const categories = (Object.keys(activityCategoryLabel) as (keyof typeof activityCategoryLabel)[])
   .map((id) => ({ id, label: activityCategoryLabel[id], count: activities.filter((a) => a.data.category === id).length }))

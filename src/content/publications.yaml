@@ -10,6 +10,16 @@
 
 # ─── Journal articles ────────────────────────────────────────────────────────
 
+- id: ab-naecp-electricity-2026
+  type: journal
+  title: "AB-NAECP: Attention Based Neural Architecture for Electricity Consumption Prediction"
+  authors: [Shaik Jamaludeen, Amrit Pal, Rajakumar Arul, Abishi Chowdhury]
+  venue: IEEE Access
+  publisher: IEEE
+  year: 2026
+  areas: [ai-ml]
+  sources: [cv]
+
 - id: quantum-computing-foundations-2025
   type: journal
   title: "Quantum Computing: Foundations, Architecture and Applications"
@@ -198,43 +208,47 @@
   title: "An efficient handover prediction & initiation algorithm for vehicular communication in 4G wireless networks"
   authors: [R. Gunasekaran, A. Rajakumar, K. Raja, J. Ramkumar, S. K. S. Kumar]
   venue: Lecture Notes on Information Theory
-  year: null
+  year: 2014
+  pages: 121–128
   volume: "2"
   issue: "2"
   url: https://pdfs.semanticscholar.org/e347/af864988387e98a602402418706dc2cb7db3.pdf
   areas: [network-security]
-  verify: [Year not stated, Listed under both journals and conferences on the existing site]
+  sources: [existing-site, cv]
 
 - id: scheduling-survey-bwn
   type: journal
   title: A Survey on Scheduling Mechanisms in Broadband Wireless Networks
   authors: [R. Sheeba, J. Ramkumar, R. Gunasekaran, A. Rajakumar]
   venue: Lecture Notes on Information Theory
-  year: null
+  year: 2014
   volume: "2"
   issue: "3"
   pages: 214–219
-  verify: [Year not stated, Author list garbled on the existing site, Listed under both journals and conferences]
+  sources: [existing-site, cv]
 
 - id: d2d-5g-mechanism
   type: journal
   title: "Simple & Secure Mechanism for establishing connection between D2D Communication in 5G Scenario"
   authors: [Rajakumar Arul, Gunasekaran Raja]
   venue: International Journal of Engineering Research in Computer Science and Engineering
-  year: null
+  year: 2017
+  volume: "4"
+  issue: "8"
+  pages: 173–178
   areas: [network-security, mobile-network-security]
-  verify: [Year, volume and pages not stated, Author list garbled on the existing site, Listed under both journals and conferences]
+  sources: [existing-site, cv]
 
 - id: network-coding-multicast
   type: journal
   title: Network Coding with Buffer Scheme in Multicast for Broadband Wireless Network
   authors: [G. Raja, R. Jayaraman, R. Arul, K. Kottursamy]
-  venue: International Journal of Electronics and Communication Engineering
-  year: null
+  venue: International Journal of Computer, Electrical, Automation, Control and Information Engineering
+  year: 2016
   volume: "10"
   issue: "6"
-  pages: 1022–1027
-  verify: [Year not stated, Listed under both journals and conferences]
+  pages: 898–903
+  sources: [existing-site, cv]
 
 - id: wimax-mesh-scheduling
   type: journal
@@ -248,6 +262,19 @@
   verify: [Year not stated, Author list garbled on the existing site, Listed under both journals and conferences]
 
 # ─── Conference papers ───────────────────────────────────────────────────────
+
+- id: neurodegenerative-ml-2026
+  type: conference
+  title: Machine Learning Approaches for Early Diagnosis of Neurodegenerative Conditions
+  authors: [N. Rakesh, B. A. Mohan, U. Kumaran, G. L. Prakash, Mohamed Shakir, Rajakumar Arul]
+  venue: "First International Conference on Recent Trends in Artificial Intelligence, Cyber Security, and Embedded Systems (ICRTACES 2024), Tiruchirappalli — AIP Conference Proceedings"
+  publisher: AIP Publishing
+  year: 2026
+  volume: "3345"
+  issue: "1"
+  pages: "020149"
+  areas: [ai-ml]
+  sources: [cv]
 
 - id: crystals-kyber-lte-2025
   type: conference
@@ -320,40 +347,42 @@
   type: conference
   title: E-Business Decision Support System for Online Shopping using MAS with Ontology and JADE Methodology
   authors: [K. Kannan, K. Raja, A. Rajakumar, P. K. Nizar Banu]
-  venue: Uva Wellassa University of Sri Lanka
-  year: null
+  venue: International Research Conference of Uva Wellassa University (IRCUWU 2019), Sri Lanka
+  year: 2019
+  pages: "88"
+  note: Poster
   url: http://192.248.93.15/handle/123456789/127
-  verify: [Year and full venue name not stated]
+  sources: [existing-site, cv]
 
 - id: non3gpp-authentication
   type: conference
   title: "Fault-tolerant Interworking Authentication Model for Non 3GPP – 3GPP Access"
   authors: [S. B. M. Baskaran, Gunasekaran Raja, Ramkumar Jayaraman, Arunkumar Arulappan, Rajakumar Arul]
-  venue: International Conference on Innovations in Engineering and Technology
-  year: null
+  venue: International Conference on Innovations in Engineering and Technology (ICET 2016), Singapore
+  year: 2016
   pages: 75–82
   areas: [network-security, mobile-network-security]
-  verify: [Year not stated, Author list partly garbled on the existing site]
+  sources: [existing-site, cv]
 
 - id: bay-race-wmn
   type: conference
   title: "BAY-RACE: Bayesian-Resource Allocation Conditional Entities algorithm under uncertainty in distributed WMN"
   authors: [Ramkumar Jayaraman, Gunasekaran Raja, Rajakumar Arul, S. B. M. Baskaran, Arunkumar Arulappan]
-  venue: International Conference on Innovations in Engineering and Technology
-  year: null
+  venue: International Conference on Innovations in Engineering and Technology (ICET 2016), Singapore
+  year: 2016
   pages: 66–74
-  verify: [Year not stated, Author list partly garbled on the existing site]
+  sources: [existing-site, cv]
 
 - id: vanet-urban-parking
   type: conference
   title: Sensor-to-Vehicle Communication by using VANETs for Urban Parking
   authors: [Arunkumar Arulappan, Gunasekaran Raja, S. B. M. Baskaran, Rajakumar Arul, Kottilingam Kottursamy, Ramkumar Jayaraman]
-  venue: International Conference on Innovations in Engineering and Technology (ICET)
-  year: null
+  venue: International Conference on Innovations in Engineering and Technology (ICET 2016), Singapore
+  year: 2016
   pages: 19–27
-  verify: [Year not stated]
 
 # ─── Book chapters ───────────────────────────────────────────────────────────
+  sources: [existing-site, cv]
 
 - id: iot-medical-imaging-2023
   type: chapter

@@ -5,13 +5,14 @@ kind: research-grant
 role: Co-Principal Investigator
 funder: MeitY Quantum Computing Applications Lab, in association with AWS
 funderShort: MeitY–AWS
-start: 2023-04
-end: 2025-04
+amount: 8900
+currency: USD
+start: 2023-04-10
+end: 2025-04-10
 status: completed
 areas: [quantum-computing]
 featured: true
 order: 2
-verify: ["Grant amount / compute allocation not stated"]
 ---
 
 A 24-month project endorsed by the MeitY Quantum Computing Applications Lab (with AWS),

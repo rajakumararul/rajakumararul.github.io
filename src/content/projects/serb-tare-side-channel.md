@@ -1,23 +1,20 @@
 ---
-title: Side-channel attack research
-shortTitle: Side-channel attack research
+title: Side-channel attack exploration in Smart Wearable Devices
+shortTitle: Side-channel attacks on smart wearables
 kind: research-grant
 role: Principal Investigator
 funder: SERB-TARE, Government of India
 funderShort: SERB
-amount: 1680000
+amount: 1830000
 currency: INR
-start: 2022-10
-end: 2025
-status: to-verify
+start: 2022-10-06
+end: 2025-10-30
+status: completed
 areas: [side-channel-security, network-security]
 collaborators: ["Prof. Sivaselvam B, IIITDM Kancheepuram"]
 featured: true
 order: 3
-verify:
-  - "Official project title not listed on the existing site"
-  - "Listed as ongoing with a 2025 end date — confirm completion or extension"
 ---
 
 A three-year project under the SERB Teachers Associateship for Research Excellence (TARE)
-scheme investigating side-channel attacks.
+scheme exploring side-channel attacks on smart wearable devices.

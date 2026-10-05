@@ -32,19 +32,37 @@
   description: Parallel architectures and programming models for building fast, scalable computational applications.
   order: 4
 
-# Not listed publicly (show: false) — set show: true to include.
-- id: course-qc-pqc
+- id: course-quantum-algorithms
   kind: course
-  title: Quantum Computing Algorithms and Post-Quantum Cryptography
-  areas: [quantum-computing, post-quantum-cryptography]
-  show: false
+  title: Quantum Algorithms
+  description: From Deutsch–Jozsa and Grover's search to the quantum Fourier transform and Shor's algorithm, built and run as circuits.
+  areas: [quantum-computing]
   order: 5
+
+- id: course-pqc
+  kind: course
+  title: Post-Quantum Cryptography
+  description: Why quantum computers threaten today's public-key cryptography, and the lattice-based schemes designed to replace it.
+  areas: [post-quantum-cryptography]
+  order: 6
 
 - id: course-cloud
   kind: course
   title: Cloud Computing
-  show: false
-  order: 6
+  description: Virtualisation, cloud service models and the design of scalable, secure cloud applications.
+  order: 7
+
+- id: course-software-engineering
+  kind: course
+  title: Software Engineering
+  description: Requirements, design, testing and agile practices for building reliable software in teams.
+  order: 8
+
+- id: course-devsecops
+  kind: course
+  title: DevSecOps
+  description: Integrating security into continuous integration and delivery pipelines.
+  order: 9
 
 # ── Teaching resources (shown only with a public link) ──
 

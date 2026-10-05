@@ -26,22 +26,22 @@
   title: Assistant Professor
   organisation: Amrita School of Engineering, Bengaluru
   location: Bengaluru, India
-  start: 2018
-  end: 2021
+  start: 2018-07
+  end: 2021-05
 - id: rns-researcher
   track: research
   title: Senior Researcher (Part Time)
   organisation: RNS Solutions Pvt. Ltd
   location: Singapore
-  start: 2018
-  end: 2018
+  start: 2018-03
+  end: 2018-11
 - id: anna-scholar
   track: research
   title: Full-Time Research Scholar
   organisation: Anna University
   location: Chennai, India
-  start: 2013
-  end: 2018
+  start: 2013-07
+  end: 2018-05
 - id: redfowl-director
   track: advisory
   title: Director

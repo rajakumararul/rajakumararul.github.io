@@ -143,3 +143,40 @@
   date: 2023-07
   endDate: null
   venue: VIT Chennai
+
+- id: rrcs-editorial
+  title: "Editorial Board — Research Reports on Computer Science"
+  category: editorial
+  role: Editorial board member
+  date: 2022
+  endDate: null
+  venue: Universal Wiser Publisher
+
+- id: techfest-iitb-2021
+  title: Researcher Discovery Platform Competition — Techfest, IIT Bombay
+  category: mentoring
+  role: Mentor of the winning team
+  date: 2021
+  venue: IIT Bombay
+
+- id: face-club-amrita
+  title: Face Technical Club
+  category: mentoring
+  role: Faculty mentor
+  date: 2019-12
+  endDate: 2021-05
+  venue: Amrita School of Engineering, Bengaluru
+
+- id: walmart-training
+  title: Corporate training — Walmart Global Tech
+  category: industry
+  role: Trainer
+  venue: Bengaluru
+  order: 200
+
+- id: thalir-training
+  title: Corporate training — Thalir Capitals Pvt. Ltd.
+  category: industry
+  role: Trainer
+  venue: Mannargudi
+  order: 201

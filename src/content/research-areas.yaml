@@ -55,7 +55,7 @@
   technologies: [Lattice-based cryptography (LWE / Module-LWE), CRYSTALS-Kyber (ML-KEM), Key encapsulation mechanisms, Quantum-safe key management]
   keywords: [Lattice-based cryptography, CRYSTALS-Kyber, Quantum-safe key management]
   evidence:
-    - "PI, Mitacs Globalink Research Award (Canada), 2025"
+    - "PI, Mitacs Globalink Research Award (Canada), 2024–2025"
     - "IEEE Transactions on Industrial Informatics: quantum-safe key hierarchy for LTE/SAE"
     - "Accepted at ICSP 2025, NIT Rourkela: review of CRYSTALS-Kyber in LTE networks"
 
@@ -129,7 +129,7 @@
   technologies: [Timing analysis, Power analysis, Constant-time implementation, Masking countermeasures]
   keywords: [Side-channel attacks, Implementation security]
   evidence:
-    - "PI, SERB-TARE project on side-channel attacks, with IIITDM Kancheepuram"
+    - "PI, SERB-TARE project on side-channel attacks in smart wearable devices, 2022–2025, with IIITDM Kancheepuram"
 
 - id: mobile-network-security
   title: Security in 5G/6G Networks

@@ -88,13 +88,21 @@
 
 - id: offsec-sec-100
   kind: certification
-  title: "OffSec SEC-100: Foundations of Offensive Security"
+  title: OffSec CyberCore Certified (OSCC)
   issuer: OffSec (Offensive Security)
   category: Security Certification
-  description: Core penetration-testing concepts and practical security fundamentals.
+  description: "SEC-100: core penetration-testing concepts and practical security fundamentals."
   areas: [network-security]
   order: 2
   verify: [Year not stated on the existing site]
+
+- id: cdac-qniverse
+  kind: certification
+  title: Qniverse Developer Certification
+  issuer: C-DAC, India
+  category: Quantum Computing Certification
+  areas: [quantum-computing]
+  order: 2
 
 - id: certified-scrum-master
   kind: certification
@@ -124,8 +132,8 @@
 
 - id: java-foundations
   kind: certification
-  title: Java Certified Foundations Associate
+  title: Java Foundations Certified Associate
   issuer: Oracle
   category: Programming Certification
   order: 6
-  verify: [Year not stated on the existing site, Issuer assumed to be Oracle — confirm]
+  verify: [Year not stated on the existing site]

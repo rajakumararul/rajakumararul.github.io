@@ -90,6 +90,14 @@
   end: null
   order: 3
 
+- id: rrcs-editorial
+  group: responsibility
+  title: "Editorial Board Member, Research Reports on Computer Science"
+  organisation: Universal Wiser Publisher
+  start: 2022
+  end: null
+  order: 4
+
 - id: ispace-mentor
   group: responsibility
   title: Mentor, iSpace — Apple Developers Club
@@ -257,7 +265,7 @@
   group: engagement
   kind: Research collaboration
   title: IIITDM Kancheepuram
-  description: Side-channel attack research with Prof. Sivaselvam B under the SERB-TARE scheme.
+  description: Side-channel attack research on smart wearable devices with Prof. Sivaselvam B under the SERB-TARE scheme.
   project: serb-tare-side-channel
   icon: handshake
   order: 2

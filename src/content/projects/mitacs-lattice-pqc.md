@@ -5,17 +5,16 @@ kind: research-grant
 role: Principal Investigator
 funder: Mitacs Globalink Research Award, Canada
 funderShort: Mitacs
-amount: 6000
+amount: 9000
 currency: USD
-start: 2025-01-13
-end: 2025-06-11
+start: 2024-05-14
+end: 2025-05-31
 status: completed
 areas: [post-quantum-cryptography, quantum-computing]
 collaborators: ["Dr. Ajmery Sultana, Algoma University, Canada"]
 album: mitacs-globalink-algoma-2025
 featured: true
 order: 1
-verify: ["Currency listed as '$' on the existing site — confirm USD or CAD"]
 ---
 
 International research project, carried out in Canada, to design a lattice-based
