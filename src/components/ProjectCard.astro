@@ -24,8 +24,9 @@ const statusLabel = { ongoing: 'Ongoing', completed: 'Completed', 'to-verify': '
 ---
 
 <article
+  id={project.id}
   data-spotlight
-  class="card card-hover reveal group flex h-full flex-col p-6 sm:p-7"
+  class="card card-hover reveal group relative flex h-full scroll-mt-28 flex-col p-6 sm:p-7"
   style={`--reveal-delay:${index * 90}ms`}
 >
   <div class="flex items-start justify-between gap-4">
@@ -74,7 +75,7 @@ const statusLabel = { ongoing: 'Ongoing', completed: 'Completed', 'to-verify': '
     <VerifyBadge notes={p.verify} class="relative z-10" />
   </div>
 
-  <a href={url(`/research#${project.id}`)} class="absolute inset-0 rounded-[inherit]" aria-label={`More about ${p.shortTitle ?? p.title}`}>
+  <a href={url(`/projects#${project.id}`)} class="absolute inset-0 rounded-[inherit]" aria-label={`More about ${p.shortTitle ?? p.title}`}>
   </a>
   <Icon
     name="arrow-up-right"

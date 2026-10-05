@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import InnovationFeature from '../components/InnovationFeature.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+
+const innovations = (await getCollection('innovations')).sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const areaTitles = Object.fromEntries((await getCollection('researchAreas')).map((a) => [a.id, a.data.short]));
+---
+
+<PageLayout
+  title="Projects"
+  eyebrow="Projects & Innovations"
+  intro="Educational technology for quantum computing, alongside nationally and internationally funded research."
+>
+  <section aria-labelledby="innovations-title">
+    <SectionHeading
+      id="innovations-title"
+      eyebrow="Innovations"
+      title="Built for learners"
+      intro="Interactive tools that make quantum computing concepts tangible for students."
+    />
+    <div class="grid gap-6">
+      {innovations.map((innovation) => <InnovationFeature innovation={innovation} />)}
+    </div>
+  </section>
+
+  <section class="mt-24 sm:mt-32" aria-labelledby="funded-title">
+    <SectionHeading
+      id="funded-title"
+      eyebrow="Funded research"
+      title="Research projects"
+      intro="Grants and sponsored work spanning quantum computation, lattice-based cryptography and network attack resilience."
+    />
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {projects.map((project, i) => <ProjectCard project={project} areaTitles={areaTitles} index={i} />)}
+    </div>
+  </section>
+</PageLayout>

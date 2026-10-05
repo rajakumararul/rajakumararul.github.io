@@ -30,12 +30,12 @@
   issuer: Vellore Institute of Technology (VIT)
   category: Institutional Recognition / Service Award
   description: Recognized by Vellore Institute of Technology for completing five years of dedicated service.
+  photo: ./gallery/vit-five-years-service-award/cover.jpg
   album: vit-five-years-service-award
   featured: true
   order: 2
   verify:
     - Award date to be provided
-    - Award photograph to be provided
     - Confirm exact award title from the award document
 
 - id: ieee-mas-publication
@@ -72,18 +72,18 @@
 - id: qiskit-gss-2026
   kind: certification
   title: Qiskit Global Summer School 2026
-  credential: Quantum Excellence
+  credential: Quantum Excellence (Advanced)
   issuer: IBM / Qiskit
   category: Professional Development / Quantum Computing Certification
   years: [2026]
+  date: 2026-08-21
   description: Successfully completed Qiskit Global Summer School 2026, earning the Quantum Excellence credential.
+  photo: ./gallery/qiskit-global-summer-school-2026/badge.png
+  certificateImage: ./gallery/qiskit-global-summer-school-2026/certificate.png
+  credentialUrl: "https://www.credly.com/go/KpN8Fe4L"
   areas: [quantum-computing]
   album: qiskit-global-summer-school-2026
   order: 1
-  verify:
-    - Completion date to be provided
-    - Certificate image and credential URL to be provided
-    - Confirm exact credential title from the certificate
 
 - id: offsec-sec-100
   kind: certification

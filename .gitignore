@@ -8,9 +8,17 @@ node_modules/
 # logs
 npm-debug.log*
 
-# environment
+# environment / credentials
 .env
 .env.*
+*.pem
+*.key
+
+# camera originals — commit resized copies only (see docs/ADDING-GALLERY-ALBUMS.md)
+*.heic
+*.HEIC
+*.dng
+*.DNG
 
 # OS / editor
 .DS_Store

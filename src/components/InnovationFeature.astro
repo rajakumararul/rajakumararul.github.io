@@ -1,0 +1,71 @@
+---
+/** Large feature card for an innovation, with a Bloch-sphere illustration. Used on /projects. */
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import InnovationLinks from './InnovationLinks.astro';
+
+interface Props {
+  innovation: CollectionEntry<'innovations'>;
+}
+const { innovation } = Astro.props;
+const d = innovation.data;
+const statusLabel = { active: 'Active', 'in-development': 'In development', archived: 'Archived' }[d.status];
+---
+
+<article id={innovation.id} class="card reveal relative scroll-mt-28 overflow-hidden">
+  <div class="bg-grid pointer-events-none absolute inset-0 opacity-40"></div>
+  <div class="relative grid gap-10 p-7 sm:p-10 lg:grid-cols-[1.25fr_1fr] lg:items-center lg:p-12">
+    <div>
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="inline-flex items-center gap-1.5 rounded-full border border-accent-2/30 bg-accent-2-soft px-2.5 py-1 text-[0.7rem] font-medium text-accent-2">
+          {d.status === 'active' && <span class="h-1.5 w-1.5 rounded-full bg-current" style="animation: pulse-dot 2s infinite" />}
+          {statusLabel}
+        </span>
+        <span class="text-[0.72rem] font-medium uppercase tracking-[0.14em] text-accent">{d.category}</span>
+      </div>
+
+      <h2 class="mt-5 font-serif text-3xl font-medium tracking-tight text-ink sm:text-[2.6rem] sm:leading-tight">{d.title}</h2>
+      <p class="mt-3 font-serif text-lg italic text-ink-soft">{d.tagline}</p>
+      <p class="mt-5 max-w-xl leading-relaxed text-ink-soft">{d.description}</p>
+
+      {
+        d.highlights.length > 0 && (
+          <ul class="mt-6 grid gap-2 sm:grid-cols-2">
+            {d.highlights.map((h) => (
+              <li class="flex items-center gap-2 text-sm text-ink-soft">
+                <Icon name="check" size={16} class="shrink-0 text-accent" />
+                {h}
+              </li>
+            ))}
+          </ul>
+        )
+      }
+      {d.audience && <p class="mt-5 text-sm text-muted">For: {d.audience}</p>}
+
+      <InnovationLinks innovation={innovation} class="mt-8" />
+    </div>
+
+    <!-- Bloch sphere -->
+    <figure class="mx-auto w-full max-w-[19rem]" aria-hidden="true">
+      <svg viewBox="0 0 240 240" class="h-auto w-full overflow-visible">
+        <defs>
+          <radialGradient id="bloch-fill" cx="0.38" cy="0.32" r="0.75">
+            <stop offset="0" style="stop-color: var(--accent); stop-opacity: 0.16"></stop>
+            <stop offset="1" style="stop-color: var(--accent-2); stop-opacity: 0.04"></stop>
+          </radialGradient>
+        </defs>
+        <circle cx="120" cy="120" r="92" fill="url(#bloch-fill)" style="stroke: var(--line-strong)" stroke-width="1.2"></circle>
+        <ellipse cx="120" cy="120" rx="92" ry="28" fill="none" style="stroke: var(--line-strong)" stroke-dasharray="3 5"></ellipse>
+        <ellipse cx="120" cy="120" rx="28" ry="92" fill="none" style="stroke: var(--line)" stroke-dasharray="3 5"></ellipse>
+        <path d="M120 22v196M22 120h196" style="stroke: var(--line)" stroke-width="1"></path>
+        <g style="transform-origin: 120px 120px; animation: orbit 24s linear infinite">
+          <path d="M120 120 172 62" style="stroke: var(--accent)" stroke-width="2.4" stroke-linecap="round"></path>
+          <circle cx="172" cy="62" r="5.5" style="fill: var(--accent)"></circle>
+        </g>
+        <circle cx="120" cy="120" r="3" style="fill: var(--ink)"></circle>
+        <text x="120" y="12" text-anchor="middle" class="font-mono" style="fill: var(--muted); font-size: 11px">|0⟩</text>
+        <text x="120" y="238" text-anchor="middle" class="font-mono" style="fill: var(--muted); font-size: 11px">|1⟩</text>
+      </svg>
+    </figure>
+  </div>
+</article>

@@ -37,7 +37,7 @@ main:
   # 1. Copy the image into  public/images/  (square crop works best, at least 800×800 px).
   # 2. Replace null with its path, e.g.   photo: /images/rajakumar-arul.jpg
   # The circular frame and orbit animation stay the same; null shows the placeholder.
-  photo: null
+  photo: /images/rajakumar-arul.jpg
   # Profile links and email are managed in src/content/social.yaml
   memberships:
     - Senior Member, IEEE
@@ -45,6 +45,5 @@ main:
     - Professional Member, ACM
     - Member, Internet Society
   verify:
-    - Professional photograph to be provided.
     - Public email address to be confirmed.
     - "Existing site gives B.E. institution as both 'Anna University, Chennai' and 'Anna University, Coimbatore'."

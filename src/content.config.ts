@@ -96,6 +96,35 @@ const projects = defineCollection({
   }),
 });
 
+/**
+ * Innovations — software and teaching tools (src/content/innovations.yaml).
+ * Links stay empty ("") until provided; an empty liveUrl shows a disabled
+ * "link to be added" button, an empty sourceUrl hides the Source Code button.
+ */
+const httpsOrEmpty = z
+  .string()
+  .refine((v) => v === '' || v.startsWith('https://'), 'Use an https:// link, or leave empty');
+
+const innovations = defineCollection({
+  loader: file('src/content/innovations.yaml'),
+  schema: z.object({
+    id: z.string(),
+    title: z.string(),
+    tagline: z.string(),
+    description: z.string(),
+    category: z.string(),
+    status: z.enum(['active', 'in-development', 'archived']),
+    highlights: z.array(z.string()).default([]),
+    audience: z.string().optional(),
+    liveUrl: httpsOrEmpty.default(''),
+    sourceUrl: httpsOrEmpty.default(''),
+    areas: z.array(areaId).default([]),
+    featured: z.boolean().default(false),
+    order: z.number().default(100),
+    verify,
+  }),
+});
+
 const publications = defineCollection({
   loader: file('src/content/publications.yaml'),
   schema: z.object({
@@ -319,6 +348,7 @@ export const collections = {
   profile,
   researchAreas,
   projects,
+  innovations,
   publications,
   news,
   leadership,

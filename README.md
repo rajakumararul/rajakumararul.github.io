@@ -20,6 +20,7 @@ All academic content lives in `src/content/`:
 | `profile.yaml` | Name, designation, bio, photo, profile links, memberships |
 | `research-areas.yaml` | Research focus cards (primary / secondary) |
 | `projects/*.md` | One file per funded project (`featured: true` → homepage) |
+| `innovations.yaml` | Software / teaching tools on `/projects` — live URL and source-code URL for each (e.g. Quantum Learning Lab) |
 | `publications.yaml` | All publications (`featured: true` → homepage) |
 | `news/*.md` | One file per news item (latest 6 shown on homepage) |
 | `leadership.yaml` | Current role, departmental initiatives, responsibilities |
@@ -45,7 +46,8 @@ so a typo fails the build with a clear message instead of breaking a page.
 ## Deployment
 
 ### GitHub Pages
-1. Push the repository to GitHub (branch `main`).
+1. Push the repository to GitHub (branch `main`). Repository: `rajakumararul.github.io`
+   (a user site, served at `https://rajakumararul.github.io/`).
 2. In **Settings → Pages**, set **Source** to **GitHub Actions**.
 3. `.github/workflows/deploy.yml` builds and publishes on every push. The site
    URL and base path come from GitHub automatically.

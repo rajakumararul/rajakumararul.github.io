@@ -1,0 +1,42 @@
+---
+/**
+ * "Open …" and "Source Code" buttons for an innovation. URLs come from
+ * src/content/innovations.yaml — an empty liveUrl renders a disabled button,
+ * an empty sourceUrl hides the Source Code button.
+ */
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import VerifyBadge from './VerifyBadge.astro';
+
+interface Props {
+  innovation: CollectionEntry<'innovations'>;
+  class?: string;
+}
+const { innovation, class: className = '' } = Astro.props;
+const { title, liveUrl, sourceUrl } = innovation.data;
+---
+
+<div class:list={['flex flex-wrap items-center gap-3', className]}>
+  {
+    liveUrl ? (
+      <a href={liveUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+        Open {title}
+        <Icon name="arrow-up-right" size={16} />
+      </a>
+    ) : (
+      <span class="btn btn-primary cursor-not-allowed opacity-50" aria-disabled="true" title="Live link to be added">
+        Open {title}
+        <Icon name="arrow-up-right" size={16} />
+      </span>
+    )
+  }
+  {
+    sourceUrl && (
+      <a href={sourceUrl} target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+        <Icon name="github" size={16} />
+        Source Code
+      </a>
+    )
+  }
+  {!liveUrl && <VerifyBadge label="Link to be added" notes={['Live URL to be set in src/content/innovations.yaml']} />}
+</div>

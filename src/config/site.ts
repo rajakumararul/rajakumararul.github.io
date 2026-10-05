@@ -20,6 +20,7 @@ export const site = {
   nav: [
     { label: 'About', href: '/about' },
     { label: 'Research', href: '/research' },
+    { label: 'Projects', href: '/projects' },
     { label: 'Publications', href: '/publications' },
     { label: 'Leadership', href: '/leadership' },
     { label: 'Teaching', href: '/teaching' },

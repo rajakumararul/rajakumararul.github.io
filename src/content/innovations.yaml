@@ -1,0 +1,29 @@
+# ─── Innovations — software, platforms and teaching tools ────────────────────
+# Shown on /projects (and as a teaser on the homepage when featured: true).
+#
+#   liveUrl    → the public address of the running app ("Open …" button).
+#   sourceUrl  → GitHub repository ("Source Code" button). Hidden while empty.
+#   Both must start with https://. Leave "" until the address is final.
+
+- id: quantum-learning-lab
+  title: Quantum Learning Lab
+  tagline: Interactive quantum computing, learned by doing.
+  description: >-
+    An interactive educational web application that helps students build intuition for
+    quantum computing — exploring qubits, the Bloch sphere, quantum gates and basic quantum
+    operations through hands-on visual experiments.
+  category: Quantum Computing / Education Technology
+  status: active
+  audience: Undergraduate and postgraduate students
+  highlights:
+    - Qubits and superposition
+    - Bloch sphere representation
+    - Quantum gates
+    - Basic quantum operations
+  # ▼▼ ENTER THE LIVE QUANTUM LEARNING LAB URL HERE, e.g. "https://…" ▼▼
+  liveUrl: "https://rajakumararul.github.io/quantum-learning-lab/"
+  # ▼▼ Optional: GitHub repository URL ▼▼
+  sourceUrl: "https://github.com/rajakumararul/quantum-learning-lab"
+  areas: [quantum-computing]
+  featured: true
+  order: 1

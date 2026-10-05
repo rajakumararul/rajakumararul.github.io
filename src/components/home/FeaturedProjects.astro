@@ -2,8 +2,12 @@
 import { getCollection } from 'astro:content';
 import SectionHeading from '../SectionHeading.astro';
 import ProjectCard from '../ProjectCard.astro';
+import Icon from '../Icon.astro';
+import InnovationLinks from '../InnovationLinks.astro';
+import { url } from '../../lib/url';
 
 const projects = (await getCollection('projects', (p) => p.data.featured)).sort((a, b) => a.data.order - b.data.order);
+const innovations = (await getCollection('innovations', (i) => i.data.featured)).sort((a, b) => a.data.order - b.data.order);
 const areaTitles = Object.fromEntries((await getCollection('researchAreas')).map((a) => [a.id, a.data.short]));
 ---
 
@@ -15,11 +19,36 @@ const areaTitles = Object.fromEntries((await getCollection('researchAreas')).map
       eyebrow="Funded research"
       title="Featured research projects"
       intro="Nationally and internationally funded work spanning quantum computation, lattice-based cryptography and network attack resilience."
-      href="/research"
+      href="/projects"
       linkLabel="All projects"
     />
     <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {projects.map((project, i) => <ProjectCard project={project} areaTitles={areaTitles} index={i} />)}
     </div>
+
+    {
+      innovations.map((innovation) => (
+        <div class="card reveal mt-5 flex flex-col gap-6 p-6 sm:p-7 lg:flex-row lg:items-center lg:justify-between">
+          <div class="flex items-start gap-4">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent">
+              <Icon name="atom" size={22} />
+            </span>
+            <div>
+              <p class="text-[0.72rem] font-medium uppercase tracking-[0.14em] text-accent">
+                Innovation · {innovation.data.category}
+              </p>
+              <h3 class="mt-1.5 font-serif text-[1.45rem] font-medium leading-snug text-ink">
+                <a href={url(`/projects#${innovation.id}`)} class="link-underline">{innovation.data.title}</a>
+              </h3>
+              <p class="mt-1 max-w-2xl text-[0.92rem] leading-relaxed text-ink-soft">{innovation.data.tagline}</p>
+              {innovation.data.highlights.length > 0 && (
+                <p class="mt-1 text-[0.8rem] text-muted">{innovation.data.highlights.join(' · ')}</p>
+              )}
+            </div>
+          </div>
+          <InnovationLinks innovation={innovation} class="shrink-0" />
+        </div>
+      ))
+    }
   </div>
 </section>

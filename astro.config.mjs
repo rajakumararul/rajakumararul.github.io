@@ -8,7 +8,7 @@ import tailwindcss from '@tailwindcss/vite';
 // works on GitHub Pages (project or user site) and later on a custom domain.
 //   SITE_URL   e.g. https://<user>.github.io  or  https://www.yourdomain.com
 //   BASE_PATH  e.g. /portfolio-website  (omit for a user site or custom domain)
-const site = process.env.SITE_URL || 'https://example.github.io';
+const site = process.env.SITE_URL || 'https://rajakumararul.github.io';
 const base = process.env.BASE_PATH || '/';
 
 export default defineConfig({
