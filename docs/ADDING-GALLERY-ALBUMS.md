@@ -66,14 +66,15 @@ The folder holds the photographs plus one small text file, `index.md`, that desc
 4. **Preview**: `npm run dev` → open http://localhost:4321/gallery
    If a field is wrong, the terminal shows exactly which file and field to fix.
 
-## Replacing a placeholder album
+## Replacing an illustrative cover
 
-Albums created for existing events currently contain **sample placeholder images**
-(`placeholder-cover.jpg`, `placeholder-02.jpg`, …) and `placeholder: true`.
+Some albums use a public-domain **illustrative image** as `cover.jpg` until the event
+photographs are available (its `coverAlt` starts with "Illustrative image"; sources are
+listed in [IMAGE-CREDITS.md](IMAGE-CREDITS.md)).
 
-1. Delete the `placeholder-*.jpg` files and add your photographs.
-2. Update `cover:` and `photos:` in `index.md` to the new file names.
-3. Remove the line `placeholder: true` (and any `verify:` notes you have resolved).
+1. Replace `cover.jpg` with your photograph (and add `photo-01.jpg`, … if you have more).
+2. Update `coverAlt:` (and `photos:`) in `index.md`.
+3. Remove that album's row from `docs/IMAGE-CREDITS.md`.
 
 ## Achievement photographs and certificates
 

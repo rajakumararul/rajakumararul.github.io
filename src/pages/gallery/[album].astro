@@ -58,10 +58,14 @@ const achievement = a.relatedAchievement ? await getEntry(a.relatedAchievement) 
         <p class="eyebrow mb-4">{categoryLabels[a.category]}</p>
         <h1 class="max-w-4xl font-serif text-4xl font-medium tracking-tight text-ink sm:text-5xl">{a.title}</h1>
         <dl class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
-          <div class="inline-flex items-center gap-2">
-            <dt><Icon name="calendar" size={16} /><span class="sr-only">Date</span></dt>
-            <dd>{date ?? 'Date to be confirmed'}</dd>
-          </div>
+          {
+            date && (
+              <div class="inline-flex items-center gap-2">
+                <dt><Icon name="calendar" size={16} /><span class="sr-only">Date</span></dt>
+                <dd>{date}</dd>
+              </div>
+            )
+          }
           {
             a.location && (
               <div class="inline-flex items-center gap-2">
@@ -139,7 +143,7 @@ const achievement = a.relatedAchievement ? await getEntry(a.relatedAchievement) 
               <div class="card p-6">
                 <p class="eyebrow mb-2">Related update</p>
                 <p class="font-serif text-lg text-ink">{n.data.title}</p>
-                <p class="mt-1 font-mono text-xs text-muted">{n.data.date ? formatDate(n.data.date, 'long') : 'Date to be confirmed'}</p>
+                {n.data.date && <p class="mt-1 font-mono text-xs text-muted">{formatDate(n.data.date, 'long')}</p>}
               </div>
             ))}
             {a.externalLink && (

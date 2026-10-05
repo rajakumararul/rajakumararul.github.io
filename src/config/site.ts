@@ -6,10 +6,12 @@ export const site = {
   locale: 'en-IN',
 
   /**
-   * Show amber "To verify" markers for details that still need confirmation.
-   * Set to false once the content has been reviewed.
+   * Show amber "To verify" markers (from `verify:` notes in the content files).
+   * On by default only in the local preview (`npm run dev`), so the live site
+   * stays clean while the notes remain a to-do list. Set to true to show them
+   * on the live site as well.
    */
-  showVerificationNotes: true,
+  showVerificationNotes: import.meta.env.DEV,
 
   /** Homepage "Academic Moments" carousel. Auto-advance never runs for reduced-motion visitors. */
   gallery: {

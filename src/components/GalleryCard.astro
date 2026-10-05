@@ -60,7 +60,7 @@ const count = albumPhotos(album).length;
   </div>
 
   <div class="flex flex-1 flex-col p-5 sm:p-6">
-    <p class="font-mono text-[0.7rem] text-muted">{date ?? 'Date to be confirmed'}{a.location && ` · ${a.location}`}</p>
+    {(date || a.location) && <p class="font-mono text-[0.7rem] text-muted">{[date, a.location].filter(Boolean).join(' · ')}</p>}
     <h3 class="mt-2 font-serif text-xl font-medium leading-snug text-ink">
       <a href={url(`/gallery/${album.id}`)} class="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none">
         {a.title}

@@ -31,8 +31,9 @@ All academic content lives in `src/content/`:
 | `experience.yaml`, `education.yaml` | Timeline |
 
 Dates may be `2025`, `2025-07` or `2025-07-14`. Any entry can carry
-`verify: ["note"]`, shown on the site as an amber **To verify** marker. Hide all
-markers by setting `showVerificationNotes: false` in `src/config/site.ts`.
+`verify: ["note"]` — a private to-do note. It appears as an amber **To verify** marker
+only in the local preview (`npm run dev`), never on the live site; remove the note once
+the detail is confirmed. (`showVerificationNotes` in `src/config/site.ts` controls this.)
 
 The build validates every file against the schemas in `src/content.config.ts`,
 so a typo fails the build with a clear message instead of breaking a page.
