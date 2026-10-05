@@ -1,49 +1,50 @@
 # Teaching portfolio — /teaching page.
 #
 # kind: course    → listed under "Current & recent teaching" ONLY when show: true.
-#                   The courses below are drafts: set show: true for each course you
-#                   actually teach (and edit the title / level), delete the rest.
 # kind: resource  → shown only when url is a public https:// link
 #                   resourceType: lab-manual | repository | tool | course | video
 # kind: project   → student project themes (never student names or register numbers)
 
-# ── Courses (drafts — not shown until show: true) ──
+# ── Courses ──
 
+- id: course-qc-fundamentals
+  kind: course
+  title: Quantum Computing Fundamentals
+  description: Qubits, superposition and entanglement, the Bloch sphere, quantum gates and circuits, and programming quantum experiments.
+  areas: [quantum-computing]
+  order: 1
+
+- id: course-dsa
+  kind: course
+  title: Data Structures and Algorithms
+  description: Core data structures and the algorithms that operate on them, with an emphasis on implementation and complexity.
+  order: 2
+
+- id: course-daa
+  kind: course
+  title: Design and Analysis of Algorithms
+  description: Algorithm design paradigms — divide and conquer, greedy, dynamic programming — and the analysis of their correctness and cost.
+  order: 3
+
+- id: course-hpc
+  kind: course
+  title: High Performance Computing
+  description: Parallel architectures and programming models for building fast, scalable computational applications.
+  order: 4
+
+# Not listed publicly (show: false) — set show: true to include.
 - id: course-qc-pqc
   kind: course
   title: Quantum Computing Algorithms and Post-Quantum Cryptography
   areas: [quantum-computing, post-quantum-cryptography]
   show: false
-  order: 1
-  verify: ["Confirm course title and level, then set show: true"]
-
-- id: course-daa
-  kind: course
-  title: Design and Analysis of Algorithms
-  show: false
-  order: 2
-  verify: ["Confirm course title and level, then set show: true"]
-
-- id: course-dsa
-  kind: course
-  title: Data Structures and Algorithms
-  show: false
-  order: 3
-  verify: ["Confirm course title and level, then set show: true"]
-
-- id: course-hpc
-  kind: course
-  title: High Performance Computing
-  show: false
-  order: 4
-  verify: ["Confirm course title and level, then set show: true"]
+  order: 5
 
 - id: course-cloud
   kind: course
   title: Cloud Computing
   show: false
-  order: 5
-  verify: ["Confirm course title and level, then set show: true"]
+  order: 6
 
 # ── Teaching resources (shown only with a public link) ──
 

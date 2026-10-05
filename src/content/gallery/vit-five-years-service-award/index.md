@@ -1,5 +1,7 @@
 ---
 title: "Five Years of Service Award"
+eventDate: 2026-09-22
+location: "VIT Chennai"
 category: awards-recognition
 description: "Recognized by Vellore Institute of Technology for completing five years of dedicated service."
 cover: ./cover.jpg
@@ -8,5 +10,4 @@ relatedNews: [vit-five-years-service-award]
 relatedAchievement: vit-five-years-service
 featured: true
 order: 1
-verify: ["Award ceremony date to be provided"]
 ---

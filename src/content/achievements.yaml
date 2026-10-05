@@ -30,12 +30,13 @@
   issuer: Vellore Institute of Technology (VIT)
   category: Institutional Recognition / Service Award
   description: Recognized by Vellore Institute of Technology for completing five years of dedicated service.
+  years: [2026]
+  date: 2026-09-22
   photo: ./gallery/vit-five-years-service-award/cover.jpg
   album: vit-five-years-service-award
   featured: true
   order: 2
   verify:
-    - Award date to be provided
     - Confirm exact award title from the award document
 
 - id: ieee-mas-publication

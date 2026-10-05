@@ -11,8 +11,9 @@
 # Categories without any entries are not shown as filters.
 
 - id: fdp-quantum-vit-2026
-  title: Faculty Development Programme on Quantum Computing
+  title: Faculty Development Programme on Research Frontiers in Quantum Computing
   category: fdp
+  role: Organiser
   date: 2026-09-29
   endDate: 2026-10-01
   venue: VIT Chennai
@@ -20,7 +21,7 @@
   album: fdp-quantum-computing-vit-chennai-2026
   news: 2026-09-quantum-fdp
   areas: [quantum-computing]
-  verify: ["Official title and your role (organiser / resource person) to be confirmed"]
+  verify: ["Confirm dates (photos taken 29 Sep – 1 Oct 2026)"]
 
 - id: qiskit-gss-2026
   title: IBM Qiskit Global Summer School 2026

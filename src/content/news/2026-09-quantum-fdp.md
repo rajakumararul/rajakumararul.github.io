@@ -1,10 +1,10 @@
 ---
-title: "Faculty Development Programme on Quantum Computing at VIT Chennai"
+title: "Organised the Faculty Development Programme on Research Frontiers in Quantum Computing"
 date: 2026-09-29
-category: event
-summary: "A Faculty Development Programme on quantum computing was held at VIT Chennai from 29 September to 1 October 2026, with technical sessions and hands-on laboratory work."
+category: workshop
+summary: "Organised the Faculty Development Programme on Research Frontiers in Quantum Computing at VIT Chennai (29 September – 1 October 2026), with technical sessions and hands-on laboratory work for faculty members."
 album: fdp-quantum-computing-vit-chennai-2026
 areas: [quantum-computing]
 verify:
-  - "Official FDP title, organising department and your role to be confirmed"
+  - "Confirm dates (photos taken 29 Sep – 1 Oct 2026)"
 ---

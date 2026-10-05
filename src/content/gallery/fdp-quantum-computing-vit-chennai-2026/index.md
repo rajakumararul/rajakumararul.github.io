@@ -1,10 +1,10 @@
 ---
-title: "Faculty Development Programme on Quantum Computing"
+title: "Faculty Development Programme on Research Frontiers in Quantum Computing"
 eventDate: 2026-09-29
 endDate: 2026-10-01
 location: "VIT Chennai"
 category: faculty-development
-description: "Faculty Development Programme on quantum computing held at VIT Chennai."
+description: "Faculty Development Programme on Research Frontiers in Quantum Computing, organised by Dr. Rajakumar Arul at VIT Chennai — technical sessions and hands-on laboratory work for faculty members."
 cover: ./cover.jpg
 coverAlt: "Group photograph of FDP participants and resource persons"
 photos:
@@ -21,8 +21,6 @@ photos:
 featured: true
 order: 1
 verify:
-  - "Official FDP title and organising department to be provided"
-  - "Your role (organiser / resource person / participant) to be confirmed"
   - "Confirm dates (photos taken 29 Sep – 1 Oct 2026)"
   - "Speaker names for captions to be provided"
   - "photo-03 and photo-04 carry a GPS-camera stamp — crop, keep or remove"
