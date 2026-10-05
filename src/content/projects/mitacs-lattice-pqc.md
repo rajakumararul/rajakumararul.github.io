@@ -12,6 +12,7 @@ end: 2025-06-11
 status: completed
 areas: [post-quantum-cryptography, quantum-computing]
 collaborators: ["Dr. Ajmery Sultana, Algoma University, Canada"]
+album: mitacs-globalink-algoma-2025
 featured: true
 order: 1
 verify: ["Currency listed as '$' on the existing site — confirm USD or CAD"]

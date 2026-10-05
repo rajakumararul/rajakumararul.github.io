@@ -1,8 +1,301 @@
 ---
+import { getCollection, getEntry } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
-import ComingSoon from '../components/ComingSoon.astro';
+import Icon from '../components/Icon.astro';
+import VerifyBadge from '../components/VerifyBadge.astro';
+import { activityDate, getActivities } from '../lib/activities';
+import { formatDate, formatRange } from '../lib/format';
+import { url } from '../lib/url';
+
+const profile = (await getEntry('profile', 'main'))!.data;
+const items = (await getCollection('leadership')).sort((a, b) => a.data.order - b.data.order);
+const group = (g: string) => items.filter((i) => i.data.group === g);
+const role = group('current-role')[0];
+const development = group('development');
+const clusters = group('cluster');
+const labs = group('lab');
+const engagement = group('engagement');
+const responsibilities = group('responsibility');
+
+const events = await getActivities((a) => ['fdp', 'workshop', 'talk', 'outreach'].includes(a.data.category));
+
+const labStatus = {
+  established: { label: 'Established', cls: 'bg-accent-2-soft text-accent-2 border-accent-2/30' },
+  'in-development': { label: 'In development', cls: 'bg-accent-soft text-accent-ink border-accent/25' },
+  proposed: { label: 'Proposed', cls: 'bg-bg-soft text-ink-soft border-line-strong' },
+} as const;
+const statusOrder = ['established', 'in-development', 'proposed'] as const;
+const labStatuses = statusOrder.filter((s) => labs.some((l) => l.data.status === s));
+const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
-<PageLayout title="Academic Leadership" eyebrow="Leadership" intro="Departmental leadership, initiatives and academic service.">
-  <ComingSoon plan={['Department of Quantum Computing — role and initiatives', 'Editorial boards and guest editorships', 'Committees, coordination and mentoring roles']} />
+<PageLayout
+  title="Academic Leadership"
+  eyebrow="Leadership"
+  intro="Building the Department of Quantum Computing at VIT Chennai — curriculum, research clusters, laboratories, faculty development and partnerships."
+  description={`Academic leadership of ${profile.shortName}, ${profile.leadershipRole} at VIT Chennai: curriculum, research clusters, laboratory development, faculty development and engagement.`}
+>
+  <!-- Current role -->
+  {
+    role && (
+      <section
+        aria-labelledby="role-title"
+        class="relative overflow-hidden rounded-[1.5rem] border border-transparent bg-[#0d1526] p-7 text-[#f2f1ec] sm:p-10 dark:border-line dark:bg-[#11183a]"
+      >
+        <div
+          class="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full opacity-60 blur-3xl"
+          style="background: radial-gradient(closest-side, rgb(var(--glow) / 0.5), transparent)"
+        />
+        <div class="relative grid gap-8 lg:grid-cols-12">
+          <div class="lg:col-span-7">
+            <p class="font-mono text-[0.7rem] uppercase tracking-[0.18em] opacity-60">Current leadership role</p>
+            <h2 id="role-title" class="mt-4 font-serif text-3xl font-medium leading-tight sm:text-4xl">{role.data.title}</h2>
+            <p class="mt-3 opacity-75">{role.data.organisation}</p>
+            {role.data.start && (
+              <p class="mt-5 inline-flex items-center gap-2 rounded-full border border-white/15 px-3 py-1 font-mono text-xs opacity-85">
+                <Icon name="calendar" size={14} /> Took charge {formatDate(role.data.start, 'long')}
+              </p>
+            )}
+          </div>
+          <div class="lg:col-span-5 lg:border-l lg:border-white/10 lg:pl-8">
+            {role.data.description && <p class="leading-relaxed opacity-85">{role.data.description}</p>}
+            <p class="mt-4 text-sm leading-relaxed opacity-70">
+              {profile.shortName} is also {profile.designation} in the {profile.school}, {profile.institutionShort}.
+            </p>
+            <a href={url('/news/2026-03-hod-appointment')} class="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-[#c9c2ff] hover:underline">
+              Appointment news <Icon name="arrow-right" size={14} />
+            </a>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Academic development -->
+  <section class="mt-20" aria-labelledby="development-title">
+    <p class="eyebrow mb-3">Academic development</p>
+    <h2 id="development-title" class="font-serif text-3xl text-ink sm:text-4xl">Shaping how quantum computing is taught and learned</h2>
+    <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        development.map((d) => (
+          <li class="card p-6">
+            <span class="grid h-10 w-10 place-items-center rounded-xl bg-accent-soft text-accent">
+              <Icon name={d.data.icon ?? 'spark'} size={20} />
+            </span>
+            <h3 class="mt-4 font-serif text-xl text-ink">{d.data.title}</h3>
+            {d.data.description && <p class="mt-2 text-sm leading-relaxed text-muted">{d.data.description}</p>}
+            {d.id === 'dev-education' && (
+              <a href={url('/teaching#quantum-education')} class="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-accent-ink hover:underline">
+                Quantum computing education <Icon name="arrow-right" size={14} />
+              </a>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Research clusters -->
+  <section class="mt-20" id="clusters" aria-labelledby="clusters-title">
+    <p class="eyebrow mb-3">Research cluster ecosystem</p>
+    <h2 id="clusters-title" class="font-serif text-3xl text-ink sm:text-4xl">Five clusters, one quantum agenda</h2>
+    <p class="mt-4 max-w-2xl leading-relaxed text-muted">
+      The department organises its research into five clusters that span computation, algorithms and security — from
+      simulating quantum systems to protecting communication against quantum attacks.
+    </p>
+    <ol class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-6">
+      {
+        clusters.map((c, i) => (
+          <li
+            id={c.id}
+            class:list={['card relative scroll-mt-28 overflow-hidden p-6 sm:p-7', i < 3 ? 'lg:col-span-2' : 'lg:col-span-3']}
+          >
+            <span class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-accent to-accent-2 opacity-70" aria-hidden="true" />
+            <div class="flex items-start justify-between gap-4">
+              <span class="grid h-11 w-11 place-items-center rounded-xl bg-accent-soft text-accent">
+                <Icon name={c.data.icon ?? 'atom'} size={22} />
+              </span>
+              <span class="font-mono text-xs text-muted">Cluster {pad(i + 1)}</span>
+            </div>
+            <h3 class="mt-5 font-serif text-xl leading-snug text-ink">{c.data.title}</h3>
+            {c.data.description && <p class="mt-2 text-sm leading-relaxed text-ink-soft">{c.data.description}</p>}
+            {c.data.themes.length > 0 && (
+              <>
+                <h4 class="mt-5 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-muted">Key themes</h4>
+                <ul class="mt-2 flex flex-wrap gap-1.5">
+                  {c.data.themes.map((t) => (
+                    <li class="chip">{t}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {c.data.outputs.length > 0 && (
+              <>
+                <h4 class="mt-5 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-muted">Typical activities</h4>
+                <ul class="mt-2 grid gap-1.5">
+                  {c.data.outputs.map((o) => (
+                    <li class="flex gap-2.5 text-sm text-ink-soft">
+                      <span class="mt-[0.5rem] h-1 w-1 shrink-0 rounded-full bg-accent-2" />
+                      {o}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            <div class="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
+              {c.data.orientation && (
+                <p class="text-xs text-muted">
+                  Orientation: <span class="font-medium text-ink-soft">{c.data.orientation}</span>
+                </p>
+              )}
+              {c.data.areas[0] && (
+                <a href={url(`/research#${c.data.areas[0]}`)} class="inline-flex items-center gap-1 text-xs font-medium text-accent-ink hover:underline">
+                  Research theme <Icon name="arrow-right" size={12} />
+                </a>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <!-- Laboratory development -->
+  <section class="mt-20" id="labs" aria-labelledby="labs-title">
+    <p class="eyebrow mb-3">Laboratory development</p>
+    <h2 id="labs-title" class="font-serif text-3xl text-ink sm:text-4xl">Quantum laboratories for teaching and research</h2>
+    <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted" aria-label="Status key">
+      {
+        labStatuses.map((s) => (
+          <span class="inline-flex items-center gap-2">
+            <span class:list={['rounded-full border px-2 py-0.5 font-medium', labStatus[s].cls]}>{labStatus[s].label}</span>
+          </span>
+        ))
+      }
+    </div>
+    <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        labs.map((l) => (
+          <li class="card flex flex-col p-6">
+            <div class="flex items-start justify-between gap-3">
+              <span class="grid h-10 w-10 place-items-center rounded-xl bg-bg-soft text-ink-soft">
+                <Icon name={l.data.icon ?? 'compass'} size={20} />
+              </span>
+              {l.data.status && (
+                <span class:list={['rounded-full border px-2.5 py-0.5 text-[0.7rem] font-medium', labStatus[l.data.status].cls]}>
+                  {labStatus[l.data.status].label}
+                </span>
+              )}
+            </div>
+            <h3 class="mt-4 font-serif text-lg leading-snug text-ink">{l.data.title}</h3>
+            {l.data.description && <p class="mt-2 text-sm leading-relaxed text-muted">{l.data.description}</p>}
+            <VerifyBadge notes={l.data.verify} class="mt-3 self-start" />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Faculty development & events -->
+  <section class="mt-20" aria-labelledby="events-title">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="eyebrow mb-3">Faculty development & events</p>
+        <h2 id="events-title" class="font-serif text-3xl text-ink sm:text-4xl">Programmes, workshops and expert sessions</h2>
+      </div>
+      <a href={url('/activities')} class="inline-flex items-center gap-1.5 text-sm font-medium text-accent-ink hover:underline">
+        All activities <Icon name="arrow-right" size={14} />
+      </a>
+    </div>
+    <ol class="mt-8 grid gap-3">
+      {
+        events.map((e) => (
+          <li class="card flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              {activityDate(e) && <p class="font-mono text-xs text-muted">{activityDate(e)}</p>}
+              <p class="mt-1 font-medium text-ink">{e.data.title}</p>
+              <p class="text-sm text-muted">{[e.data.role, e.data.venue].filter(Boolean).join(' · ')}</p>
+            </div>
+            <div class="flex shrink-0 flex-wrap gap-2">
+              {e.data.album && (
+                <a href={url(`/gallery/${e.data.album.id}`)} class="chip hover:border-accent hover:text-accent">
+                  <Icon name="image" size={12} /> Photos
+                </a>
+              )}
+              {e.data.news && (
+                <a href={url(`/news/${e.data.news.id}`)} class="chip hover:border-accent hover:text-accent">
+                  <Icon name="file" size={12} /> News
+                </a>
+              )}
+              {e.data.project && (
+                <a href={url(`/projects/${e.data.project.id}`)} class="chip hover:border-accent hover:text-accent">
+                  <Icon name="compass" size={12} /> Project
+                </a>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <!-- Engagement -->
+  <section class="mt-20" aria-labelledby="engagement-title">
+    <p class="eyebrow mb-3">Academic & industry engagement</p>
+    <h2 id="engagement-title" class="font-serif text-3xl text-ink sm:text-4xl">Collaborations and partnerships</h2>
+    <ul class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {
+        engagement.map((g) => (
+          <li class="card flex flex-col p-6">
+            {g.data.kind && <p class="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-accent">{g.data.kind}</p>}
+            <h3 class="mt-2 font-serif text-lg leading-snug text-ink">{g.data.title}</h3>
+            {g.data.description && <p class="mt-2 text-sm leading-relaxed text-muted">{g.data.description}</p>}
+            <div class="mt-auto flex flex-wrap gap-2 pt-4">
+              {g.data.project && (
+                <a href={url(`/projects/${g.data.project.id}`)} class="chip hover:border-accent hover:text-accent">
+                  <Icon name="compass" size={12} /> Project
+                </a>
+              )}
+              {g.data.album && (
+                <a href={url(`/gallery/${g.data.album.id}`)} class="chip hover:border-accent hover:text-accent">
+                  <Icon name="image" size={12} /> Photos
+                </a>
+              )}
+              {g.data.news && (
+                <a href={url(`/news/${g.data.news.id}`)} class="chip hover:border-accent hover:text-accent">
+                  <Icon name="file" size={12} /> News
+                </a>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Other responsibilities -->
+  {
+    responsibilities.length > 0 && (
+      <section class="mt-20" aria-labelledby="service-title">
+        <p class="eyebrow mb-3">Service</p>
+        <h2 id="service-title" class="font-serif text-3xl text-ink sm:text-4xl">Other responsibilities</h2>
+        <ul class="mt-8 grid gap-3 md:grid-cols-2">
+          {responsibilities.map((r) => (
+            <li class="flex items-start gap-4 rounded-2xl border border-line p-5">
+              <span class="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-bg-soft text-ink-soft">
+                <Icon name="flag" size={17} />
+              </span>
+              <div>
+                <p class="font-medium text-ink">{r.data.title}</p>
+                <p class="text-sm text-muted">
+                  {[r.data.organisation, r.data.start && formatRange(r.data.start, r.data.end)].filter(Boolean).join(' · ')}
+                </p>
+                <VerifyBadge notes={r.data.verify} class="mt-2" />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
 </PageLayout>

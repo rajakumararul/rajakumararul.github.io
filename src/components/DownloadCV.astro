@@ -1,0 +1,27 @@
+---
+/**
+ * "Download CV" button. Renders nothing until the PDF exists at
+ * public<site.cvPath> (public/cv/Dr_Rajakumar_Arul_CV.pdf), so the link never breaks.
+ */
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import Icon from './Icon.astro';
+import { site } from '../config/site';
+import { url } from '../lib/url';
+
+interface Props {
+  variant?: 'primary' | 'ghost';
+  class?: string;
+}
+const { variant = 'ghost', class: className = '' } = Astro.props;
+// Checked at build time, relative to the project root.
+const available = existsSync(join(process.cwd(), 'public', site.cvPath));
+---
+
+{
+  available && (
+    <a href={url(site.cvPath)} download class:list={['btn', variant === 'primary' ? 'btn-primary' : 'btn-ghost', className]}>
+      <Icon name="download" size={16} /> Download CV <span class="sr-only">(PDF)</span>
+    </a>
+  )
+}

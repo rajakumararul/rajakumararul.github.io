@@ -10,7 +10,7 @@ const role = items.find((i) => i.data.group === 'current-role')!;
 const portfolio = items.filter((i) => i.data.group === 'portfolio');
 const responsibilities = items.filter((i) => i.data.group === 'responsibility');
 
-const statusLabel = { established: 'Ongoing', 'in-development': 'In development' } as const;
+const statusLabel = { established: 'Ongoing', 'in-development': 'In development', proposed: 'Proposed' } as const;
 ---
 
 <section class="relative overflow-hidden py-20 sm:py-28" aria-labelledby="leadership-title">

@@ -8,9 +8,12 @@ import Leadership from '../components/home/Leadership.astro';
 import LatestNews from '../components/home/LatestNews.astro';
 import AcademicMoments from '../components/home/AcademicMoments.astro';
 import Spotlight from '../components/Spotlight.astro';
+import { personJsonLd } from '../lib/seo';
+
+const jsonLd = await personJsonLd(Astro.site);
 ---
 
-<BaseLayout>
+<BaseLayout ogType="profile" jsonLd={jsonLd}>
   <Hero />
   <ResearchAreas />
   <FeaturedProjects />

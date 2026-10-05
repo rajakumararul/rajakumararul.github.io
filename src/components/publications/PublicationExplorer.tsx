@@ -2,7 +2,7 @@
  * Searchable, filterable publication list (React island).
  * All data is prepared at build time in src/pages/publications.astro.
  */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export interface PubItem {
   id: string;
@@ -31,6 +31,8 @@ interface Props {
   types: { id: string; label: string; count: number }[];
   areas: { id: string; label: string }[];
   showVerify: boolean;
+  /** Base URL of the research page, for "research theme" links on each record. */
+  researchHref: string;
 }
 
 const statusLabel: Record<PubItem['status'], string | null> = {
@@ -98,13 +100,24 @@ function CopyButton({ text, label }: { text: string; label: string }) {
   );
 }
 
-export default function PublicationExplorer({ pubs, types, areas, showVerify }: Props) {
+export default function PublicationExplorer({ pubs, types, areas, showVerify, researchHref }: Props) {
   const [query, setQuery] = useState('');
   const [type, setType] = useState('all');
   const [year, setYear] = useState('all');
   const [area, setArea] = useState('all');
   const [sort, setSort] = useState<'newest' | 'oldest'>('newest');
   const [featuredOnly, setFeaturedOnly] = useState(false);
+
+  // Deep links from other pages: /publications?area=post-quantum-cryptography (also ?type=, ?q=).
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const a = params.get('area');
+    const t = params.get('type');
+    const q = params.get('q');
+    if (a && areas.some((x) => x.id === a)) setArea(a);
+    if (t && types.some((x) => x.id === t)) setType(t);
+    if (q) setQuery(q);
+  }, []);
 
   const years = useMemo(
     () => [...new Set(pubs.map((p) => p.year).filter((y): y is number => y !== null))].sort((a, b) => b - a),
@@ -310,6 +323,12 @@ export default function PublicationExplorer({ pubs, types, areas, showVerify }: 
                   )}
                   <CopyButton text={p.citation} label="Citation" />
                   <CopyButton text={p.bibtex} label="BibTeX" />
+                  {p.areas.map((a) => (
+                    <a key={a.id} href={`${researchHref}#${a.id}`} className="chip transition-colors hover:border-accent hover:text-accent">
+                      <span className="sr-only">Research theme: </span>
+                      {a.label}
+                    </a>
+                  ))}
                   {showVerify && p.verify.length > 0 && (
                     <span
                       className="inline-flex cursor-help items-center gap-1 rounded-full border border-warn-line bg-warn-soft px-2 py-0.5 font-mono text-[0.62rem] font-medium uppercase tracking-wider text-warn"

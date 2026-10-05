@@ -25,7 +25,7 @@ export async function getHomeStats(): Promise<Stat[]> {
   stats.push({
     value: String(published.length),
     label: 'Publications',
-    hint: `Journals, conferences, chapters & books${accepted.length ? ` · +${accepted.length} accepted` : ''}`,
+    hint: `Published works${accepted.length ? ` · ${accepted.length} more accepted` : ''}`,
     pending: incomplete.length
       ? [`${incomplete.length} of ${published.length} records have incomplete details (year, authors or venue)`]
       : [],

@@ -1,8 +1,142 @@
 ---
+import { getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import PageLayout from '../layouts/PageLayout.astro';
-import ComingSoon from '../components/ComingSoon.astro';
+import Icon from '../components/Icon.astro';
+import VerifyBadge from '../components/VerifyBadge.astro';
+import { activityCategoryIcon, activityCategoryLabel, activityDate, getActivities } from '../lib/activities';
+import { url } from '../lib/url';
+
+const activities = await getActivities();
+
+// Ongoing roles are listed under the year they started.
+const yearOf = (d?: string) => (d ? d.slice(0, 4) : 'Ongoing');
+const years = [...new Set(activities.map((a) => yearOf(a.data.date)))];
+const categories = (Object.keys(activityCategoryLabel) as (keyof typeof activityCategoryLabel)[])
+  .map((id) => ({ id, label: activityCategoryLabel[id], count: activities.filter((a) => a.data.category === id).length }))
+  .filter((c) => c.count > 0);
+
+const enriched = await Promise.all(
+  activities.map(async (a) => {
+    let image: { src: ImageMetadata; alt: string } | null = a.data.photo ? { src: a.data.photo, alt: a.data.photoAlt ?? a.data.title } : null;
+    if (!image && a.data.album) {
+      const album = await getEntry(a.data.album);
+      if (album?.data.cover) image = { src: album.data.cover, alt: album.data.coverAlt ?? album.data.title };
+    }
+    return { a, image, year: yearOf(a.data.date) };
+  }),
+);
 ---
 
-<PageLayout title="Activities" eyebrow="Activities" intro="Invited talks, session chairs, workshops and events.">
-  <ComingSoon plan={['Invited and keynote talks', 'Session chair and workshop organisation', 'Events, FDPs and courses attended']} />
+<PageLayout
+  title="Activities"
+  eyebrow="Professional activities"
+  intro="Invited talks, faculty development programmes, workshops, conferences, editorial work, mentoring and professional service."
+  description="Professional activities of Dr. Rajakumar Arul: invited talks, FDPs, workshops, conferences, editorial roles, hackathons, mentoring, industry interaction and service."
+>
+  <div data-list-filter data-noun="activity" data-noun-plural="activities">
+    <div class="mb-10 grid gap-5 lg:grid-cols-[1fr_auto] lg:items-start">
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Filter by category">
+        <button type="button" data-filter="category" data-value="all" aria-pressed="true" class="filter-chip">
+          All <span class="opacity-60">{activities.length}</span>
+        </button>
+        {
+          categories.map((c) => (
+            <button type="button" data-filter="category" data-value={c.id} aria-pressed="false" class="filter-chip">
+              {c.label} <span class="opacity-60">{c.count}</span>
+            </button>
+          ))
+        }
+      </div>
+      <label class="flex items-center gap-2 text-sm text-muted">
+        Year
+        <select data-filter="year" class="rounded-full border border-line bg-surface px-4 py-2 text-sm text-ink focus:border-accent">
+          <option value="all">All years</option>
+          {years.map((y) => <option value={y}>{y}</option>)}
+        </select>
+      </label>
+    </div>
+
+    <p class="sr-only" aria-live="polite" data-result-count></p>
+
+    {
+      years.map((year) => (
+        <section data-group class="relative mb-12 grid gap-6 lg:grid-cols-[8rem_1fr]" aria-labelledby={`year-${year}`}>
+          <h2 id={`year-${year}`} class="font-serif text-3xl text-ink lg:sticky lg:top-28 lg:self-start">
+            {year}
+          </h2>
+          <ol class="grid gap-4">
+            {enriched
+              .filter((e) => e.year === year)
+              .map(({ a, image }) => (
+                <li
+                  id={a.id}
+                  data-item
+                  data-category={a.data.category}
+                  data-year={year}
+                  class="card scroll-mt-28 overflow-hidden target:ring-2 target:ring-accent"
+                >
+                  <div class:list={['grid', image && 'sm:grid-cols-[1fr_14rem]']}>
+                    <div class="p-6">
+                      <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                        <span class="inline-flex items-center gap-1 text-[0.7rem] font-medium uppercase tracking-[0.12em] text-accent">
+                          <Icon name={activityCategoryIcon[a.data.category]} size={13} />
+                          {activityCategoryLabel[a.data.category]}
+                        </span>
+                        {activityDate(a) && <span class="font-mono text-xs text-muted">{activityDate(a)}</span>}
+                      </p>
+                      <h3 class="mt-2 font-serif text-xl leading-snug text-ink">{a.data.title}</h3>
+                      {(a.data.role || a.data.venue) && (
+                        <p class="mt-1 text-sm text-ink-soft">{[a.data.role, a.data.venue].filter(Boolean).join(' · ')}</p>
+                      )}
+                      {a.data.description && <p class="mt-2 text-sm leading-relaxed text-muted">{a.data.description}</p>}
+                      {(a.data.link || a.data.album || a.data.news || a.data.project) && (
+                        <div class="mt-4 flex flex-wrap gap-2">
+                          {a.data.album && (
+                            <a href={url(`/gallery/${a.data.album.id}`)} class="chip hover:border-accent hover:text-accent">
+                              <Icon name="image" size={12} /> Photos
+                            </a>
+                          )}
+                          {a.data.news && (
+                            <a href={url(`/news/${a.data.news.id}`)} class="chip hover:border-accent hover:text-accent">
+                              <Icon name="file" size={12} /> News
+                            </a>
+                          )}
+                          {a.data.project && (
+                            <a href={url(`/projects/${a.data.project.id}`)} class="chip hover:border-accent hover:text-accent">
+                              <Icon name="compass" size={12} /> Project
+                            </a>
+                          )}
+                          {a.data.link && (
+                            <a href={a.data.link} target="_blank" rel="noopener noreferrer" class="chip hover:border-accent hover:text-accent">
+                              <Icon name="external" size={12} /> Link<span class="sr-only"> (opens in a new tab)</span>
+                            </a>
+                          )}
+                        </div>
+                      )}
+                      <VerifyBadge notes={a.data.verify} class="mt-3" />
+                    </div>
+                    {image && (
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        width={448}
+                        widths={[320, 448]}
+                        sizes="(min-width: 640px) 14rem, 100vw"
+                        class="h-48 w-full object-cover sm:h-full"
+                      />
+                    )}
+                  </div>
+                </li>
+              ))}
+          </ol>
+        </section>
+      ))
+    }
+    <p data-empty hidden class="py-16 text-center text-muted">No activities match these filters.</p>
+  </div>
 </PageLayout>
+
+<script>
+  import '../scripts/list-filter';
+</script>

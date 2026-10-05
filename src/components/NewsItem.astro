@@ -3,6 +3,8 @@ import type { CollectionEntry } from 'astro:content';
 import Icon from './Icon.astro';
 import VerifyBadge from './VerifyBadge.astro';
 import { formatDate } from '../lib/format';
+import { newsCategoryLabel as categoryLabel, newsCategoryIcon as categoryIcon } from '../lib/news';
+import { url } from '../lib/url';
 
 interface Props {
   item: CollectionEntry<'news'>;
@@ -11,26 +13,6 @@ interface Props {
 const { item, index = 0 } = Astro.props;
 const n = item.data;
 
-const categoryLabel: Record<string, string> = {
-  appointment: 'Appointment',
-  talk: 'Invited talk',
-  publication: 'Publication',
-  project: 'Project',
-  award: 'Award',
-  certification: 'Certification',
-  event: 'Event',
-  mentoring: 'Mentoring',
-};
-const categoryIcon: Record<string, string> = {
-  appointment: 'flag',
-  talk: 'users',
-  publication: 'file',
-  project: 'compass',
-  award: 'award',
-  certification: 'certificate',
-  event: 'calendar',
-  mentoring: 'users',
-};
 ---
 
 <li class="reveal relative pb-9 pl-10 last:pb-0" style={`--reveal-delay:${index * 70}ms`}>
@@ -55,15 +37,7 @@ const categoryIcon: Record<string, string> = {
     </span>
   </div>
   <h3 class="mt-1.5 font-serif text-lg font-medium leading-snug text-ink">
-    {
-      n.link ? (
-        <a href={n.link} target="_blank" rel="noopener noreferrer" class="hover:text-accent-ink">
-          {n.title}
-        </a>
-      ) : (
-        n.title
-      )
-    }
+    <a href={url(`/news/${item.id}`)} class="hover:text-accent-ink">{n.title}</a>
   </h3>
   <p class="mt-1 text-sm leading-relaxed text-muted">{n.summary}</p>
   <VerifyBadge notes={n.verify} class="mt-2" />

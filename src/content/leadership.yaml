@@ -97,3 +97,203 @@
   start: 2023-07
   end: null
   order: 4
+
+# ── Academic development (/leadership) ──
+
+- id: dev-curriculum
+  group: development
+  title: Quantum computing curriculum
+  description: Shaping a curriculum that runs from quantum foundations and circuits to algorithms, quantum-safe cryptography and quantum communication.
+  icon: layers
+  order: 1
+
+- id: dev-faculty
+  group: development
+  title: Faculty capacity building
+  description: Faculty development programmes and hands-on sessions that prepare colleagues to teach and research in quantum technologies.
+  icon: users
+  order: 2
+
+- id: dev-students
+  group: development
+  title: Student skill development
+  description: Programming-based quantum experimentation, guided project work and participation in quantum learning programmes.
+  icon: spark
+  order: 3
+
+- id: dev-education
+  group: development
+  title: Quantum education initiatives
+  description: Interactive learning tools such as the Quantum Learning Lab, built to make qubits, gates and the Bloch sphere visual and intuitive.
+  icon: atom
+  order: 4
+
+- id: dev-enrichment
+  group: development
+  title: Academic enrichment
+  description: Expert talks, technical workshops and events that connect students and faculty with the wider quantum community.
+  icon: compass
+  order: 5
+
+# ── Research clusters (/leadership) ──
+# themes: key technical themes · outputs: typical activities · orientation: research orientation
+
+- id: cluster-simulation-hpc
+  group: cluster
+  title: Quantum Simulation & HPC
+  description: Simulating quantum systems and quantum circuits on classical high-performance computing resources.
+  themes: [State-vector & tensor-network simulation, Quantum chemistry and materials, GPU / HPC acceleration]
+  outputs: [Simulation studies, Benchmarking of quantum workloads, Student projects]
+  orientation: Computational and applied
+  icon: layers
+  areas: [quantum-computing]
+  order: 1
+
+- id: cluster-hybrid-ai
+  group: cluster
+  title: Hybrid Quantum Computing & AI
+  description: Combining classical machine learning with quantum circuits in hybrid quantum–classical workflows.
+  themes: [Variational quantum algorithms, Quantum machine learning, Hybrid optimisation]
+  outputs: [Algorithm prototypes, Comparative studies with classical ML, Student projects]
+  orientation: Applied and interdisciplinary
+  icon: spark
+  areas: [quantum-computing, ai-ml]
+  order: 2
+
+- id: cluster-algorithms
+  group: cluster
+  title: Quantum Algorithms & Information Processing
+  description: Designing and analysing quantum algorithms and the information-processing principles behind them.
+  themes: [Quantum circuits and gates, "Search, factoring and Fourier-based algorithms", Quantum information theory]
+  outputs: [Algorithm design and analysis, Circuit implementations on simulators, Teaching material]
+  orientation: Foundational
+  icon: atom
+  areas: [quantum-computing]
+  order: 3
+
+- id: cluster-pqc
+  group: cluster
+  title: Post-Quantum Cryptography
+  description: Cryptographic schemes that remain secure against quantum attacks, and their deployment in real networks.
+  themes: [Lattice-based cryptography, CRYSTALS-Kyber and standardised algorithms, Migration of network protocols]
+  outputs: [Scheme design and analysis, Implementation studies, Publications]
+  orientation: Security and applied cryptography
+  icon: lattice
+  areas: [post-quantum-cryptography]
+  order: 4
+
+- id: cluster-qkd
+  group: cluster
+  title: Quantum Key Distribution & Secure Communication
+  description: Quantum-physical key exchange and its integration with classical and post-quantum security.
+  themes: [QKD protocols, Quantum channels and photonics, Hybrid QKD + PQC key establishment]
+  outputs: [Protocol studies, Demonstration experiments, Teaching demonstrations]
+  orientation: Experimental and systems
+  icon: photon
+  areas: [quantum-key-distribution]
+  order: 5
+
+# ── Laboratory development (/leadership) ──
+# status: established | in-development | proposed — never mark a proposal as established.
+
+- id: lab-teaching
+  group: lab
+  title: Quantum technology teaching laboratories
+  description: Laboratory facilities for teaching quantum computing and quantum technologies.
+  status: in-development
+  icon: compass
+  order: 1
+  verify: ["Confirm status: established / in development / proposed"]
+
+- id: lab-circuits
+  group: lab
+  title: Quantum circuits laboratory
+  description: Hands-on sessions building and running quantum circuits on simulators and cloud quantum platforms.
+  status: in-development
+  icon: atom
+  order: 2
+  verify: ["Confirm status: established / in development / proposed"]
+
+- id: lab-hardware
+  group: lab
+  title: Educational quantum hardware
+  description: Physical teaching aids — such as a tangible Bloch sphere — that let students see and manipulate qubit states.
+  status: in-development
+  icon: spark
+  order: 3
+  verify: ["Confirm status: established / in development / proposed"]
+
+- id: lab-communication
+  group: lab
+  title: Quantum communication experiments
+  description: Demonstrations of quantum key distribution and quantum communication principles.
+  status: in-development
+  icon: photon
+  order: 4
+  verify: ["Confirm status: established / in development / proposed"]
+
+- id: lab-platforms
+  group: lab
+  title: Quantum computing platforms & simulation environments
+  description: Access to quantum programming frameworks, simulators and cloud quantum platforms for teaching and research.
+  status: in-development
+  icon: layers
+  order: 5
+  verify: ["Confirm status: established / in development / proposed"]
+
+# ── Academic & industry engagement (/leadership) ──
+
+- id: eng-algoma
+  group: engagement
+  kind: International research collaboration
+  title: Algoma University, Canada
+  description: Lattice-based post-quantum cryptography research with Dr. Ajmery Sultana under the Mitacs Globalink Research Award.
+  project: mitacs-lattice-pqc
+  album: mitacs-globalink-algoma-2025
+  icon: compass
+  order: 1
+
+- id: eng-iiitdm
+  group: engagement
+  kind: Research collaboration
+  title: IIITDM Kancheepuram
+  description: Side-channel attack research with Prof. Sivaselvam B under the SERB-TARE scheme.
+  project: serb-tare-side-channel
+  icon: handshake
+  order: 2
+
+- id: eng-meity-aws
+  group: engagement
+  kind: Government–industry programme
+  title: MeitY Quantum Computing Applications Lab, with AWS
+  description: Quantum computing project on the behaviour of chemical compounds for electrolyte discovery.
+  project: meity-aws-quantum-electrolyte
+  icon: atom
+  order: 3
+
+- id: eng-samsung
+  group: engagement
+  kind: Industry engagement
+  title: Samsung PRISM
+  description: Faculty mentor for an industry-defined student worklet on blockchain-powered on-device AI.
+  album: samsung-prism-worklet
+  icon: handshake
+  order: 4
+
+- id: eng-gian
+  group: engagement
+  kind: External experts
+  title: Global Initiative of Academic Networks (GIAN)
+  description: Local coordinator for GIAN courses, which bring international faculty to VIT Chennai.
+  icon: users
+  order: 5
+
+- id: eng-ibm
+  group: engagement
+  kind: Quantum community
+  title: IBM Quantum — Qiskit Global Summer School
+  description: Quantum Excellence (Advanced) credential from the 2026 Qiskit Global Summer School.
+  album: qiskit-global-summer-school-2026
+  news: qiskit-global-summer-school-2026
+  icon: certificate
+  order: 6

@@ -7,7 +7,7 @@ funder: Accelerate Vigyan scheme — VRITIKA Training and Skill Internship
 start: 2024-06-10
 end: 2024-08-10
 status: completed
-areas: [network-security]
+areas: [mobile-network-security, network-security]
 order: 5
 ---
 

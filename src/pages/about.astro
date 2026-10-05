@@ -5,6 +5,8 @@ import Icon from '../components/Icon.astro';
 import SocialLinks from '../components/SocialLinks.astro';
 import AchievementItem from '../components/AchievementItem.astro';
 import VerifyBadge from '../components/VerifyBadge.astro';
+import DownloadCV from '../components/DownloadCV.astro';
+import { personJsonLd } from '../lib/seo';
 import { formatRange, dateKey } from '../lib/format';
 
 const profile = (await getEntry('profile', 'main'))!.data;
@@ -18,6 +20,7 @@ const placeSuffix = (org: string, loc?: string) => {
   const rest = (loc ?? '').split(',').map((p) => p.trim()).filter((p) => p && !org.includes(p));
   return rest.length ? `, ${rest.join(', ')}` : '';
 };
+const jsonLd = { ...(await personJsonLd(Astro.site)), description: profile.bio[0] };
 const tracks = [
   { id: 'academic', label: 'Academic positions' },
   { id: 'research', label: 'Research positions' },
@@ -25,7 +28,14 @@ const tracks = [
 ] as const;
 ---
 
-<PageLayout title="About" eyebrow="Profile" intro={`${profile.designation} · ${profile.leadershipRole}, ${profile.institutionShort}`}>
+<PageLayout
+  title="About"
+  eyebrow="Profile"
+  intro={`${profile.designation} and ${profile.leadershipRole}, ${profile.institutionShort}.`}
+  description={`About ${profile.shortName} — ${profile.designation} and ${profile.leadershipRole} at ${profile.institution}: biography, education, experience, honours and certifications.`}
+  ogType="profile"
+  jsonLd={jsonLd}
+>
   <!-- Biography -->
   <section class="grid gap-10 lg:grid-cols-12" aria-labelledby="bio-title">
     <div class="lg:col-span-7">
@@ -46,6 +56,7 @@ const tracks = [
         <div class="mt-6 border-t border-line pt-6">
           <SocialLinks placement="about" variant="list" />
         </div>
+        <DownloadCV variant="primary" class="mt-6" />
       </div>
     </aside>
   </section>

@@ -123,7 +123,7 @@
   issue: "1"
   pages: 681–690
   doi: 10.1109/TII.2019.2949354
-  areas: [post-quantum-cryptography, network-security]
+  areas: [post-quantum-cryptography, network-security, mobile-network-security]
   featured: true
 
 - id: cloud-ran-5g-2019
@@ -137,7 +137,7 @@
   issue: "8"
   pages: e3627
   doi: 10.1002/ett.3627
-  areas: [ai-ml, network-security]
+  areas: [ai-ml, network-security, mobile-network-security]
 
 - id: ddos-sdn-2019
   type: journal
@@ -164,7 +164,7 @@
   issue: "6"
   pages: 2677–2689
   doi: 10.1109/TII.2018.2817028
-  areas: [network-security]
+  areas: [network-security, mobile-network-security]
   featured: true
 
 - id: compatibility-vector-2017
@@ -222,7 +222,7 @@
   authors: [Rajakumar Arul, Gunasekaran Raja]
   venue: International Journal of Engineering Research in Computer Science and Engineering
   year: null
-  areas: [network-security]
+  areas: [network-security, mobile-network-security]
   verify: [Year, volume and pages not stated, Author list garbled on the existing site, Listed under both journals and conferences]
 
 - id: network-coding-multicast
@@ -257,7 +257,7 @@
   venue: 4th International Conference on Security & Privacy (ICSP 2025), NIT Rourkela
   year: 2025
   url: https://icsp.co.in/2025/cfp.html#accepted
-  areas: [post-quantum-cryptography, network-security]
+  areas: [post-quantum-cryptography, network-security, mobile-network-security]
   featured: true
   verify: [Listed as accepted for presentation — update once published]
 
@@ -332,7 +332,7 @@
   venue: International Conference on Innovations in Engineering and Technology
   year: null
   pages: 75–82
-  areas: [network-security]
+  areas: [network-security, mobile-network-security]
   verify: [Year not stated, Author list partly garbled on the existing site]
 
 - id: bay-race-wmn

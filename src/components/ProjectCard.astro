@@ -82,7 +82,7 @@ const statusLabel = { ongoing: 'Ongoing', completed: 'Completed', 'to-verify': '
     <VerifyBadge notes={p.verify} class="relative z-10" />
   </div>
 
-  <a href={url(`/projects#${project.id}`)} class="absolute inset-0 rounded-[inherit]" aria-label={`More about ${p.shortTitle ?? p.title}`}>
+  <a href={url(`/projects/${project.id}`)} class="absolute inset-0 rounded-[inherit]" aria-label={`More about ${p.shortTitle ?? p.title}`}>
   </a>
   <Icon
     name="arrow-up-right"

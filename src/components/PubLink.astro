@@ -1,0 +1,31 @@
+---
+/** Compact publication line used for cross-links (research themes, projects). */
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import { publicationTypeLabel } from '../lib/format';
+
+interface Props {
+  pub: CollectionEntry<'publications'>;
+}
+const p = Astro.props.pub.data;
+const href = p.doi ? `https://doi.org/${p.doi}` : p.url;
+const meta = [publicationTypeLabel[p.type], p.year, p.status === 'accepted' ? 'Accepted' : null].filter(Boolean).join(' · ');
+---
+
+<li class="rounded-xl border border-line bg-surface p-4">
+  <p class="font-mono text-[0.68rem] uppercase tracking-wider text-muted">{meta}</p>
+  <p class="mt-1 font-serif text-[1.05rem] leading-snug text-ink">
+    {
+      href ? (
+        <a href={href} target="_blank" rel="noopener noreferrer" class="hover:text-accent-ink">
+          {p.title}
+          <Icon name="arrow-up-right" size={13} class="ml-0.5 inline align-baseline text-muted" />
+          <span class="sr-only"> (opens in a new tab)</span>
+        </a>
+      ) : (
+        p.title
+      )
+    }
+  </p>
+  <p class="mt-1 text-sm italic text-muted">{p.venue}</p>
+</li>

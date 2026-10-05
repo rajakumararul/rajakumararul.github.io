@@ -5,12 +5,13 @@ import QuantumField from '../QuantumField.astro';
 import PhotoPortrait from '../PhotoPortrait.astro';
 import VerifyBadge from '../VerifyBadge.astro';
 import SocialLinks from '../SocialLinks.astro';
+import DownloadCV from '../DownloadCV.astro';
 import { url } from '../../lib/url';
 import { getHomeStats } from '../../lib/stats';
 
 const profile = (await getEntry('profile', 'main'))!.data;
 const areas = (await getCollection('researchAreas'))
-  .filter((a) => a.data.tier === 'primary')
+  .filter((a) => a.data.tier === 'primary' && a.data.homepage)
   .sort((a, b) => a.data.order - b.data.order);
 
 // Stats are computed from the content records (see src/lib/stats.ts).
@@ -42,7 +43,7 @@ const stats = await getHomeStats();
         <span class="relative flex h-5 w-5 items-center justify-center rounded-full bg-accent-soft">
           <span class="h-1.5 w-1.5 rounded-full bg-accent" style="animation: pulse-dot 2.4s infinite"></span>
         </span>
-        {profile.leadershipRole}
+        {profile.department} · {profile.institutionShort}
       </p>
 
       <h1
@@ -54,11 +55,10 @@ const stats = await getHomeStats();
         {profile.name}
       </h1>
 
-      <p class="reveal mt-5 text-lg text-ink-soft sm:text-xl" style="--reveal-delay:160ms">
-        <span class="font-medium text-ink">{profile.designation}</span>
-        <span class="mx-2 text-line-strong">/</span>
-        {profile.department}
-        <span class="mt-1 block text-base text-muted">{profile.school}, {profile.institution}</span>
+      <p class="reveal mt-5 text-lg leading-snug text-ink-soft sm:text-xl" style="--reveal-delay:160ms">
+        <span class="block font-medium text-ink">{profile.designation}</span>
+        <span class="mt-1 block">{profile.leadershipRole}</span>
+        <span class="mt-1 block text-base text-muted">{profile.institution}</span>
       </p>
 
       <p
@@ -73,11 +73,11 @@ const stats = await getHomeStats();
           areas.map((a) => (
             <li>
               <a
-                href={url(`/#area-${a.id}`)}
+                href={url(`/research#${a.id}`)}
                 class="inline-flex items-center gap-2 rounded-full border border-line bg-surface/80 px-3.5 py-1.5 text-sm text-ink backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-accent hover:text-accent-ink"
               >
                 <Icon name={a.data.icon} size={16} class="text-accent" />
-                {a.data.title}
+                {a.data.chip ?? a.data.title}
               </a>
             </li>
           ))
@@ -89,6 +89,7 @@ const stats = await getHomeStats();
           Explore research <Icon name="arrow-right" size={16} />
         </a>
         <a href={url('/publications')} class="btn btn-ghost">Publications</a>
+        <DownloadCV />
         <SocialLinks placement="hero" variant="icons" class="ml-1" />
       </div>
     </div>

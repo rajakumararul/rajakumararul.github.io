@@ -1,5 +1,14 @@
-# Research areas. "primary" areas get large cards on the homepage.
-# "evidence" lines are short, verifiable pointers to projects, papers or talks.
+# Research themes — /research page, homepage cards (tier: primary + homepage: true)
+# and hero chips.
+#
+#   intro         technical introduction (research page)
+#   problems      key problems addressed
+#   technologies  relevant technologies / algorithms
+#   evidence      short, verifiable outcomes — projects, papers, talks. Only verified facts.
+#
+# Projects, publications, news and activities are linked to a theme through their
+# own `areas:` lists, so the research page always reflects the current records.
+
 - id: quantum-computing
   title: Quantum Computing
   short: Quantum
@@ -9,6 +18,16 @@
   summary: >-
     Applying quantum computation to real scientific problems and building the academic
     foundations of the discipline through curriculum and departmental leadership.
+  intro: >-
+    Quantum computers use superposition, entanglement and interference to approach problems
+    that are hard for classical machines. This theme spans applied quantum computation —
+    such as analysing the behaviour of chemical compounds with quantum methods — together
+    with the foundations, architectures and education that a young discipline needs.
+  problems:
+    - Identifying scientific problems where quantum computers and simulators can add value
+    - Mapping chemistry and materials questions onto quantum algorithms
+    - Making quantum concepts accessible to students through visual, hands-on tools
+  technologies: [Quantum circuits & gates, Qiskit, Quantum simulators, Cloud quantum computing platforms, Hybrid quantum–classical workflows]
   keywords: [Quantum applications, Foundations & architecture, Quantum education]
   evidence:
     - "Co-PI, MeitY Quantum Computing Applications Lab (with AWS) project, 2023–2025"
@@ -24,13 +43,25 @@
   summary: >-
     Lattice-based cryptographic schemes and quantum-safe key hierarchies designed to remain
     secure once large-scale quantum computers arrive.
+  intro: >-
+    A large-scale quantum computer running Shor's algorithm would break RSA and
+    elliptic-curve cryptography. Post-quantum cryptography replaces them with schemes based
+    on problems believed to resist quantum attack — most prominently lattice problems such
+    as Learning With Errors, the basis of CRYSTALS-Kyber.
+  problems:
+    - Designing lattice-based key generation and key-establishment mechanisms
+    - Assessing the implications of post-quantum algorithms such as CRYSTALS-Kyber for mobile networks
+    - Quantum-safe key hierarchies and security associations for LTE/5G
+  technologies: [Lattice-based cryptography (LWE / Module-LWE), CRYSTALS-Kyber (ML-KEM), Key encapsulation mechanisms, Quantum-safe key management]
   keywords: [Lattice-based cryptography, CRYSTALS-Kyber, Quantum-safe key management]
   evidence:
     - "PI, Mitacs Globalink Research Award (Canada), 2025"
     - "IEEE Transactions on Industrial Informatics: quantum-safe key hierarchy for LTE/SAE"
+    - "Accepted at ICSP 2025, NIT Rourkela: review of CRYSTALS-Kyber in LTE networks"
 
 - id: quantum-key-distribution
-  title: Quantum Key Distribution
+  title: Quantum Key Distribution & Secure Communication
+  chip: Quantum Key Distribution
   short: QKD
   tier: primary
   order: 3
@@ -38,12 +69,23 @@
   summary: >-
     Quantum key distribution and its interplay with post-quantum cryptography for securing
     next-generation communication networks.
+  intro: >-
+    Quantum key distribution lets two parties establish a shared key whose secrecy rests on
+    quantum physics: eavesdropping disturbs the transmitted quantum states and can be
+    detected. This theme examines QKD protocols and how QKD and post-quantum cryptography
+    can complement each other in practical secure-communication systems.
+  problems:
+    - Understanding QKD protocols and their practical limits — distance, key rate and trusted nodes
+    - Combining QKD with post-quantum cryptography for hybrid key establishment
+    - Teaching and demonstrating quantum communication concepts
+  technologies: [BB84 and related QKD protocols, Quantum channels & photonics, Hybrid QKD + PQC key establishment, Secure key management]
   keywords: [QKD protocols, QKD + PQC integration, Quantum communications]
   evidence:
     - "Invited session “QKD & Post-Quantum Cryptography”, FDP on Quantum Computing, Communications and Materials, Oct 2025"
 
 - id: network-security
-  title: Network Security
+  title: Network Security & Cryptography
+  chip: Network Security
   short: NetSec
   tier: primary
   order: 4
@@ -51,32 +93,111 @@
   summary: >-
     Authentication, key agreement and attack resilience for LTE, 5G and emerging
     telecommunication networks — from protocol design to side-channel analysis.
+  intro: >-
+    Mobile and wireless networks rely on authentication and key-agreement protocols that
+    must be secure and efficient at the same time. This work has designed authentication,
+    key-management and key-caching mechanisms for LTE/SAE and broadband wireless networks,
+    and detection schemes for attacks such as DDoS in software-defined networks.
+  problems:
+    - Efficient authentication and key agreement for mobile users and handovers
+    - Symmetric key management for next-generation networks
+    - Detecting denial-of-service attacks in software-defined networks
+  technologies: [Authentication & key agreement (AKA), Symmetric key hierarchies, Key caching for handover, SDN security, Metaheuristic clustering]
   keywords: [LTE/5G authentication, Side-channel attacks, DDoS detection in SDN]
   evidence:
-    - "PI, SERB-TARE project on side-channel attacks"
     - "IEEE Transactions on Industrial Informatics: console GRID authentication and key agreement for LTE/SAE"
+    - "Ph.D. thesis: Robust Symmetric Key Management Techniques for Next Generation Networks (Anna University, 2020)"
+
+- id: side-channel-security
+  title: Side-Channel Security
+  short: Side-channel
+  tier: primary
+  homepage: false
+  order: 5
+  icon: shield
+  summary: >-
+    Protecting cryptographic implementations against leakage through timing, power and other
+    physical side channels.
+  intro: >-
+    Side-channel attacks recover secrets from physical leakage — timing, power consumption or
+    electromagnetic emissions — instead of breaking the mathematics of an algorithm. As
+    cryptographic algorithms, including post-quantum ones, move into real devices, resistance
+    to such leakage matters as much as their theoretical security.
+  problems:
+    - Analysing how cryptographic implementations leak secret information
+    - Evaluating countermeasures for leakage-resistant implementations
+  technologies: [Timing analysis, Power analysis, Constant-time implementation, Masking countermeasures]
+  keywords: [Side-channel attacks, Implementation security]
+  evidence:
+    - "PI, SERB-TARE project on side-channel attacks, with IIITDM Kancheepuram"
+
+- id: mobile-network-security
+  title: Security in 5G/6G Networks
+  chip: 5G/6G Security
+  short: 5G/6G
+  tier: primary
+  homepage: false
+  order: 6
+  icon: layers
+  summary: >-
+    Security, privacy and quantum-safe keys for 5G and emerging 6G telecommunication networks.
+  intro: >-
+    5G and the emerging 6G generation bring device-to-device links, massive IoT and
+    cloud-native radio access — each widening the attack surface. This work covers
+    quantum-safe security associations for LTE/5G, secure device-to-device connection
+    establishment, interworking authentication and training on threats in emerging
+    telecommunication networks.
+  problems:
+    - Quantum-safe security associations for LTE/5G
+    - Secure device-to-device (D2D) connection establishment
+    - Interworking authentication between 3GPP and non-3GPP access
+    - Awareness of security and privacy threats in emerging 5G/6G networks
+  technologies: [5G / LTE authentication, Non-3GPP interworking, Cloud RAN, Post-quantum KEMs for mobile networks]
+  keywords: [5G security, 6G threats, D2D communication]
+  evidence:
+    - "Organised the VRITIKA training & skill internship on 5G/6G security and privacy threats, 2024"
+    - "Mentored the winning team at the VIMARSH 5G Hackathon, 2023"
 
 - id: blockchain-iot
   title: Blockchain & Secure IoT
   short: Blockchain
   tier: secondary
-  order: 5
+  order: 7
   icon: blocks
   summary: >-
     Blockchain-based trust and privacy for IoT and healthcare data dissemination.
+  intro: >-
+    Blockchain offers tamper-evident records and decentralised trust for connected devices.
+    This continuing theme applies it to privacy preservation in the Internet of Things and to
+    secure dissemination of healthcare data in the Internet of Medical Things.
+  problems:
+    - Privacy-preserving data sharing among IoT devices
+    - Secure, auditable dissemination of healthcare data
+  technologies: [Blockchain, Smart contracts, IoMT, Privacy preservation]
   keywords: [IoMT, Privacy preservation, Smart contracts]
   evidence:
     - "Personal and Ubiquitous Computing (2021): blockchain frameworks for IoMT healthcare"
 
 - id: ai-ml
-  title: AI & Machine Learning for Security
+  title: AI / Machine Learning for Security & Healthcare
+  chip: AI / ML
   short: AI / ML
   tier: secondary
-  order: 6
+  order: 8
   icon: spark
   summary: >-
-    Machine and deep learning for threat detection, secure IoT communication and
+    Machine and deep learning for threat detection, secure IoT communication, healthcare and
     resource optimisation.
+  intro: >-
+    Machine and deep learning support security and decision-making where rules alone fall
+    short. This continuing theme covers threat detection and secure IoT communication, as
+    well as healthcare applications such as disease prediction and public-health emergency
+    management.
+  problems:
+    - Learning-based threat detection and secure IoT communication
+    - Prediction and decision support in healthcare
+    - Resource optimisation in wireless networks
+  technologies: [Deep learning, Ensemble learning, Bio-inspired optimisation, CNNs]
   keywords: [Threat detection, Bio-inspired algorithms, 5G resource allocation]
   evidence:
     - "VIT RGEMS Seed Grant for AI & ML research, 2022–2024"

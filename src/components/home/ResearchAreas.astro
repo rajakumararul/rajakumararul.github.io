@@ -3,10 +3,12 @@ import { getCollection } from 'astro:content';
 import Icon from '../Icon.astro';
 import SectionHeading from '../SectionHeading.astro';
 import VerifyBadge from '../VerifyBadge.astro';
+import { url } from '../../lib/url';
 
 const areas = (await getCollection('researchAreas')).sort((a, b) => a.data.order - b.data.order);
-const primary = areas.filter((a) => a.data.tier === 'primary');
-const secondary = areas.filter((a) => a.data.tier === 'secondary');
+const primary = areas.filter((a) => a.data.tier === 'primary' && a.data.homepage);
+// Everything else (incl. primary themes kept off the homepage cards) is listed compactly.
+const secondary = areas.filter((a) => !(a.data.tier === 'primary' && a.data.homepage));
 ---
 
 <section class="relative py-20 sm:py-28" aria-labelledby="research-title">
@@ -26,7 +28,7 @@ const secondary = areas.filter((a) => a.data.tier === 'secondary');
           <article
             id={`area-${a.id}`}
             data-spotlight
-            class="card card-hover reveal group relative flex flex-col overflow-hidden p-7 sm:p-9"
+            class="card card-hover reveal group relative flex flex-col overflow-hidden p-7 focus-within:ring-2 focus-within:ring-accent sm:p-9"
             style={`--reveal-delay:${i * 90}ms`}
           >
             <div class="flex items-start justify-between">
@@ -35,7 +37,11 @@ const secondary = areas.filter((a) => a.data.tier === 'secondary');
               </span>
               <span class="font-mono text-xs text-muted">0{a.data.order}</span>
             </div>
-            <h3 class="mt-7 font-serif text-[1.7rem] font-medium leading-tight text-ink">{a.data.title}</h3>
+            <h3 class="mt-7 font-serif text-[1.7rem] font-medium leading-tight text-ink">
+              <a href={url(`/research#${a.id}`)} class="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none">
+                {a.data.title}
+              </a>
+            </h3>
             <p class="mt-3 leading-relaxed text-ink-soft">{a.data.summary}</p>
             <ul class="mt-5 flex flex-wrap gap-2">
               {a.data.keywords.map((k) => (
@@ -55,7 +61,7 @@ const secondary = areas.filter((a) => a.data.tier === 'secondary');
                 </ul>
               </div>
             )}
-            <VerifyBadge notes={a.data.verify} class="mt-4 self-start" />
+            <VerifyBadge notes={a.data.verify} class="relative z-10 mt-4 self-start" />
             <div
               class="pointer-events-none absolute -bottom-24 -right-24 h-56 w-56 rounded-full opacity-0 blur-2xl transition-opacity duration-700 group-hover:opacity-100"
               style="background: radial-gradient(closest-side, color-mix(in oklab, var(--accent-2) 22%, transparent), transparent)"
@@ -71,15 +77,21 @@ const secondary = areas.filter((a) => a.data.tier === 'secondary');
           {secondary.map((a, i) => (
             <article
               id={`area-${a.id}`}
-              class="reveal flex items-start gap-5 rounded-2xl border border-dashed border-line-strong p-6 transition-colors hover:border-accent/50"
+              class="reveal relative flex items-start gap-5 rounded-2xl border border-dashed border-line-strong p-6 transition-colors hover:border-accent/50 focus-within:ring-2 focus-within:ring-accent"
               style={`--reveal-delay:${i * 90}ms`}
             >
               <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-bg-soft text-ink-soft">
                 <Icon name={a.data.icon} size={22} />
               </span>
               <div>
-                <p class="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-muted">Also working on</p>
-                <h3 class="mt-1 font-serif text-xl font-medium text-ink">{a.data.title}</h3>
+                <p class="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-muted">
+                  {a.data.tier === 'primary' ? 'Research theme' : 'Continuing theme'}
+                </p>
+                <h3 class="mt-1 font-serif text-xl font-medium text-ink">
+                  <a href={url(`/research#${a.id}`)} class="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none">
+                    {a.data.title}
+                  </a>
+                </h3>
                 <p class="mt-1.5 text-sm leading-relaxed text-muted">{a.data.summary}</p>
               </div>
             </article>

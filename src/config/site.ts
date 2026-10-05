@@ -4,6 +4,14 @@ export const site = {
   description:
     'Associate Professor and Head of the Department of Quantum Computing, VIT Chennai — research in quantum computing, post-quantum cryptography, quantum key distribution and network security.',
   locale: 'en-IN',
+  /** Default social-preview image (site-relative). */
+  ogImage: '/images/rajakumar-arul.jpg',
+
+  /**
+   * CV download. Put the PDF at public/cv/Dr_Rajakumar_Arul_CV.pdf — the
+   * "Download CV" buttons appear automatically once the file exists.
+   */
+  cvPath: '/cv/Dr_Rajakumar_Arul_CV.pdf',
 
   /**
    * Show amber "To verify" markers (from `verify:` notes in the content files).

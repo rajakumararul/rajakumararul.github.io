@@ -10,7 +10,7 @@ currency: INR
 start: 2022-10
 end: 2025
 status: to-verify
-areas: [network-security]
+areas: [side-channel-security, network-security]
 collaborators: ["Prof. Sivaselvam B, IIITDM Kancheepuram"]
 featured: true
 order: 3

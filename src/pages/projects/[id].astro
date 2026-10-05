@@ -1,0 +1,158 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import PageLayout from '../../layouts/PageLayout.astro';
+import Icon from '../../components/Icon.astro';
+import VerifyBadge from '../../components/VerifyBadge.astro';
+import PubLink from '../../components/PubLink.astro';
+import { formatAmount, formatDate, formatRange } from '../../lib/format';
+import { getNews } from '../../lib/news';
+import { activityDate, getActivities } from '../../lib/activities';
+import { relatedPublications } from '../../lib/research';
+import { url } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const p = project.data;
+const { Content } = await render(project);
+const name = p.shortTitle ?? p.title;
+const amount = formatAmount(p.amount, p.currency);
+const statusLabel = { ongoing: 'Ongoing', completed: 'Completed', 'to-verify': null }[p.status];
+
+const areas = (await getCollection('researchAreas')).filter((a) => (p.areas as string[]).includes(a.id)).sort((a, b) => a.data.order - b.data.order);
+// The project's own first-listed theme drives the related publications.
+const primaryArea = areas.find((a) => a.id === p.areas[0]) ?? areas[0];
+const pubs = primaryArea ? (await relatedPublications(primaryArea.id)).slice(0, 4) : [];
+const pubTotal = primaryArea ? (await relatedPublications(primaryArea.id)).length : 0;
+const album = p.album ? await getEntry(p.album) : undefined;
+const news = await getNews((n) => n.data.project?.id === project.id);
+const activities = await getActivities((a) => a.data.project?.id === project.id);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ResearchProject',
+  name: p.title,
+  alternateName: p.shortTitle,
+  funder: { '@type': 'Organization', name: p.funder },
+  startDate: p.start,
+  endDate: p.end ?? undefined,
+  url: new URL(url(`/projects/${project.id}`), Astro.site).href,
+};
+---
+
+<PageLayout
+  title={name}
+  eyebrow={p.kind === 'training-programme' ? 'Training programme' : 'Funded research'}
+  intro={p.shortTitle && p.shortTitle !== p.title ? `“${p.title}”` : undefined}
+  description={`${name} — ${p.role}, funded by ${p.funder} (${formatRange(p.start, p.end)}).`}
+  jsonLd={jsonLd}
+>
+  <div class="grid gap-10 lg:grid-cols-12">
+    <div class="lg:col-span-7">
+      <nav aria-label="Breadcrumb" class="mb-6 text-sm">
+        <a href={url('/projects')} class="inline-flex items-center gap-1.5 text-muted hover:text-ink">
+          <Icon name="chevron-left" size={15} /> All projects
+        </a>
+      </nav>
+      <div class="space-y-4 text-[1.05rem] leading-relaxed text-ink-soft">
+        <Content />
+      </div>
+
+      {
+        areas.length > 0 && (
+          <section class="mt-10" aria-labelledby="themes-title">
+            <h2 id="themes-title" class="eyebrow mb-3">Research themes</h2>
+            <ul class="flex flex-wrap gap-2">
+              {areas.map((a) => (
+                <li>
+                  <a href={url(`/research#${a.id}`)} class="chip transition-colors hover:border-accent hover:text-accent">
+                    <Icon name={a.data.icon} size={13} /> {a.data.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      {
+        pubs.length > 0 && primaryArea && (
+          <section class="mt-12" aria-labelledby="pubs-title">
+            <h2 id="pubs-title" class="font-serif text-2xl text-ink">Publications in this research area</h2>
+            <ul class="mt-5 grid gap-3">
+              {pubs.map((pub) => (
+                <PubLink pub={pub} />
+              ))}
+            </ul>
+            {pubTotal > pubs.length && (
+              <a href={url(`/publications?area=${primaryArea.id}`)} class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent-ink hover:underline">
+                All {pubTotal} {primaryArea.data.title} publications <Icon name="arrow-right" size={14} />
+              </a>
+            )}
+          </section>
+        )
+      }
+    </div>
+
+    <aside class="grid content-start gap-5 lg:col-span-5">
+      <div class="card p-6 sm:p-7">
+        <dl class="grid gap-3 text-sm">
+          <div class="flex gap-3"><dt class="w-24 shrink-0 text-muted">Role</dt><dd class="text-ink">{p.role}</dd></div>
+          <div class="flex gap-3"><dt class="w-24 shrink-0 text-muted">Funder</dt><dd class="text-ink-soft">{p.funder}</dd></div>
+          <div class="flex gap-3"><dt class="w-24 shrink-0 text-muted">Period</dt><dd class="text-ink-soft">{formatRange(p.start, p.end)}</dd></div>
+          {amount && <div class="flex gap-3"><dt class="w-24 shrink-0 text-muted">Grant</dt><dd class="font-medium text-ink">{amount}</dd></div>}
+          {statusLabel && <div class="flex gap-3"><dt class="w-24 shrink-0 text-muted">Status</dt><dd class="text-ink-soft">{statusLabel}</dd></div>}
+          {
+            p.collaborators.length > 0 && (
+              <div class="flex gap-3">
+                <dt class="w-24 shrink-0 text-muted">With</dt>
+                <dd class="text-ink-soft">{p.collaborators.join('; ')}</dd>
+              </div>
+            )
+          }
+        </dl>
+        <VerifyBadge notes={p.verify} class="mt-4" />
+      </div>
+
+      {
+        album && (
+          <a href={url(`/gallery/${album.id}`)} class="card card-hover group block overflow-hidden">
+            {album.data.cover && (
+              <Image src={album.data.cover} alt={album.data.coverAlt ?? album.data.title} width={640} class="aspect-[16/9] w-full object-cover" />
+            )}
+            <span class="block p-5">
+              <span class="eyebrow">Academic Moments</span>
+              <span class="mt-1 block font-serif text-lg text-ink group-hover:text-accent-ink">{album.data.title}</span>
+            </span>
+          </a>
+        )
+      }
+
+      {
+        (news.length > 0 || activities.length > 0) && (
+          <div class="card p-6">
+            <p class="eyebrow mb-3">Related updates</p>
+            <ul class="grid gap-3 text-sm">
+              {news.map((n) => (
+                <li>
+                  <a href={url(`/news/${n.id}`)} class="font-medium text-ink hover:text-accent-ink">{n.data.title}</a>
+                  {n.data.date && <span class="block font-mono text-xs text-muted">{formatDate(n.data.date, 'long')}</span>}
+                </li>
+              ))}
+              {activities.map((a) => (
+                <li>
+                  <a href={url(`/activities#${a.id}`)} class="font-medium text-ink hover:text-accent-ink">{a.data.title}</a>
+                  {activityDate(a) && <span class="block font-mono text-xs text-muted">{activityDate(a)}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </aside>
+  </div>
+</PageLayout>

@@ -1,8 +1,109 @@
 ---
+import { Image } from 'astro:assets';
 import PageLayout from '../layouts/PageLayout.astro';
-import ComingSoon from '../components/ComingSoon.astro';
+import Icon from '../components/Icon.astro';
+import VerifyBadge from '../components/VerifyBadge.astro';
+import { formatDate } from '../lib/format';
+import { getNews, newsCategoryIcon, newsCategoryLabel, newsCover } from '../lib/news';
+import { url } from '../lib/url';
+
+const news = await getNews();
+const yearOf = (d?: string) => (d ? d.slice(0, 4) : 'Recent');
+const items = await Promise.all(news.map(async (n) => ({ n, cover: await newsCover(n), year: yearOf(n.data.date) })));
+const years = [...new Set(items.map((i) => i.year))];
+const categories = (Object.keys(newsCategoryLabel) as (keyof typeof newsCategoryLabel)[])
+  .map((id) => ({ id, label: newsCategoryLabel[id], count: news.filter((n) => n.data.category === id).length }))
+  .filter((c) => c.count > 0);
 ---
 
-<PageLayout title="News" eyebrow="News" intro="Appointments, talks, publications and project milestones.">
-  <ComingSoon plan={['Full news archive with categories', 'Individual news pages']} />
+<PageLayout
+  title="News"
+  eyebrow="News & updates"
+  intro="Appointments, awards, publications, projects, talks and department activities — the full archive."
+  description="News and updates from Dr. Rajakumar Arul: appointments, awards, publications, projects, certifications, invited talks and department activities."
+>
+  <div data-list-filter data-noun="update">
+    <div class="mb-10 grid gap-5 lg:grid-cols-[1fr_auto] lg:items-start">
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Filter by category">
+        <button type="button" data-filter="category" data-value="all" aria-pressed="true" class="filter-chip">
+          All <span class="opacity-60">{news.length}</span>
+        </button>
+        {
+          categories.map((c) => (
+            <button type="button" data-filter="category" data-value={c.id} aria-pressed="false" class="filter-chip">
+              {c.label} <span class="opacity-60">{c.count}</span>
+            </button>
+          ))
+        }
+      </div>
+      <label class="flex items-center gap-2 text-sm text-muted">
+        Year
+        <select data-filter="year" class="rounded-full border border-line bg-surface px-4 py-2 text-sm text-ink focus:border-accent">
+          <option value="all">All years</option>
+          {years.map((y) => <option value={y}>{y}</option>)}
+        </select>
+      </label>
+    </div>
+
+    <p class="sr-only" aria-live="polite" data-result-count></p>
+
+    {
+      years.map((year) => (
+        <section data-group class="mb-12 grid gap-6 lg:grid-cols-[8rem_1fr]" aria-labelledby={`news-${year}`}>
+          <h2 id={`news-${year}`} class="font-serif text-3xl text-ink lg:sticky lg:top-28 lg:self-start">
+            {year}
+          </h2>
+          <ol class="grid gap-4">
+            {items
+              .filter((i) => i.year === year)
+              .map(({ n, cover }) => (
+                <li data-item data-category={n.data.category} data-year={year}>
+                  <article class="card card-hover group relative grid overflow-hidden focus-within:ring-2 focus-within:ring-accent sm:grid-cols-[12rem_1fr]">
+                    {cover ? (
+                      <Image
+                        src={cover.src}
+                        alt={cover.alt}
+                        width={384}
+                        widths={[256, 384]}
+                        sizes="(min-width: 640px) 12rem, 100vw"
+                        class="h-44 w-full object-cover sm:h-full"
+                      />
+                    ) : (
+                      <span class="hidden place-items-center bg-gradient-to-br from-accent-soft via-surface to-accent-2-soft text-accent sm:grid" aria-hidden="true">
+                        <Icon name={newsCategoryIcon[n.data.category]} size={34} />
+                      </span>
+                    )}
+                    <div class="p-6">
+                      <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                        {n.data.date && (
+                          <time datetime={n.data.date} class="font-mono text-xs text-muted">
+                            {formatDate(n.data.date, 'long')}
+                          </time>
+                        )}
+                        <span class="inline-flex items-center gap-1 text-[0.7rem] font-medium uppercase tracking-[0.12em] text-accent">
+                          <Icon name={newsCategoryIcon[n.data.category]} size={13} />
+                          {newsCategoryLabel[n.data.category]}
+                        </span>
+                      </p>
+                      <h3 class="mt-2 font-serif text-xl leading-snug text-ink">
+                        <a href={url(`/news/${n.id}`)} class="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none group-hover:text-accent-ink">
+                          {n.data.title}
+                        </a>
+                      </h3>
+                      <p class="mt-2 text-sm leading-relaxed text-muted">{n.data.summary}</p>
+                      <VerifyBadge notes={n.data.verify} class="relative z-10 mt-3" />
+                    </div>
+                  </article>
+                </li>
+              ))}
+          </ol>
+        </section>
+      ))
+    }
+    <p data-empty hidden class="py-16 text-center text-muted">No updates match these filters.</p>
+  </div>
 </PageLayout>
+
+<script>
+  import '../scripts/list-filter';
+</script>

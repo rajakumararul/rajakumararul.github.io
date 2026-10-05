@@ -6,10 +6,11 @@ import PublicationExplorer, { type PubItem } from '../components/publications/Pu
 import { formatAuthors, formatDate, publicationTypeLabel } from '../lib/format';
 import { formatCitation, toBibtex } from '../lib/citations';
 import { site } from '../config/site';
+import { url } from '../lib/url';
 
 const all = await getCollection('publications');
 const areaEntries = (await getCollection('researchAreas')).sort((a, b) => a.data.order - b.data.order);
-const areaLabel = Object.fromEntries(areaEntries.map((a) => [a.id, a.data.title]));
+const areaChip = Object.fromEntries(areaEntries.map((a) => [a.id, a.data.chip ?? a.data.title]));
 
 const pubs: PubItem[] = all.map(({ data: p }) => ({
   id: p.id,
@@ -25,7 +26,7 @@ const pubs: PubItem[] = all.map(({ data: p }) => ({
   doi: p.doi,
   url: p.url,
   pdf: p.pdf,
-  areas: p.areas.map((id) => ({ id, label: areaLabel[id] ?? id })),
+  areas: p.areas.map((id) => ({ id, label: areaChip[id] ?? id })),
   keywords: p.keywords,
   featured: p.featured,
   // Internal notes are only sent to the browser when they are displayed (local preview).
@@ -45,6 +46,18 @@ const published = counted.filter((p) => p.data.status === 'published');
 const notYet = counted.filter((p) => p.data.status !== 'published');
 const incomplete = published.filter((p) => p.data.verify.length > 0);
 const byType = (t: string) => published.filter((p) => p.data.type === t).length;
+const thesisCount = all.filter((p) => p.data.type === 'thesis').length;
+const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
+const breakdown = [
+  byType('journal') && plural(byType('journal'), 'journal article'),
+  byType('conference') && plural(byType('conference'), 'conference paper'),
+  byType('book') + byType('chapter') && plural(byType('book') + byType('chapter'), 'book or chapter', 'books & chapters'),
+  byType('article') && plural(byType('article'), 'other article'),
+  byType('preprint') && plural(byType('preprint'), 'preprint'),
+]
+  .filter(Boolean)
+  .join(', ')
+  .replace(/, ([^,]*)$/, ' and $1');
 const localTotals = [
   { label: 'Published works', value: published.length },
   { label: 'Journal articles', value: byType('journal') },
@@ -60,18 +73,41 @@ const metricItems = [
   { label: 'i10-index', value: metrics.i10Index },
   { label: `Publications on ${metrics.source}`, value: metrics.publications },
 ].filter((m) => m.value !== null);
+
+// schema.org: one ScholarlyArticle per published / accepted work with a known year.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Publications of Dr. Rajakumar Arul',
+  itemListElement: all
+    .filter((p) => p.data.type !== 'thesis' && p.data.status === 'published' && p.data.year)
+    .map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': p.data.type === 'book' ? 'Book' : 'ScholarlyArticle',
+        name: p.data.title,
+        author: p.data.authors.map((a) => ({ '@type': 'Person', name: a })),
+        datePublished: String(p.data.year),
+        isPartOf: p.data.venue,
+        ...(p.data.doi ? { sameAs: `https://doi.org/${p.data.doi}` } : p.data.url ? { url: p.data.url } : {}),
+      },
+    })),
+};
 ---
 
 <PageLayout
   title="Publications"
   eyebrow="Research output"
   intro="Journal articles, conference papers, book chapters and books — searchable, filterable and ready to cite."
+  description="Publications of Dr. Rajakumar Arul on quantum computing, post-quantum cryptography, network security and 5G/6G security — searchable, filterable and ready to cite."
+  jsonLd={jsonLd}
 >
   <div class="mb-14 grid gap-5 lg:grid-cols-12">
-    <section class="card p-6 sm:p-8 lg:col-span-7" aria-labelledby="local-totals">
+    <section class:list={['card p-6 sm:p-8', metricItems.length > 0 ? 'lg:col-span-7' : 'lg:col-span-12']} aria-labelledby="local-totals">
       <div class="flex flex-wrap items-baseline justify-between gap-2">
         <h2 id="local-totals" class="font-serif text-xl text-ink">Publication record</h2>
-        <p class="font-mono text-[0.68rem] uppercase tracking-wider text-muted">Calculated from this site's records</p>
+        <p class="font-mono text-[0.68rem] uppercase tracking-wider text-muted">Calculated from the list below</p>
       </div>
       <dl class="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-4">
         {
@@ -83,53 +119,56 @@ const metricItems = [
           ))
         }
       </dl>
-      <p class="mt-6 border-t border-line pt-4 text-xs leading-relaxed text-muted">
-        Only records with a confirmed published status are counted.
-        {notYet.length > 0 && ` ${notYet.length} accepted / in-progress item${notYet.length === 1 ? ' is' : 's are'} listed but not counted.`}
+      <div class="mt-6 flex flex-col gap-4 border-t border-line pt-4 text-xs leading-relaxed text-muted sm:flex-row sm:items-end sm:justify-between">
+        <p class="max-w-3xl">
+          <strong class="font-medium text-ink-soft">{published.length} published works</strong> are counted:{' '}
+          {breakdown}.
+          {notYet.length > 0 && ` ${notYet.length} accepted paper${notYet.length === 1 ? ' is' : 's are'} listed below but not yet counted.`}
+          {thesisCount > 0 && ' The Ph.D. thesis is listed separately and not counted.'}
+          {
+            site.showVerificationNotes && incomplete.length > 0 && (
+              <span class="text-warn"> {incomplete.length} counted records still have incomplete bibliographic details.</span>
+            )
+          }
+        </p>
         {
-          site.showVerificationNotes && incomplete.length > 0 && (
-            <span class="text-warn"> {incomplete.length} counted records still have incomplete bibliographic details.</span>
+          metricItems.length === 0 && metrics.sourceUrl && (
+            <a href={metrics.sourceUrl} target="_blank" rel="noopener noreferrer" class="btn btn-ghost shrink-0 py-2! text-sm!">
+              <Icon name="scholar" size={16} /> View {metrics.source} profile
+              <span class="sr-only">(opens in a new tab)</span>
+            </a>
           )
         }
-      </p>
+      </div>
     </section>
 
-    <section class="card p-6 sm:p-8 lg:col-span-5" aria-labelledby="citation-metrics">
-      <div class="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 id="citation-metrics" class="font-serif text-xl text-ink">Citation metrics</h2>
-        <p class="font-mono text-[0.68rem] uppercase tracking-wider text-muted">Manually verified</p>
-      </div>
-      {
-        metricItems.length > 0 ? (
-          <>
-            <dl class="mt-6 grid grid-cols-2 gap-6">
-              {metricItems.map((m) => (
-                <div>
-                  <dd class="font-serif text-4xl font-medium text-ink">{m.value}</dd>
-                  <dt class="mt-1 text-xs text-muted">{m.label}</dt>
-                </div>
-              ))}
-            </dl>
-            <p class="mt-6 border-t border-line pt-4 text-xs text-muted">
-              Source: {metrics.source}
-              {metrics.lastVerified && ` · verified ${formatDate(metrics.lastVerified, 'long')}`}
-            </p>
-          </>
-        ) : (
-          <p class="mt-6 text-sm leading-relaxed text-muted">
-            Citation counts, h-index and i10-index will appear here once verified figures are recorded.
-          </p>
-        )
-      }
-      {
-        metrics.sourceUrl && (
-          <a href={metrics.sourceUrl} target="_blank" rel="noopener noreferrer" class="btn btn-ghost mt-5 py-2! text-sm!">
-            <Icon name="scholar" size={16} /> View {metrics.source} profile
-            <span class="sr-only">(opens in a new tab)</span>
-          </a>
-        )
-      }
-    </section>
+    {
+      metricItems.length > 0 && (
+        <section class="card p-6 sm:p-8 lg:col-span-5" aria-labelledby="citation-metrics">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 id="citation-metrics" class="font-serif text-xl text-ink">Citation metrics</h2>
+            <p class="font-mono text-[0.68rem] uppercase tracking-wider text-muted">{metrics.source}</p>
+          </div>
+          <dl class="mt-6 grid grid-cols-2 gap-6">
+            {metricItems.map((m) => (
+              <div>
+                <dd class="font-serif text-4xl font-medium text-ink">{m.value}</dd>
+                <dt class="mt-1 text-xs text-muted">{m.label}</dt>
+              </div>
+            ))}
+          </dl>
+          {metrics.lastVerified && (
+            <p class="mt-6 border-t border-line pt-4 text-xs text-muted">As of {formatDate(metrics.lastVerified, 'long')}</p>
+          )}
+          {metrics.sourceUrl && (
+            <a href={metrics.sourceUrl} target="_blank" rel="noopener noreferrer" class="btn btn-ghost mt-5 py-2! text-sm!">
+              <Icon name="scholar" size={16} /> View {metrics.source} profile
+              <span class="sr-only">(opens in a new tab)</span>
+            </a>
+          )}
+        </section>
+      )
+    }
   </div>
 
   <PublicationExplorer
@@ -138,5 +177,6 @@ const metricItems = [
     types={types}
     areas={areaEntries.map((a) => ({ id: a.id, label: a.data.title }))}
     showVerify={site.showVerificationNotes}
+    researchHref={url('/research')}
   />
 </PageLayout>

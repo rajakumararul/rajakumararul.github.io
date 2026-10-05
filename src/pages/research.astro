@@ -1,8 +1,237 @@
 ---
+import { getCollection } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
-import ComingSoon from '../components/ComingSoon.astro';
+import Icon from '../components/Icon.astro';
+import PubLink from '../components/PubLink.astro';
+import VerifyBadge from '../components/VerifyBadge.astro';
+import { relatedPublications } from '../lib/research';
+import { activityDate, getActivities } from '../lib/activities';
+import { formatRange } from '../lib/format';
+import { url } from '../lib/url';
+
+const areas = (await getCollection('researchAreas')).sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const innovations = await getCollection('innovations');
+const activities = await getActivities();
+const clusters = await getCollection('leadership', (l) => l.data.group === 'cluster');
+
+const themes = await Promise.all(
+  areas.map(async (area) => {
+    const pubs = await relatedPublications(area.id);
+    const has = (list: string[]) => list.includes(area.id);
+    return {
+      area,
+      pubs,
+      projects: projects.filter((p) => has(p.data.areas)),
+      innovations: innovations.filter((i) => has(i.data.areas)),
+      activities: activities.filter((a) => has(a.data.areas)).slice(0, 3),
+      clusters: clusters.filter((c) => has(c.data.areas)),
+    };
+  }),
+);
+const primary = themes.filter((t) => t.area.data.tier === 'primary');
+const continuing = themes.filter((t) => t.area.data.tier === 'secondary');
+const pad = (n: number) => String(n).padStart(2, '0');
+const count = (n: number, one: string) => `${n} ${one}${n === 1 ? '' : 's'}`;
 ---
 
-<PageLayout title="Research" eyebrow="Research" intro="Quantum computing, post-quantum cryptography, quantum key distribution and network security.">
-  <ComingSoon plan={['Research themes in depth', 'Interactive, filterable project cards with full details', 'Collaborations — national, international and industry']} />
+<PageLayout
+  title="Research"
+  heading="Research at the Intersection of Quantum Computing, Cryptography and Secure Communications"
+  eyebrow="Research"
+  intro="Six connected themes — from building with quantum computers to defending networks against them — supported by funded projects, publications and teaching."
+  description="Research of Dr. Rajakumar Arul: quantum computing, post-quantum cryptography, quantum key distribution, network security, side-channel security and 5G/6G security."
+>
+  <!-- Theme explorer -->
+  <section aria-labelledby="themes-title">
+    <h2 id="themes-title" class="eyebrow mb-6">Research themes</h2>
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        primary.map(({ area, pubs, projects }, i) => (
+          <li>
+            <a
+              href={`#${area.id}`}
+              class="card card-hover group flex h-full flex-col p-6"
+            >
+              <span class="flex items-start justify-between">
+                <span class="grid h-11 w-11 place-items-center rounded-xl bg-accent-soft text-accent">
+                  <Icon name={area.data.icon} size={22} />
+                </span>
+                <span class="font-mono text-xs text-muted">{pad(i + 1)}</span>
+              </span>
+              <span class="mt-5 block font-serif text-xl leading-snug text-ink group-hover:text-accent-ink">{area.data.title}</span>
+              <span class="mt-2 block text-sm leading-relaxed text-muted">{area.data.summary}</span>
+              <span class="mt-auto flex flex-wrap gap-x-4 gap-y-1 pt-5 font-mono text-[0.68rem] uppercase tracking-wider text-muted">
+                {pubs.length > 0 && <span>{count(pubs.length, 'publication')}</span>}
+                {projects.length > 0 && <span>{count(projects.length, 'project')}</span>}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <ul class="mt-4 grid gap-4 sm:grid-cols-2">
+      {
+        continuing.map(({ area, pubs }) => (
+          <li>
+            <a
+              href={`#${area.id}`}
+              class="flex h-full items-start gap-4 rounded-2xl border border-dashed border-line-strong p-5 transition-colors hover:border-accent/50"
+            >
+              <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-bg-soft text-ink-soft">
+                <Icon name={area.data.icon} size={20} />
+              </span>
+              <span>
+                <span class="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-muted">Continuing theme</span>
+                <span class="mt-1 block font-serif text-lg text-ink">{area.data.title}</span>
+                {pubs.length > 0 && <span class="mt-1 block text-xs text-muted">{count(pubs.length, 'publication')}</span>}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Theme details -->
+  {
+    themes.map(({ area, pubs, projects, innovations, activities, clusters }, i) => {
+      const a = area.data;
+      return (
+        <section id={area.id} class="scroll-mt-28 border-t border-line pt-14 mt-16 sm:mt-20" aria-labelledby={`${area.id}-title`}>
+          <div class="grid gap-10 lg:grid-cols-12">
+            <div class="lg:col-span-7">
+              <p class="eyebrow flex items-center gap-3">
+                <Icon name={a.icon} size={16} />
+                {a.tier === 'primary' ? `Theme ${pad(i + 1)}` : 'Continuing theme'}
+              </p>
+              <h2 id={`${area.id}-title`} class="mt-3 font-serif text-3xl font-medium tracking-tight text-ink sm:text-4xl">
+                {a.title}
+              </h2>
+              <p class="mt-5 text-[1.05rem] leading-relaxed text-ink-soft">{a.intro ?? a.summary}</p>
+
+              {a.problems.length > 0 && (
+                <div class="mt-8">
+                  <h3 class="text-sm font-medium text-ink">Key problems</h3>
+                  <ul class="mt-3 grid gap-2.5">
+                    {a.problems.map((p) => (
+                      <li class="flex gap-3 text-[0.95rem] leading-relaxed text-ink-soft">
+                        <span class="mt-[0.6rem] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                        {p}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {a.technologies.length > 0 && (
+                <div class="mt-8">
+                  <h3 class="text-sm font-medium text-ink">Technologies & algorithms</h3>
+                  <ul class="mt-3 flex flex-wrap gap-2">
+                    {a.technologies.map((t) => (
+                      <li class="chip">{t}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {pubs.length > 0 && (
+                <div class="mt-10">
+                  <div class="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 class="text-sm font-medium text-ink">Related publications</h3>
+                    <a href={url(`/publications?area=${area.id}`)} class="inline-flex items-center gap-1.5 text-sm font-medium text-accent-ink hover:underline">
+                      All {pubs.length} in this theme <Icon name="arrow-right" size={14} />
+                    </a>
+                  </div>
+                  <ul class="mt-3 grid gap-3">
+                    {pubs.slice(0, 3).map((pub) => (
+                      <PubLink pub={pub} />
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            <aside class="grid content-start gap-5 lg:col-span-5">
+              {a.evidence.length > 0 && (
+                <div class="card p-6">
+                  <h3 class="eyebrow mb-3">Selected outcomes</h3>
+                  <ul class="grid gap-2.5">
+                    {a.evidence.map((e) => (
+                      <li class="flex gap-2.5 text-sm leading-snug text-ink-soft">
+                        <span class="mt-[0.45rem] h-1 w-1 shrink-0 rounded-full bg-accent-2" />
+                        {e}
+                      </li>
+                    ))}
+                  </ul>
+                  <VerifyBadge notes={a.verify} class="mt-3" />
+                </div>
+              )}
+
+              {projects.length > 0 && (
+                <div class="card p-6">
+                  <h3 class="eyebrow mb-3">Funded projects</h3>
+                  <ul class="grid gap-3">
+                    {projects.map((p) => (
+                      <li>
+                        <a href={url(`/projects/${p.id}`)} class="group block">
+                          <span class="font-medium text-ink group-hover:text-accent-ink">{p.data.shortTitle ?? p.data.title}</span>
+                          <span class="block text-xs text-muted">
+                            {p.data.role} · {p.data.funderShort ?? p.data.funder} · {formatRange(p.data.start, p.data.end)}
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {innovations.length > 0 && (
+                <div class="card p-6">
+                  <h3 class="eyebrow mb-3">Innovation</h3>
+                  {innovations.map((inn) => (
+                    <a href={url(`/projects#${inn.id}`)} class="group block">
+                      <span class="font-medium text-ink group-hover:text-accent-ink">{inn.data.title}</span>
+                      <span class="block text-sm text-muted">{inn.data.tagline}</span>
+                    </a>
+                  ))}
+                </div>
+              )}
+
+              {(activities.length > 0 || clusters.length > 0 || area.id === 'quantum-computing') && (
+                <div class="card p-6">
+                  <h3 class="eyebrow mb-3">Talks, events & teaching</h3>
+                  <ul class="grid gap-3 text-sm">
+                    {activities.map((act) => (
+                      <li>
+                        <a href={url(`/activities#${act.id}`)} class="font-medium text-ink hover:text-accent-ink">{act.data.title}</a>
+                        {activityDate(act) && <span class="block font-mono text-xs text-muted">{activityDate(act)}</span>}
+                      </li>
+                    ))}
+                    {clusters.map((c) => (
+                      <li>
+                        <a href={url(`/leadership#${c.id}`)} class="font-medium text-ink hover:text-accent-ink">
+                          Research cluster: {c.data.title}
+                        </a>
+                      </li>
+                    ))}
+                    {area.id === 'quantum-computing' && (
+                      <>
+                        <li>
+                          <a href={url('/teaching#quantum-education')} class="font-medium text-ink hover:text-accent-ink">Quantum computing education</a>
+                        </li>
+                        <li>
+                          <a href={url('/leadership#labs')} class="font-medium text-ink hover:text-accent-ink">Quantum laboratory development</a>
+                        </li>
+                      </>
+                    )}
+                  </ul>
+                </div>
+              )}
+            </aside>
+          </div>
+        </section>
+      );
+    })
+  }
 </PageLayout>

@@ -5,9 +5,9 @@
  * The schemas below validate those files at build time, so a typo or missing
  * field fails the build with a clear message instead of silently breaking a page.
  *
- * Any entry may carry `verify: [...]` — notes about details that still need
- * confirmation. These are rendered as amber "To verify" markers on the site
- * (toggle with `showVerificationNotes` in src/config/site.ts).
+ * Any entry may carry `verify: [...]` — private notes about details that still
+ * need confirmation. They appear as amber "To verify" markers only in the local
+ * preview (`npm run dev`), never on the live site (see src/config/site.ts).
  */
 import { defineCollection, reference } from 'astro:content';
 import { file, glob } from 'astro/loaders';
@@ -33,6 +33,8 @@ const areaId = z.enum([
   'network-security',
   'blockchain-iot',
   'ai-ml',
+  'side-channel-security',
+  'mobile-network-security',
 ]);
 
 const profile = defineCollection({
@@ -64,10 +66,19 @@ const researchAreas = defineCollection({
     title: z.string(),
     short: z.string(),
     tier: z.enum(['primary', 'secondary']),
+    /** false → listed on /research only, not in the homepage cards and hero chips. */
+    homepage: z.boolean().default(true),
+    /** Shorter label for the homepage hero chips (defaults to title). */
+    chip: z.string().optional(),
     order: z.number(),
     icon: z.string(),
     summary: z.string(),
+    /** Longer technical introduction for the /research page. */
+    intro: z.string().optional(),
+    problems: z.array(z.string()).default([]),
+    technologies: z.array(z.string()).default([]),
     keywords: z.array(z.string()),
+    /** Verified outcomes / pointers (projects, papers, talks). */
     evidence: z.array(z.string()).default([]),
     verify,
   }),
@@ -90,6 +101,8 @@ const projects = defineCollection({
     status: z.enum(['ongoing', 'completed', 'to-verify']),
     areas: z.array(areaId),
     collaborators: z.array(z.string()).default([]),
+    /** Related Academic Moments album. */
+    album: reference('gallery').optional(),
     featured: z.boolean().default(false),
     order: z.number().default(100),
     verify,
@@ -155,37 +168,117 @@ const publications = defineCollection({
   }),
 });
 
+/** News categories — labels and icons live in src/lib/news.ts. */
+export const newsCategories = [
+  'appointment',
+  'award',
+  'publication',
+  'project',
+  'certification',
+  'workshop',
+  'talk',
+  'department',
+  'collaboration',
+  'achievement',
+  'event',
+  'mentoring',
+] as const;
+
+/**
+ * News — one Markdown file per item in src/content/news/. Every item gets its
+ * own page (/news/<file-name>); text below the front matter becomes the story.
+ */
 const news = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/news' }),
-  schema: z.object({
-    title: z.string(),
-    /** Leave out when the date is not yet confirmed — the item is then shown as "Date to be confirmed". */
-    date: partialDate.optional(),
-    category: z.enum(['appointment', 'talk', 'publication', 'project', 'award', 'certification', 'event', 'mentoring']),
-    summary: z.string(),
-    link: z.url().optional(),
-    achievement: reference('achievements').optional(),
-    album: reference('gallery').optional(),
-    areas: z.array(areaId).default([]),
-    verify,
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      /** Leave out when the date is not confirmed — no date is then shown. */
+      date: partialDate.optional(),
+      category: z.enum(newsCategories),
+      summary: z.string(),
+      /** Optional cover image (else the related album's cover is used). */
+      cover: image().optional(),
+      coverAlt: z.string().optional(),
+      link: z.url().optional(),
+      achievement: reference('achievements').optional(),
+      album: reference('gallery').optional(),
+      project: reference('projects').optional(),
+      areas: z.array(areaId).default([]),
+      verify,
+    }),
+});
+
+/** Activity categories — labels live in src/lib/activities.ts. */
+export const activityCategories = [
+  'talk',
+  'fdp',
+  'workshop',
+  'conference',
+  'editorial',
+  'session-chair',
+  'mentoring',
+  'hackathon',
+  'service',
+  'industry',
+  'outreach',
+] as const;
+
+/** Professional activities — src/content/activities.yaml. */
+const activities = defineCollection({
+  loader: file('src/content/activities.yaml'),
+  schema: ({ image }) =>
+    z.object({
+      id: z.string(),
+      title: z.string(),
+      category: z.enum(activityCategories),
+      /** Your role, e.g. "Invited speaker", "Mentor". Leave out if not confirmed. */
+      role: z.string().optional(),
+      date: partialDate.optional(),
+      endDate: partialDate.nullable().optional(),
+      venue: z.string().optional(),
+      description: z.string().optional(),
+      photo: image().optional(),
+      photoAlt: z.string().optional(),
+      link: z.url().optional(),
+      album: reference('gallery').optional(),
+      news: reference('news').optional(),
+      project: reference('projects').optional(),
+      areas: z.array(areaId).default([]),
+      order: z.number().default(100),
+      verify,
+    }),
 });
 
 const leadership = defineCollection({
   loader: file('src/content/leadership.yaml'),
   schema: z.object({
     id: z.string(),
-    /** current-role: the headline role · portfolio: departmental work · responsibility: other service */
-    group: z.enum(['current-role', 'portfolio', 'responsibility']),
+    /**
+     * current-role: the headline role · portfolio: departmental work (homepage)
+     * development: academic development · cluster: research cluster · lab: laboratory
+     * engagement: collaborations & partnerships · responsibility: other service
+     */
+    group: z.enum(['current-role', 'portfolio', 'development', 'cluster', 'lab', 'engagement', 'responsibility']),
     title: z.string(),
     organisation: z.string().optional(),
     start: partialDate.optional(),
     end: partialDate.nullable().optional(),
     description: z.string().optional(),
-    /** established = ongoing, in place · in-development = initiative being set up */
-    status: z.enum(['established', 'in-development']).optional(),
+    /** established = in place · in-development = being set up · proposed = planned, not started */
+    status: z.enum(['established', 'in-development', 'proposed']).optional(),
     /** Named sub-areas, e.g. research clusters — rendered as chips. */
     clusters: z.array(z.string()).default([]),
+    /** Research clusters: technical themes, typical activities and orientation. */
+    themes: z.array(z.string()).default([]),
+    outputs: z.array(z.string()).default([]),
+    orientation: z.string().optional(),
+    /** Engagement: kind of partner, e.g. "Research collaboration". */
+    kind: z.string().optional(),
+    album: reference('gallery').optional(),
+    news: reference('news').optional(),
+    project: reference('projects').optional(),
+    areas: z.array(areaId).default([]),
     icon: z.string().optional(),
     order: z.number().default(100),
     verify,
@@ -321,6 +414,31 @@ const gallery = defineCollection({
     }),
 });
 
+/**
+ * Teaching portfolio — src/content/teaching.yaml.
+ *   course    → shown under "Current / recent teaching" only when show: true
+ *   resource  → shown only when it has a public url
+ *   project   → student project themes (no student names)
+ */
+const teaching = defineCollection({
+  loader: file('src/content/teaching.yaml'),
+  schema: z.object({
+    id: z.string(),
+    kind: z.enum(['course', 'resource', 'project']),
+    title: z.string(),
+    description: z.string().optional(),
+    /** Courses: programme level, e.g. "B.Tech" / "M.Tech". */
+    level: z.string().optional(),
+    /** Resources: lab-manual | repository | tool | course | video */
+    resourceType: z.enum(['lab-manual', 'repository', 'tool', 'course', 'video']).optional(),
+    url: httpsOrEmpty.default(''),
+    show: z.boolean().default(true),
+    areas: z.array(areaId).default([]),
+    order: z.number().default(100),
+    verify,
+  }),
+});
+
 /** Every public profile / contact link, edited in one place: src/content/social.yaml */
 const social = defineCollection({
   loader: file('src/content/social.yaml'),
@@ -366,6 +484,8 @@ export const collections = {
   innovations,
   publications,
   news,
+  activities,
+  teaching,
   leadership,
   experience,
   education,

@@ -1,5 +1,5 @@
 ---
-import { getEntries, getEntry } from 'astro:content';
+import { getCollection, getEntries, getEntry } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
@@ -41,7 +41,12 @@ const lightboxPhotos = await Promise.all(
   }),
 );
 
-const related = await getEntries(a.relatedNews);
+// News listed in the album, plus news / projects / activities that point to it.
+const listed = await getEntries(a.relatedNews);
+const pointing = await getCollection('news', (n) => n.data.album?.id === album.id);
+const related = [...listed, ...pointing.filter((n) => !listed.some((l) => l.id === n.id))];
+const projects = await getCollection('projects', (p) => p.data.album?.id === album.id);
+const activities = await getCollection('activities', (x) => x.data.album?.id === album.id);
 const achievement = a.relatedAchievement ? await getEntry(a.relatedAchievement) : undefined;
 ---
 
@@ -127,13 +132,11 @@ const achievement = a.relatedAchievement ? await getEntry(a.relatedAchievement) 
               </li>
             ))}
           </ul>
-        ) : (
-          <p class="card p-10 text-center text-muted">Photographs for this event will be added soon.</p>
-        )
+        ) : null
       }
 
       {
-        (related.length > 0 || achievement || a.externalLink) && (
+        (related.length > 0 || achievement || projects.length > 0 || activities.length > 0 || a.externalLink) && (
           <aside class="mt-14 grid gap-4 md:grid-cols-2" aria-label="Related">
             {achievement && (
               <div class="card p-6">
@@ -143,11 +146,25 @@ const achievement = a.relatedAchievement ? await getEntry(a.relatedAchievement) 
               </div>
             )}
             {related.map((n) => (
-              <div class="card p-6">
+              <a href={url(`/news/${n.id}`)} class="card card-hover group block p-6">
                 <p class="eyebrow mb-2">Related update</p>
-                <p class="font-serif text-lg text-ink">{n.data.title}</p>
+                <p class="font-serif text-lg text-ink group-hover:text-accent-ink">{n.data.title}</p>
                 {n.data.date && <p class="mt-1 font-mono text-xs text-muted">{formatDate(n.data.date, 'long')}</p>}
-              </div>
+              </a>
+            ))}
+            {projects.map((p) => (
+              <a href={url(`/projects/${p.id}`)} class="card card-hover group block p-6">
+                <p class="eyebrow mb-2">Related project</p>
+                <p class="font-serif text-lg text-ink group-hover:text-accent-ink">{p.data.shortTitle ?? p.data.title}</p>
+                <p class="mt-1 text-sm text-muted">{p.data.funder}</p>
+              </a>
+            ))}
+            {activities.map((x) => (
+              <a href={url(`/activities#${x.id}`)} class="card card-hover group block p-6">
+                <p class="eyebrow mb-2">Activity</p>
+                <p class="font-serif text-lg text-ink group-hover:text-accent-ink">{x.data.title}</p>
+                {x.data.role && <p class="mt-1 text-sm text-muted">{x.data.role}</p>}
+              </a>
             ))}
             {a.externalLink && (
               <a href={a.externalLink} target="_blank" rel="noopener noreferrer" class="card card-hover flex items-center justify-between p-6">

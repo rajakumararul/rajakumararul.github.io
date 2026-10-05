@@ -4,14 +4,10 @@ import SectionHeading from '../SectionHeading.astro';
 import NewsItem from '../NewsItem.astro';
 import Icon from '../Icon.astro';
 import VerifyBadge from '../VerifyBadge.astro';
-import { dateKey } from '../../lib/format';
+import { getNews } from '../../lib/news';
 import { url } from '../../lib/url';
 
-// Undated items are recent additions awaiting a confirmed date, so they lead the list.
-const newsKey = (d?: string) => (d ? dateKey(d) : '9999');
-const news = (await getCollection('news'))
-  .sort((a, b) => newsKey(b.data.date).localeCompare(newsKey(a.data.date)))
-  .slice(0, 6);
+const news = (await getNews()).slice(0, 6);
 const awards = (await getCollection('achievements', (a) => a.data.featured && a.data.kind !== 'certification'))
   .sort((a, b) => a.data.order - b.data.order)
   .slice(0, 5);

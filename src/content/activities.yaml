@@ -1,0 +1,144 @@
+# Professional activities — /activities page, and the "Faculty development & events"
+# section of /leadership.
+#
+# category: talk | fdp | workshop | conference | editorial | session-chair | mentoring
+#           | hackathon | service | industry | outreach
+# role:     your role — leave out when it is not confirmed
+# date / endDate: 2025, 2025-07 or 2025-07-14; endDate: null means "Present"
+# album / news / project: link to a gallery album, news file (without .md) or project file
+# photo:    optional image path relative to this file
+#
+# Categories without any entries are not shown as filters.
+
+- id: fdp-quantum-vit-2026
+  title: Faculty Development Programme on Quantum Computing
+  category: fdp
+  date: 2026-09-29
+  endDate: 2026-10-01
+  venue: VIT Chennai
+  description: Three days of technical sessions and hands-on laboratory work on quantum computing for faculty members.
+  album: fdp-quantum-computing-vit-chennai-2026
+  news: 2026-09-quantum-fdp
+  areas: [quantum-computing]
+  verify: ["Official title and your role (organiser / resource person) to be confirmed"]
+
+- id: qiskit-gss-2026
+  title: IBM Qiskit Global Summer School 2026
+  category: workshop
+  role: Participant — Quantum Excellence (Advanced) credential
+  date: 2026-08-21
+  venue: IBM Quantum (online)
+  description: International quantum computing summer school; completed with the Quantum Excellence credential.
+  link: "https://www.credly.com/go/KpN8Fe4L"
+  album: qiskit-global-summer-school-2026
+  news: qiskit-global-summer-school-2026
+  areas: [quantum-computing]
+
+- id: icsp-2025-kyber
+  title: "4th International Conference on Security & Privacy (ICSP 2025)"
+  category: conference
+  role: Co-author
+  date: 2025-12-05
+  venue: NIT Rourkela
+  description: "Paper “Review on the Implications of CRYSTALS-Kyber in LTE Networks” accepted for presentation."
+  link: "https://icsp.co.in/2025/cfp.html#accepted"
+  news: 2025-12-icsp-kyber
+  areas: [post-quantum-cryptography, mobile-network-security]
+
+- id: latex-keynote-2025
+  title: Keynote — 58th National Library Week
+  category: talk
+  role: Keynote speaker
+  date: 2025-11-18
+  venue: VIT Chennai
+  description: "“Hands-on Training — Mastering LaTeX: A Guide to Professional Research Document Preparation” for Ph.D. scholars."
+  album: latex-keynote-national-library-week-2025
+  news: 2025-11-latex-keynote
+  areas: []
+
+- id: qkd-pqc-fdp-2025
+  title: "Invited session — QKD & Post-Quantum Cryptography"
+  category: talk
+  role: Session speaker
+  date: 2025-10-08
+  description: Session at the one-week FDP on Quantum Computing, Quantum Communications and Quantum Materials (6–10 October 2025).
+  album: fdp-qkd-pqc-session-2025
+  news: 2025-10-qkd-pqc-fdp
+  areas: [quantum-key-distribution, post-quantum-cryptography]
+  verify: ["Host institution of the FDP not stated"]
+
+- id: atal-fdp-2025
+  title: "ATAL FDP — AI and Quantum Computing: Glimpsing Near the Future"
+  category: talk
+  role: Guest speaker
+  date: 2025-01-20
+  endDate: 2025-01-25
+  venue: Sri Sairam Engineering College, Chennai (online)
+  description: Invited talk at the ATAL online Faculty Development Programme.
+  news: 2025-01-atal-fdp
+  areas: [quantum-computing]
+
+- id: vritika-2024
+  title: "VRITIKA training & skill internship — Security and Privacy Threats in 5G/6G Networks"
+  category: outreach
+  role: Event organiser
+  date: 2024-06-10
+  endDate: 2024-08-10
+  venue: Accelerate Vigyan scheme
+  description: Training and skill internship for students on security and privacy threat exploration in emerging telecommunication networks.
+  project: vritika-5g6g-security
+  areas: [mobile-network-security]
+
+- id: samsung-prism-2024
+  title: Samsung PRISM worklet — “BC|Block chain powered on device AI Ecosystem”
+  category: industry
+  role: Faculty mentor
+  date: 2024-07
+  endDate: 2025-06
+  venue: Samsung PRISM programme
+  description: Mentored a student team on an industry-defined worklet combining blockchain and on-device AI.
+  album: samsung-prism-worklet
+  areas: [blockchain-iot, ai-ml]
+
+- id: vimarsh-5g-2023
+  title: VIMARSH 5G Hackathon
+  category: hackathon
+  role: Mentor of the winning team
+  date: 2023
+  venue: BPR&D with DoT and the Ministry of Home Affairs
+  description: "Mentored the winning team for the problem statement “App for Emergency Response Vehicle”."
+  album: vimarsh-5g-hackathon
+  areas: [mobile-network-security]
+
+- id: ieee-future-directions
+  title: "Editorial Board — IEEE Future Directions Newsletter: Technology, Policy and Ethics"
+  category: editorial
+  role: Editorial board member
+  date: 2023-04
+  endDate: null
+  venue: IEEE
+
+- id: gian-coordinator
+  title: Global Initiative of Academic Networks (GIAN)
+  category: service
+  role: Local coordinator
+  date: 2024-12
+  endDate: null
+  venue: VIT Chennai
+  description: Coordinates GIAN courses that bring international faculty to VIT Chennai.
+
+- id: fist-automation
+  title: FIST Server
+  category: service
+  role: Automation in-charge
+  date: 2025-11
+  endDate: null
+  venue: School of Computer Science and Engineering, VIT Chennai
+
+- id: ispace-mentor
+  title: iSpace — Apple Developers Club
+  category: mentoring
+  role: Faculty mentor
+  date: 2023-07
+  endDate: null
+  venue: VIT Chennai

@@ -1,0 +1,117 @@
+# Teaching portfolio — /teaching page.
+#
+# kind: course    → listed under "Current & recent teaching" ONLY when show: true.
+#                   The courses below are drafts: set show: true for each course you
+#                   actually teach (and edit the title / level), delete the rest.
+# kind: resource  → shown only when url is a public https:// link
+#                   resourceType: lab-manual | repository | tool | course | video
+# kind: project   → student project themes (never student names or register numbers)
+
+# ── Courses (drafts — not shown until show: true) ──
+
+- id: course-qc-pqc
+  kind: course
+  title: Quantum Computing Algorithms and Post-Quantum Cryptography
+  areas: [quantum-computing, post-quantum-cryptography]
+  show: false
+  order: 1
+  verify: ["Confirm course title and level, then set show: true"]
+
+- id: course-daa
+  kind: course
+  title: Design and Analysis of Algorithms
+  show: false
+  order: 2
+  verify: ["Confirm course title and level, then set show: true"]
+
+- id: course-dsa
+  kind: course
+  title: Data Structures and Algorithms
+  show: false
+  order: 3
+  verify: ["Confirm course title and level, then set show: true"]
+
+- id: course-hpc
+  kind: course
+  title: High Performance Computing
+  show: false
+  order: 4
+  verify: ["Confirm course title and level, then set show: true"]
+
+- id: course-cloud
+  kind: course
+  title: Cloud Computing
+  show: false
+  order: 5
+  verify: ["Confirm course title and level, then set show: true"]
+
+# ── Teaching resources (shown only with a public link) ──
+
+- id: res-qll
+  kind: resource
+  resourceType: tool
+  title: Quantum Learning Lab
+  description: Interactive web app for exploring qubits, the Bloch sphere, quantum gates and basic quantum operations.
+  url: "https://rajakumararul.github.io/quantum-learning-lab/"
+  areas: [quantum-computing]
+  order: 1
+
+- id: res-qll-source
+  kind: resource
+  resourceType: repository
+  title: Quantum Learning Lab — source code
+  description: Open-source repository of the Quantum Learning Lab.
+  url: "https://github.com/rajakumararul/quantum-learning-lab"
+  areas: [quantum-computing]
+  order: 2
+
+- id: res-lab-manual
+  kind: resource
+  resourceType: lab-manual
+  title: Quantum computing lab manual
+  url: ""
+  order: 3
+
+- id: res-youtube
+  kind: resource
+  resourceType: video
+  title: Video lectures
+  url: ""
+  order: 4
+
+# ── Student project themes ──
+
+- id: proj-bloch-sphere
+  kind: project
+  title: Physical Quantum Bloch Sphere
+  description: A tangible model of the Bloch sphere that shows how gates rotate a single qubit's state.
+  areas: [quantum-computing]
+  order: 1
+
+- id: proj-circuit-analyser
+  kind: project
+  title: Quantum Circuit Analyser
+  description: A tool that inspects quantum circuits — gates, depth and resulting state probabilities.
+  areas: [quantum-computing]
+  order: 2
+
+- id: proj-algorithm-visualizer
+  kind: project
+  title: Quantum Algorithm Visualizer
+  description: Step-by-step visualisation of how algorithms such as Deutsch–Jozsa or Grover's search evolve the quantum state.
+  areas: [quantum-computing]
+  order: 3
+
+- id: proj-qkd-demo
+  kind: project
+  title: QKD demonstration systems
+  description: Demonstrations of quantum key distribution protocols such as BB84, including the effect of an eavesdropper.
+  areas: [quantum-key-distribution]
+  order: 4
+
+- id: proj-pqc
+  kind: project
+  title: Post-quantum cryptography projects
+  description: Implementations and experiments with lattice-based schemes such as CRYSTALS-Kyber.
+  areas: [post-quantum-cryptography]
+  order: 5
